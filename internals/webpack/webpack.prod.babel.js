@@ -5,6 +5,8 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const OfflinePlugin = require('offline-plugin');
 const { HashedModuleIdsPlugin } = require('webpack');
 
+const manifest = require('./manifest/manifest.js');
+
 module.exports = require('./webpack.base.babel')({
   mode: 'production',
 
@@ -70,10 +72,8 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      name: 'React Boilerplate',
-      short_name: 'React BP',
-      description: 'My React Boilerplate-based project!',
-      background_color: '#fafafa',
+      ...manifest,
+      filename: 'manifest.json',
       theme_color: '#b1624d',
       icons: [
         {
