@@ -4,8 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const OfflinePlugin = require('offline-plugin');
 const { HashedModuleIdsPlugin } = require('webpack');
-
-const manifest = require('./manifest/manifest.js');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = require('./webpack.base.babel')({
   mode: 'production',
@@ -72,8 +71,10 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      ...manifest,
-      filename: 'manifest.json',
+      name: 'Bitcoin on browser',
+      short_name: 'BTC browser',
+      description: 'Bitcoin wallet chrome extension',
+      background_color: '#fafafa',
       theme_color: '#b1624d',
       icons: [
         {
@@ -88,6 +89,7 @@ module.exports = require('./webpack.base.babel')({
       hashDigest: 'hex',
       hashDigestLength: 20,
     }),
+    new CopyWebpackPlugin([{ from: 'public' }]),
   ],
 
   performance: {
