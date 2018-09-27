@@ -191,7 +191,6 @@ website!
 
   - ImmutableJS
   - reselect
-  - react-router-redux
   - redux-saga
 
 - **Huge CSS Improvements**

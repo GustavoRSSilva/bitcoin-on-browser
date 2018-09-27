@@ -2,7 +2,6 @@
  * Test injectors
  */
 
-import { memoryHistory } from 'react-router-dom';
 import { shallow } from 'enzyme';
 import React from 'react';
 import identity from 'lodash/identity';
@@ -26,7 +25,7 @@ describe('injectReducer decorator', () => {
   });
 
   beforeEach(() => {
-    store = configureStore({}, memoryHistory);
+    store = configureStore({});
     injectors = {
       injectReducer: jest.fn(),
     };
