@@ -1,4 +1,4 @@
-# bitcin-on-browser
+# bitcoin-on-browser
 Bitcoin wallet on your browser
 
 ## Objective
