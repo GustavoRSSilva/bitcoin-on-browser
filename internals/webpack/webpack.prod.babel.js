@@ -1,7 +1,6 @@
 // Important modules this config uses
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebpackPwaManifest = require('webpack-pwa-manifest');
 const OfflinePlugin = require('offline-plugin');
 const { HashedModuleIdsPlugin } = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -68,20 +67,6 @@ module.exports = require('./webpack.base.babel')({
 
       // Removes warning for about `additional` section usage
       safeToUseOptionalCaches: true,
-    }),
-
-    new WebpackPwaManifest({
-      name: 'Bitcoin on browser',
-      short_name: 'BTC browser',
-      description: 'Bitcoin wallet chrome extension',
-      background_color: '#fafafa',
-      theme_color: '#b1624d',
-      icons: [
-        {
-          src: path.resolve('app/images/icon-512x512.png'),
-          sizes: [72, 96, 120, 128, 144, 152, 167, 180, 192, 384, 512],
-        },
-      ],
     }),
 
     new HashedModuleIdsPlugin({
