@@ -11,7 +11,8 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   width: 330px;
   height: 600px;
-  margin: auto;
+  padding: 20px;
+  margin: 0 auto;
 `;
 
 function Layout(props) {

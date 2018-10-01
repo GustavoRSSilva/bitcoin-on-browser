@@ -21,9 +21,8 @@ import App from 'containers/App';
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
-// Load the favicon, the .htaccess file and the manifest.json
+// Load the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
-import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
