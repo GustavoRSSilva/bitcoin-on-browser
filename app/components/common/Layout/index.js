@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   width: 330px;
   height: 600px;
   margin: auto;
+  float: left;
 `;
 
 function Layout(props) {
