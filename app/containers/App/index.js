@@ -14,7 +14,13 @@
 import React from 'react';
 
 import HomePage from 'containers/HomePage/Loadable';
+import NotSupportedPage from 'containers/NotSupportedPage/Loadable';
 
 export default function App() {
+  //  @dev - only works as a chrome extension
+  if (!chrome || !chrome.storage) {
+    return <NotSupportedPage />;
+  }
+
   return <HomePage />;
 }

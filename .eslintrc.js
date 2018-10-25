@@ -7,6 +7,7 @@ module.exports = {
   extends: ['airbnb', 'prettier', 'prettier/react'],
   plugins: ['prettier', 'redux-saga', 'react', 'jsx-a11y'],
   env: {
+    webextensions: true,
     browser: true,
     node: true,
     jest: true,

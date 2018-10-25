@@ -9,10 +9,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
+  float: left;
   width: 330px;
   height: 600px;
-  margin: auto;
-  float: left;
+  padding: 20px;
+  margin: 0 auto;
 `;
 
 function Layout(props) {
