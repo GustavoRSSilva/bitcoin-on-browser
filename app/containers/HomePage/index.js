@@ -16,6 +16,10 @@ import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class HomePage extends React.PureComponent {
+  //  if no session, ask for password
+
+  //  if no seed ask for seed
+
   render() {
     return (
       <Layout>
