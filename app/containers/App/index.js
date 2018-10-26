@@ -15,7 +15,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
-import Login from '';
+import Login from 'containers/Login/Loadable';
 import Seed from 'containers/Seed/Loadable';
 import NotSupportedPage from 'containers/NotSupportedPage/Loadable';
 import Layout from 'components/common/Layout';
