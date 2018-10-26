@@ -3,24 +3,24 @@ import { initialState } from './reducer';
 import { PASSWORD } from './constants';
 
 /**
- * Direct selector to the login state domain
+ * Direct selector to the logIn state domain
  */
 
-const selectLoginDomain = state => state.get('login', initialState);
+const selectLogInDomain = state => state.get('logIn', initialState);
 
 /**
  * Other specific selectors
  */
 
 const selectPassword = () =>
-  createSelector(selectLoginDomain, subState => subState.get(PASSWORD));
+  createSelector(selectLogInDomain, subState => subState.get(PASSWORD));
 
 /**
- * Default selector used by Login
+ * Default selector used by LogIn
  */
 
-const makeSelectLogin = () =>
-  createSelector(selectLoginDomain, substate => substate.toJS());
+const makeSelectLogIn = () =>
+  createSelector(selectLogInDomain, substate => substate.toJS());
 
-export default makeSelectLogin;
-export { selectLoginDomain, selectPassword };
+export default makeSelectLogIn;
+export { selectLogInDomain, selectPassword };

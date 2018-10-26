@@ -1,7 +1,7 @@
 // import { fromJS } from 'immutable';
-// import { selectLogInDomain } from '../selectors';
+// import { selectSignUpDomain } from '../selectors';
 
-describe('selectLogInDomain', () => {
+describe('selectSignUpDomain', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

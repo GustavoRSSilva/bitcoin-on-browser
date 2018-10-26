@@ -1,10 +1,10 @@
 /*
  *
- * Login constants
+ * LogIn constants
  *
  */
 
-const path = 'app/Login/';
+const path = 'app/LogIn/';
 
 export const PASSWORD = 'password';
 export const SET_PASSWORD = `${path}SET_PASSWORD`;
