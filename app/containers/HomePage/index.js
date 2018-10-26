@@ -1,7 +1,6 @@
 /*
  * HomePage
  *
- * This is the first thing users see of our App, at the '/' route
  *
  * NOTE: while this component should technically be a stateless functional
  * component (SFC), hot reloading does not currently support SFCs. If hot
@@ -9,24 +8,19 @@
  * the linting exception.
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Layout from 'components/common/Layout';
 import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class HomePage extends React.PureComponent {
-  //  if no session, ask for password
-
-  //  if no seed ask for seed
-
   render() {
     return (
-      <Layout>
+      <Fragment>
         <h1>
           <FormattedMessage {...messages.header} />
         </h1>
-      </Layout>
+      </Fragment>
     );
   }
 }

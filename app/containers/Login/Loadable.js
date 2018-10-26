@@ -1,6 +1,6 @@
 /**
  *
- * Asynchronously loads the component for SeedPage
+ * Asynchronously loads the component for Login
  *
  */
 

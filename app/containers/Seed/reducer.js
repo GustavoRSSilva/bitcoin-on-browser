@@ -1,6 +1,6 @@
 /*
  *
- * SeedPage reducer
+ * Seed reducer
  *
  */
 
@@ -9,7 +9,7 @@ import { DEFAULT_ACTION } from './constants';
 
 export const initialState = fromJS({});
 
-function seedPageReducer(state = initialState, action) {
+function seedReducer(state = initialState, action) {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state;
@@ -18,4 +18,4 @@ function seedPageReducer(state = initialState, action) {
   }
 }
 
-export default seedPageReducer;
+export default seedReducer;
