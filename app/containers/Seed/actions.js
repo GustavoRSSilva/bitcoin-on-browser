@@ -1,6 +1,6 @@
 /*
  *
- * SeedPage actions
+ * Seed actions
  *
  */
 

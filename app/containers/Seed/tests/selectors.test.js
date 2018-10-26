@@ -1,7 +1,7 @@
 // import { fromJS } from 'immutable';
-// import { selectSeedPageDomain } from '../selectors';
+// import { selectSeedDomain } from '../selectors';
 
-describe('selectSeedPageDomain', () => {
+describe('selectSeedDomain', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

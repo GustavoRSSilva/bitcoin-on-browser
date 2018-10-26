@@ -1,6 +1,6 @@
 /**
  *
- * SeedPage
+ * Seed
  *
  */
 
@@ -13,13 +13,13 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectSeedPage from './selectors';
+import makeSelectSeed from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
-export class SeedPage extends React.PureComponent {
+export class Seed extends React.Component {
   render() {
     return (
       <div>
@@ -29,12 +29,12 @@ export class SeedPage extends React.PureComponent {
   }
 }
 
-SeedPage.propTypes = {
+Seed.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  seedpage: makeSelectSeedPage(),
+  seed: makeSelectSeed(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -48,11 +48,11 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'seedPage', reducer });
-const withSaga = injectSaga({ key: 'seedPage', saga });
+const withReducer = injectReducer({ key: 'seed', reducer });
+const withSaga = injectSaga({ key: 'seed', saga });
 
 export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(SeedPage);
+)(Seed);
