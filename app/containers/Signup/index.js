@@ -1,10 +1,10 @@
 /**
  *
- * LogIn
+ * SignUp
  *
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -15,46 +15,55 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
 import * as actions from './actions';
-import { selectPassword } from './selectors';
+
+import { selectPassword, selectConfirmPassword } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 import { Title } from './styles';
 
 /* eslint-disable react/prefer-stateless-function */
-export class LogIn extends React.Component {
+export class SignUp extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleSetPassword = this.handleSetPassword.bind(this);
+    this.handleSetConfirmPassword = this.handleSetConfirmPassword.bind(this);
   }
 
   handleSetPassword(evt) {
     const { setPassword } = this.props;
-    const { value } = evt.target.value;
+    const { value } = evt.target;
     setPassword(value);
   }
 
+  handleSetConfirmPassword(evt) {
+    const { setConfirmPassword } = this.props;
+    const { value } = evt.target.value;
+    setConfirmPassword(value);
+  }
+
   render() {
-    const { password } = this.props;
     return (
-      <Fragment>
+      <div>
         <Title>
           <FormattedMessage {...messages.app_title} />
         </Title>
-        <input value={password} onChange={this.handleSetPassword} />
-      </Fragment>
+      </div>
     );
   }
 }
 
-LogIn.propTypes = {
+SignUp.propTypes = {
   password: PropTypes.string.isRequired,
   setPassword: PropTypes.func.isRequired,
+  confirmPassword: PropTypes.string.isRequired,
+  setConfirmPassword: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   password: selectPassword(),
+  confirmPassword: selectConfirmPassword(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -64,11 +73,11 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'logIn', reducer });
-const withSaga = injectSaga({ key: 'logIn', saga });
+const withReducer = injectReducer({ key: 'signUp', reducer });
+const withSaga = injectSaga({ key: 'signUp', saga });
 
 export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(LogIn);
+)(SignUp);

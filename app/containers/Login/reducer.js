@@ -1,6 +1,6 @@
 /*
  *
- * Login reducer
+ * LogIn reducer
  *
  */
 
@@ -11,7 +11,7 @@ export const initialState = fromJS({
   [PASSWORD]: '',
 });
 
-function loginReducer(state = initialState, action) {
+function logInReducer(state = initialState, action) {
   switch (action.type) {
     case SET_PASSWORD:
       return state.setState(PASSWORD, action.payload);
@@ -21,4 +21,4 @@ function loginReducer(state = initialState, action) {
   }
 }
 
-export default loginReducer;
+export default logInReducer;
