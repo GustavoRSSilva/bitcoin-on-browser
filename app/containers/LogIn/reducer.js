@@ -14,7 +14,7 @@ export const initialState = fromJS({
 function logInReducer(state = initialState, action) {
   switch (action.type) {
     case SET_PASSWORD:
-      return state.setState(PASSWORD, action.payload);
+      return state.set(PASSWORD, action.payload);
 
     default:
       return state;
