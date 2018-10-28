@@ -7,12 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+
+import Input from 'components/common/Input';
+import Button from 'components/common/Button';
 
 import * as actions from './actions';
 
@@ -29,25 +32,76 @@ export class SignUp extends React.Component {
 
     this.handleSetPassword = this.handleSetPassword.bind(this);
     this.handleSetConfirmPassword = this.handleSetConfirmPassword.bind(this);
+    this.handleSubmitForm = this.handleSubmitForm.bind(this);
+  }
+
+  validatePasswords(password, confirmPassword) {
+    const { setErrorMessage } = this.props;
+    const { formatMessage } = this.props.intl;
+
+    if (!password || !confirmPassword) {
+      setErrorMessage(formatMessage(messages.missing_information));
+      return false;
+    }
+
+    if (password.length < 8 || confirmPassword.length < 8) {
+      setErrorMessage(formatMessage(messages.invalid_length));
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage(formatMessage(messages.passwords_do_not_match));
+      return false;
+    }
+
+    return password === confirmPassword;
   }
 
   handleSetPassword(evt) {
-    const { setPassword } = this.props;
+    const { setPassword, setErrorMessage } = this.props;
     const { value } = evt.target;
+    setErrorMessage(null);
     setPassword(value);
   }
 
   handleSetConfirmPassword(evt) {
-    const { setConfirmPassword } = this.props;
-    const { value } = evt.target.value;
+    const { setConfirmPassword, setErrorMessage } = this.props;
+    const { value } = evt.target;
+    setErrorMessage(null);
     setConfirmPassword(value);
   }
 
+  handleSubmitForm(evt) {
+    evt.preventDefault();
+    const { submitForm, password, confirmPassword } = this.props;
+    const error = this.validatePasswords(password, confirmPassword);
+    if (!error) {
+      submitForm();
+    }
+  }
+
   render() {
+    const { password, confirmPassword } = this.props;
+    const { formatMessage } = this.props.intl;
     return (
       <div>
         <Title>
           <FormattedMessage {...messages.app_title} />
+          <form>
+            <Input
+              value={password || ''}
+              onChange={this.handleSetPassword}
+              placeholder={formatMessage(messages.new_password)}
+            />
+            <Input
+              value={confirmPassword || ''}
+              onChange={this.handleSetConfirmPassword}
+              placeholder={formatMessage(messages.confirm_password)}
+            />
+            <Button type="submit">
+              <FormattedMessage {...messages.submit} />
+            </Button>
+          </form>
         </Title>
       </div>
     );
@@ -55,10 +109,13 @@ export class SignUp extends React.Component {
 }
 
 SignUp.propTypes = {
+  intl: intlShape.isRequired,
   password: PropTypes.string.isRequired,
   setPassword: PropTypes.func.isRequired,
   confirmPassword: PropTypes.string.isRequired,
   setConfirmPassword: PropTypes.func.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
+  submitForm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -80,4 +137,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(SignUp);
+)(injectIntl(SignUp));
