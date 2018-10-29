@@ -1,6 +1,11 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
-import { PASSWORD, CONFIRM_PASSWORD, SUBMIT_FORM_STATE } from './constants';
+import {
+  PASSWORD,
+  CONFIRM_PASSWORD,
+  SUBMIT_FORM_STATE,
+  FORM_ERROR_MESSAGE,
+} from './constants';
 
 /**
  * Direct selector to the signUp state domain
@@ -25,6 +30,11 @@ const selectSubmitFormState = () =>
     subState.get(SUBMIT_FORM_STATE),
   );
 
+const selectErrorMessage = () =>
+  createSelector(selectSignUpDomain, subState =>
+    subState.get(FORM_ERROR_MESSAGE),
+  );
+
 /**
  * Default selector used by SignUp
  */
@@ -38,4 +48,5 @@ export {
   selectPassword,
   selectConfirmPassword,
   selectSubmitFormState,
+  selectErrorMessage,
 };
