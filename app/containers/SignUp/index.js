@@ -24,6 +24,7 @@ import {
   selectPassword,
   selectConfirmPassword,
   selectErrorMessage,
+  selectSubmitFormState,
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -38,6 +39,16 @@ export class SignUp extends React.Component {
     this.handleSetPassword = this.handleSetPassword.bind(this);
     this.handleSetConfirmPassword = this.handleSetConfirmPassword.bind(this);
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
+  }
+
+  componentDidUpdate() {
+    const { submitFormState, history } = this.props;
+
+    //  Checks if the submit form is successful
+    //  If so redirect to the homepage
+    if (submitFormState.data) {
+      history.push('/seed');
+    }
   }
 
   validatePasswords(password, confirmPassword) {
@@ -79,9 +90,9 @@ export class SignUp extends React.Component {
   handleSubmitForm(evt) {
     evt.preventDefault();
     const { submitForm, password, confirmPassword } = this.props;
-    const error = this.validatePasswords(password, confirmPassword);
-    if (!error) {
-      submitForm();
+    const valid = this.validatePasswords(password, confirmPassword);
+    if (valid) {
+      submitForm(password);
     }
   }
 
@@ -97,6 +108,7 @@ export class SignUp extends React.Component {
 
   render() {
     const { password, confirmPassword } = this.props;
+
     const { formatMessage } = this.props.intl;
     return (
       <div>
@@ -128,6 +140,7 @@ export class SignUp extends React.Component {
 
 SignUp.propTypes = {
   intl: intlShape.isRequired,
+  history: PropTypes.object.isRequired,
   password: PropTypes.string.isRequired,
   setPassword: PropTypes.func.isRequired,
   confirmPassword: PropTypes.string.isRequired,
@@ -135,12 +148,14 @@ SignUp.propTypes = {
   errorMessage: PropTypes.string,
   setErrorMessage: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
+  submitFormState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   password: selectPassword(),
   confirmPassword: selectConfirmPassword(),
   errorMessage: selectErrorMessage(),
+  submitFormState: selectSubmitFormState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

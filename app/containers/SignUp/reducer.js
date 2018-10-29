@@ -46,10 +46,7 @@ function signUpReducer(state = initialState, action) {
       return state.set(SUBMIT_FORM_STATE, setState(false, action.payload));
 
     case SUBMIT_FORM_SUCCESSFUL:
-      return state.set(
-        SUBMIT_FORM_STATE,
-        setState(false, null, action.payload),
-      );
+      return state.set(SUBMIT_FORM_STATE, setState(false, null, 'success'));
 
     case SET_ERROR_MESSAGE:
       return state.set(FORM_ERROR_MESSAGE, action.payload);
