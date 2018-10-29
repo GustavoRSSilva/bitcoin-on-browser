@@ -16,10 +16,16 @@ import injectReducer from 'utils/injectReducer';
 
 import Input from 'components/common/Input';
 import Button from 'components/common/Button';
+import { Error } from 'components/common/Messages';
 
 import * as actions from './actions';
 
-import { selectPassword, selectConfirmPassword } from './selectors';
+import {
+  selectPassword,
+  selectConfirmPassword,
+  selectErrorMessage,
+  selectSubmitFormState,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -33,6 +39,16 @@ export class SignUp extends React.Component {
     this.handleSetPassword = this.handleSetPassword.bind(this);
     this.handleSetConfirmPassword = this.handleSetConfirmPassword.bind(this);
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
+  }
+
+  componentDidUpdate() {
+    const { submitFormState, history } = this.props;
+
+    //  Checks if the submit form is successful
+    //  If so redirect to the homepage
+    if (submitFormState.data) {
+      history.push('/seed');
+    }
   }
 
   validatePasswords(password, confirmPassword) {
@@ -74,14 +90,25 @@ export class SignUp extends React.Component {
   handleSubmitForm(evt) {
     evt.preventDefault();
     const { submitForm, password, confirmPassword } = this.props;
-    const error = this.validatePasswords(password, confirmPassword);
-    if (!error) {
-      submitForm();
+    const valid = this.validatePasswords(password, confirmPassword);
+    if (valid) {
+      submitForm(password);
     }
+  }
+
+  renderErrorMessage() {
+    const { errorMessage } = this.props;
+
+    if (!errorMessage) {
+      return null;
+    }
+
+    return <Error>{errorMessage}</Error>;
   }
 
   render() {
     const { password, confirmPassword } = this.props;
+
     const { formatMessage } = this.props.intl;
     return (
       <div>
@@ -98,6 +125,9 @@ export class SignUp extends React.Component {
               onChange={this.handleSetConfirmPassword}
               placeholder={formatMessage(messages.confirm_password)}
             />
+
+            {this.renderErrorMessage()}
+
             <Button type="submit">
               <FormattedMessage {...messages.submit} />
             </Button>
@@ -110,17 +140,22 @@ export class SignUp extends React.Component {
 
 SignUp.propTypes = {
   intl: intlShape.isRequired,
+  history: PropTypes.object.isRequired,
   password: PropTypes.string.isRequired,
   setPassword: PropTypes.func.isRequired,
   confirmPassword: PropTypes.string.isRequired,
   setConfirmPassword: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
   setErrorMessage: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
+  submitFormState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   password: selectPassword(),
   confirmPassword: selectConfirmPassword(),
+  errorMessage: selectErrorMessage(),
+  submitFormState: selectSubmitFormState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

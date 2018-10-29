@@ -13,7 +13,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { getUserSession } from 'utils/storage';
+import { isUserCreated, isUserValid } from 'utils/user';
 
 import makeSelectHomePage from './selectors';
 import reducer from './reducer';
@@ -25,9 +25,16 @@ export class HomePage extends React.Component {
   render() {
     const { history } = this.props;
 
-    //  If not logged in send to loggin page
-    if (!getUserSession()) {
+    //  check if there is user signed in
+    if (!isUserCreated()) {
       history.push('/signUp');
+      return null;
+    }
+
+    //  check if the user is valid, if not redirect to the login page
+    if (!isUserValid()) {
+      history.push('/logIn');
+      return null;
     }
 
     return (

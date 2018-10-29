@@ -48,9 +48,8 @@ export function submitFormRejected(payload) {
   };
 }
 
-export function submitFormSuccessful(payload) {
+export function submitFormSuccessful() {
   return {
     type: SUBMIT_FORM_SUCCESSFUL,
-    payload,
   };
 }
