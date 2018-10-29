@@ -1,16 +1,16 @@
 {
-  "name": "react-boilerplate",
+  "name": "bitcoin-on-browser",
   "version": "3.6.0",
-  "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "description": "A bitcoin wallet extension",
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/GustavoRSSilva/bitcoin-on-browser.git"
   },
   "engines": {
     "npm": ">=5",
     "node": ">=8"
   },
-  "author": "Max Stoiber",
+  "author": "Gustavo Silva",
   "license": "MIT",
   "scripts": {
     "analyze:clean": "rimraf stats.json",
