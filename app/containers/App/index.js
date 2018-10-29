@@ -22,11 +22,6 @@ import NotSupportedPage from 'containers/NotSupportedPage/Loadable';
 import Layout from 'components/common/Layout';
 
 export default function App() {
-  // @dev - only works as a chrome extension
-  if (!chrome || !chrome.storage) {
-    return <NotSupportedPage />;
-  }
-
   return (
     <Layout>
       <Switch>
