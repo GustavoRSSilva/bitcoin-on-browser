@@ -87,7 +87,7 @@ export class SignUp extends React.Component {
       <div>
         <Title>
           <FormattedMessage {...messages.app_title} />
-          <form>
+          <form onSubmit={this.handleSubmitForm}>
             <Input
               value={password || ''}
               onChange={this.handleSetPassword}
