@@ -14,6 +14,8 @@ import {
   SUBMIT_FORM,
   SUBMIT_FORM_REJECTED,
   SUBMIT_FORM_SUCCESSFUL,
+  FORM_ERROR_MESSAGE,
+  SET_ERROR_MESSAGE,
 } from 'containers/SignUp/constants';
 
 const setState = (requesting = false, error = null, data = null) => ({
@@ -26,6 +28,7 @@ export const initialState = fromJS({
   [PASSWORD]: '',
   [CONFIRM_PASSWORD]: '',
   [SUBMIT_FORM_STATE]: setState(),
+  [FORM_ERROR_MESSAGE]: null,
 });
 
 function signUpReducer(state = initialState, action) {
@@ -47,6 +50,9 @@ function signUpReducer(state = initialState, action) {
         SUBMIT_FORM_STATE,
         setState(false, null, action.payload),
       );
+
+    case SET_ERROR_MESSAGE:
+      return state.set(FORM_ERROR_MESSAGE, action.payload);
 
     default:
       return state;

@@ -17,4 +17,6 @@ export const SUBMIT_FORM = `${path}SUBMIT_FORM`;
 export const SUBMIT_FORM_REJECTED = `${path}SUBMIT_FORM_REJECTED`;
 export const SUBMIT_FORM_SUCCESSFUL = `${path}SUBMIT_FORM_SUCCESSFUL`;
 
+//  Form error message
+export const FORM_ERROR_MESSAGE = `${path}FORM_ERROR_MESSAGE`;
 export const SET_ERROR_MESSAGE = `${path}SET_ERROR_MESSAGE`;

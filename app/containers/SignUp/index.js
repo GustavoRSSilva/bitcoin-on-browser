@@ -16,10 +16,15 @@ import injectReducer from 'utils/injectReducer';
 
 import Input from 'components/common/Input';
 import Button from 'components/common/Button';
+import { Error } from 'components/common/Messages';
 
 import * as actions from './actions';
 
-import { selectPassword, selectConfirmPassword } from './selectors';
+import {
+  selectPassword,
+  selectConfirmPassword,
+  selectErrorMessage,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -80,6 +85,16 @@ export class SignUp extends React.Component {
     }
   }
 
+  renderErrorMessage() {
+    const { errorMessage } = this.props;
+
+    if (!errorMessage) {
+      return null;
+    }
+
+    return <Error>{errorMessage}</Error>;
+  }
+
   render() {
     const { password, confirmPassword } = this.props;
     const { formatMessage } = this.props.intl;
@@ -98,6 +113,9 @@ export class SignUp extends React.Component {
               onChange={this.handleSetConfirmPassword}
               placeholder={formatMessage(messages.confirm_password)}
             />
+
+            {this.renderErrorMessage()}
+
             <Button type="submit">
               <FormattedMessage {...messages.submit} />
             </Button>
@@ -114,6 +132,7 @@ SignUp.propTypes = {
   setPassword: PropTypes.func.isRequired,
   confirmPassword: PropTypes.string.isRequired,
   setConfirmPassword: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
   setErrorMessage: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
 };
@@ -121,6 +140,7 @@ SignUp.propTypes = {
 const mapStateToProps = createStructuredSelector({
   password: selectPassword(),
   confirmPassword: selectConfirmPassword(),
+  errorMessage: selectErrorMessage(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
