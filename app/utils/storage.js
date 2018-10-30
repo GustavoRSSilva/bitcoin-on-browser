@@ -1,21 +1,35 @@
 const isExtension = !!(chrome && chrome.storage);
 
 //  Save data on the browser
-export const saveItem = (key, value, fn = () => null) => {
+export const saveItem = (key, value) => {
   if (isExtension) {
-    return chrome.storage.local.set({ [key]: value }, fn);
+    return chrome.storage.local.set({ [key]: value }, () => null);
   }
 
-  window.localStorage.setItem([key], value);
-  return fn();
+  return window.localStorage.setItem([key], value);
 };
 
-//  Fetch data from the browser
-export const getItem = (key, fn = () => null) => {
-  if (isExtension) {
-    return chrome.storage.local.get([key], fn);
-  }
+//  Fetch data from the browser async
+/* eslint-disable no-console */
+export const getItem = function getItem(key) {
+  return new Promise((resolve, reject) => {
+    if (isExtension) {
+      chrome.storage.local.get(key, items => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError.message);
+          reject(chrome.runtime.lastError.message);
+        } else {
+          resolve(items[key]);
+        }
+      });
+    }
 
-  window.localStorage.getItem(key);
-  return fn();
+    const item = window.localStorage.getItem(key);
+
+    if (item) {
+      resolve(item);
+    } else {
+      reject();
+    }
+  });
 };

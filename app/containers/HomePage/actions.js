@@ -4,6 +4,7 @@
  *
  */
 
+import { fetchUserCreated, fetchSessionValid } from 'containers/App/actions';
 import { DEFAULT_ACTION } from './constants';
 
 export function defaultAction() {
@@ -11,3 +12,5 @@ export function defaultAction() {
     type: DEFAULT_ACTION,
   };
 }
+
+export { fetchSessionValid, fetchUserCreated };

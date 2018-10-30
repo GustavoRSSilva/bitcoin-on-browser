@@ -1,17 +1,11 @@
 /**
  *
- * App.js
+ * App
  *
- * This component is the skeleton around the actual pages, and should only
- * contain code that should be seen on all pages. (e.g. navigation bar)
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a necessity for you then you can refactor it and remove
- * the linting exception.
  */
 
 import React from 'react';
+import { compose } from 'redux';
 import { Route, Switch } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
@@ -21,16 +15,32 @@ import Seed from 'containers/Seed/Loadable';
 import NotSupportedPage from 'containers/NotSupportedPage/Loadable';
 import Layout from 'components/common/Layout';
 
-export default function App() {
-  return (
-    <Layout>
-      <Switch>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/signUp" exact component={SignUp} />
-        <Route path="/logIn" exact component={LogIn} />
-        <Route path="/seed" exact component={Seed} />
-        <Route component={NotSupportedPage} />
-      </Switch>
-    </Layout>
-  );
+import injectSaga from 'utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
+import reducer from './reducer';
+import saga from './saga';
+
+/* eslint-disable react/prefer-stateless-function */
+export class App extends React.Component {
+  render() {
+    return (
+      <Layout>
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/signUp" exact component={SignUp} />
+          <Route path="/logIn" exact component={LogIn} />
+          <Route path="/seed" exact component={Seed} />
+          <Route component={NotSupportedPage} />
+        </Switch>
+      </Layout>
+    );
+  }
 }
+
+const withReducer = injectReducer({ key: 'app', reducer });
+const withSaga = injectSaga({ key: 'app', saga });
+
+export default compose(
+  withReducer,
+  withSaga,
+)(App);
