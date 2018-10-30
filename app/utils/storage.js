@@ -16,6 +16,7 @@ export const getItem = (key, fn = () => null) => {
     return chrome.storage.local.get([key], fn);
   }
 
-  window.localStorage.getItem(key);
-  return fn();
+  const item = window.localStorage.getItem(key);
+  fn(item);
+  return item;
 };
