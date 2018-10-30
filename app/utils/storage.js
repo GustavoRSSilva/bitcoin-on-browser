@@ -22,14 +22,14 @@ export const getItem = function getItem(key) {
           resolve(items[key]);
         }
       });
-    }
-
-    const item = window.localStorage.getItem(key);
-
-    if (item) {
-      resolve(item);
     } else {
-      reject();
+      const item = window.localStorage.getItem(key);
+
+      if (item) {
+        resolve(item);
+      } else {
+        reject();
+      }
     }
   });
 };
