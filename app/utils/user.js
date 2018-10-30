@@ -1,15 +1,15 @@
 import CryptoJS from 'crypto-js';
 import { saveItem, getItem } from './storage';
 
-const USER = 'p';
 const IS_VALID = 'isValid';
 const PASSWORD = 'password';
 
+const USER = 'p';
+
 const SECRET = process.env.SECRET || 'secret_key';
 
-const getUser = () => {
-  const ciphertext = getItem(USER);
-
+const getUser = async () => {
+  const ciphertext = await getItem(USER);
   if (!ciphertext) {
     return null;
   }
@@ -29,10 +29,7 @@ const saveUser = data => {
 };
 
 //  fetch user by key
-const getUserKey = (key = null) => {
-  const user = getUser();
-  return user ? user[key] : null;
-};
+const getUserKey = (user, key = null) => (user ? user[key] : null);
 
 //  fetch user by key
 const setUserKey = (key, value) => {
@@ -65,4 +62,5 @@ export const setUserPassword = password => {
   setUserKey(PASSWORD, password);
 };
 
-export const isUserCreated = () => getUser() && getUserKey(PASSWORD);
+export const isUserCreated = () =>
+  getUser().then(user => getUserKey(user, PASSWORD));

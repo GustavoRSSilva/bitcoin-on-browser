@@ -36,7 +36,7 @@ import { translationMessages } from './i18n';
 import './styles/global-styles';
 
 // constants
-import { invalidateUserSession } from './utils/user';
+import { setSession } from './containers/App/saga';
 
 // Create redux store with history
 const initialState = {};
@@ -91,6 +91,6 @@ if (process.env.NODE_ENV === 'production') {
 //  Do no persisnt the password
 if (chrome && chrome.runtime && chrome.runtime.onStartup) {
   chrome.runtime.onStartup.addListener(() => {
-    invalidateUserSession();
+    setSession(false);
   });
 }

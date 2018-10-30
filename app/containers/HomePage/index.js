@@ -9,33 +9,57 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
+import { bindActionCreators, compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { isUserCreated, isUserValid } from 'utils/user';
 
-import makeSelectHomePage from './selectors';
+import {
+  selectSessionValidState,
+  selectUserCreatedState,
+} from 'containers/App/selectors';
+
+import * as actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.Component {
-  render() {
-    const { history } = this.props;
+  componentWillMount() {
+    const { fetchSessionValid, fetchUserCreated } = this.props;
+    fetchUserCreated();
+    fetchSessionValid();
+  }
 
-    //  check if there is user signed in
-    if (!isUserCreated()) {
+  isRequesting() {
+    const requesting = 'requesting';
+    const { sessionValidState, userCreatedState } = this.props;
+    return sessionValidState[requesting] || userCreatedState[requesting];
+  }
+
+  render() {
+    const {
+      history,
+      // sessionValidState,
+      userCreatedState,
+    } = this.props;
+
+    if (this.isRequesting()) {
+      return <div>requesting</div>;
+    }
+
+    // check if there is a user
+    if (userCreatedState.data === null) {
       history.push('/signUp');
       return null;
     }
 
     //  check if the user is valid, if not redirect to the login page
-    if (!isUserValid()) {
-      history.push('/logIn');
-      return null;
-    }
+    // if (sessionValidState && !sessionValidState.data) {
+    //   history.push('/logIn');
+    //   return null;
+    // }
 
     return (
       <div>
@@ -46,19 +70,19 @@ export class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  fetchUserCreated: PropTypes.func.isRequired,
+  userCreatedState: PropTypes.object.isRequired,
+  fetchSessionValid: PropTypes.func.isRequired,
+  sessionValidState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  homepage: makeSelectHomePage(),
+  userCreatedState: selectUserCreatedState(),
+  sessionValidState: selectSessionValidState(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const withConnect = connect(
   mapStateToProps,

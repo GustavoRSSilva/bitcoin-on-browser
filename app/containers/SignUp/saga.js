@@ -1,12 +1,26 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-import { setUserPassword } from 'utils/user';
+import { setSession, getUser, saveUser } from 'containers/App/saga';
+import { PASSWORD } from 'containers/App/constants';
+
 import { SUBMIT_FORM } from './constants';
 import { submitFormRejected, submitFormSuccessful } from './actions';
 
 // Workers sagas
-function savePassword(password) {
-  return setUserPassword(password);
+function* savePassword(password) {
+  try {
+    setSession(true);
+    let user = yield getUser();
+
+    if (!user) {
+      user = {};
+    }
+    user[PASSWORD] = password;
+    saveUser(user);
+    return user;
+  } catch (e) {
+    throw e;
+  }
 }
 
 // Watcher sagas
