@@ -1,10 +1,21 @@
 /*
- * AppConstants
- * Each action has a corresponding type, which the reducer knows and picks up on.
- * To avoid weird typos between the reducer and the actions, we save them as
- * constants here. We prefix them with 'yourproject/YourComponent' so we avoid
- * reducers accidentally picking up actions they shouldn't.
  *
- * Follow this format:
- * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
+ * App constants
+ *
  */
+
+const path = 'app/App/';
+
+export const USER = 'p';
+export const SESSION = 'q';
+export const PASSWORD = 'ps';
+
+export const SESSION_VALID_STATE = 'session_valid_state';
+export const FETCH_SESSION_VALID = `${path}FETCH_SESSION_VALID`;
+export const FETCH_SESSION_VALID_REJECTED = `${path}FETCH_SESSION_VALID_REJECTED`;
+export const FETCH_SESSION_VALID_SUCCESSFUL = `${path}FETCH_SESSION_VALID_SUCCESSFUL`;
+
+export const USER_CREATED_STATE = 'user_created_state';
+export const FETCH_USER_CREATED = `${path}FETCH_USER_CREATED`;
+export const FETCH_USER_CREATED_REJECTED = `${path}FETCH_USER_CREATED_REJECTED`;
+export const FETCH_USER_CREATED_SUCCESSFUL = `${path}FETCH_USER_CREATED_SUCCESSFUL`;
