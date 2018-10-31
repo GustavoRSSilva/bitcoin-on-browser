@@ -11,6 +11,8 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import { generateMnemonic } from 'utils/bitcoin';
+
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import makeSelectSeed from './selectors';
@@ -21,6 +23,12 @@ import messages from './messages';
 /* eslint-disable react/prefer-stateless-function */
 export class Seed extends React.Component {
   render() {
+    // console.log(generateMnemonic());
+    // console.log(generateMnemonic());
+    // console.log(generateMnemonic());
+    // console.log(generateMnemonic());
+    generateMnemonic();
+
     return (
       <div>
         <FormattedMessage {...messages.header} />
