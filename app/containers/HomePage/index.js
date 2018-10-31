@@ -38,28 +38,38 @@ export class HomePage extends React.Component {
     return sessionValidState[requesting] || userCreatedState[requesting];
   }
 
+  isUserCreated() {
+    const { userCreatedState } = this.props;
+    return !(userCreatedState.data === null);
+  }
+
+  isSessionValid() {
+    const { sessionValidState } = this.props;
+    return !(
+      this.isUserCreated() &&
+      sessionValidState &&
+      sessionValidState.data === false
+    );
+  }
+
   render() {
-    const {
-      history,
-      // sessionValidState,
-      userCreatedState,
-    } = this.props;
+    const { history } = this.props;
 
     if (this.isRequesting()) {
       return <div>requesting</div>;
     }
 
     // check if there is a user
-    if (userCreatedState.data === null) {
+    if (!this.isUserCreated()) {
       history.push('/signUp');
       return null;
     }
 
     //  check if the user is valid, if not redirect to the login page
-    // if (sessionValidState && !sessionValidState.data) {
-    //   history.push('/logIn');
-    //   return null;
-    // }
+    if (!this.isSessionValid()) {
+      history.push('/logIn');
+      return null;
+    }
 
     return (
       <div>

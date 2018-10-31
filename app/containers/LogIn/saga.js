@@ -1,6 +1,33 @@
-// import { take, call, put, select } from 'redux-saga/effects';
+import { takeLatest, call, put } from 'redux-saga/effects';
 
-// Individual exports for testing
+import { validateSession, setSession } from 'containers/App/saga';
+import { fetchSessionValid } from 'containers/App/actions';
+
+import { SUBMIT_FORM } from './constants';
+import { submitFormRejected, submitFormSuccessful } from './actions';
+
+// Workers sagas
+
+// Watcher sagas
+
+function* callSubmitForm(action) {
+  try {
+    const validSession = yield call(validateSession, action.payload);
+    //  set the session as valid
+    yield setSession(validSession);
+    // update the session value
+    yield put(fetchSessionValid());
+    yield put(submitFormSuccessful(validSession));
+  } catch (e) {
+    yield put(submitFormRejected('something went wrong'));
+  }
+}
+
+function* submitLoginFormSaga() {
+  yield takeLatest(SUBMIT_FORM, callSubmitForm);
+}
+
+// Root sagas
 export default function* defaultSaga() {
-  // See example in containers/HomePage/saga.js
+  yield [submitLoginFormSaga()];
 }

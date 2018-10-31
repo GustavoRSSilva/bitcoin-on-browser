@@ -1,3 +1,5 @@
 import bitcoin from 'bitcoinjs-lib';
 
-export const sha256 = val => bitcoin.crypto.sha256(val);
+const { Buffer } = require('buffer/');
+
+export const sha256 = val => bitcoin.crypto.sha256(Buffer.from(val));
