@@ -1,6 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-import { validateSession } from 'containers/App/saga';
+import { validateSession, setSession } from 'containers/App/saga';
+import { fetchSessionValid } from 'containers/App/actions';
 
 import { SUBMIT_FORM } from './constants';
 import { submitFormRejected, submitFormSuccessful } from './actions';
@@ -12,6 +13,10 @@ import { submitFormRejected, submitFormSuccessful } from './actions';
 function* callSubmitForm(action) {
   try {
     const validSession = yield call(validateSession, action.payload);
+    //  set the session as valid
+    yield setSession(validSession);
+    // update the session value
+    yield put(fetchSessionValid());
     yield put(submitFormSuccessful(validSession));
   } catch (e) {
     yield put(submitFormRejected('something went wrong'));
