@@ -2,9 +2,11 @@ import { takeLatest, call, put } from 'redux-saga/effects';
 import { saveItem, getItem } from 'utils/storage';
 import CryptoJS from 'crypto-js';
 import { sha256 } from 'utils/bitcoin';
+
 import {
   SESSION,
   USER,
+  PASSWORD,
   FETCH_USER_CREATED,
   FETCH_SESSION_VALID,
 } from './constants';
@@ -15,8 +17,20 @@ import {
   fetchSessionValidRejected,
   fetchSessionValidSuccessful,
 } from './actions';
+const { Buffer } = require('buffer/');
 
 const SECRET = process.env.SECRET || 'secret_key';
+
+const compareUint8Array = (buf1, buf2) => {
+  if (buf1.length !== buf2.length) return false;
+  for (let i = 0; i < buf1.length; i += 1) {
+    if (buf1[i] !== buf2[i]) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 export const setSession = bool => {
   saveItem(SESSION, bool);
@@ -47,6 +61,13 @@ export function* getUser() {
     //  If there is no user, return null
     return null;
   }
+}
+
+export function* validateSession(password) {
+  const sha256Pass = stringToSha256(password);
+  const user = yield getUser();
+  const userPass = Buffer.from(user[PASSWORD].data);
+  return compareUint8Array(userPass, sha256Pass);
 }
 
 export function* getSession() {
