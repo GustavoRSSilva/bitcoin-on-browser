@@ -53,6 +53,7 @@ export class HomePage extends React.Component {
   }
 
   render() {
+    console.log('arrived!!');
     const { history } = this.props;
 
     if (this.isRequesting()) {
@@ -66,7 +67,12 @@ export class HomePage extends React.Component {
     }
 
     //  check if the user is valid, if not redirect to the login page
+
+    console.log('zzz');
+    console.log(this.isSessionValid());
     if (!this.isSessionValid()) {
+      console.log('bye!!!');
+      console.log(this.isSessionValid());
       history.push('/logIn');
       return null;
     }
