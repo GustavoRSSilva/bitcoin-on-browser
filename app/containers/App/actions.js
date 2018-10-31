@@ -38,14 +38,16 @@ export function fetchSessionValid() {
   };
 }
 
-export function fetchSessionValidRejected() {
+export function fetchSessionValidRejected(payload) {
   return {
     type: FETCH_SESSION_VALID_REJECTED,
+    payload,
   };
 }
 
-export function fetchSessionValidSuccessful() {
+export function fetchSessionValidSuccessful(payload) {
   return {
     type: FETCH_SESSION_VALID_SUCCESSFUL,
+    payload,
   };
 }

@@ -71,7 +71,9 @@ function* callGetUserCreated() {
 function* callGetSessionValid() {
   try {
     const session = yield call(getSession);
-    yield put(fetchSessionValidSuccessful(session));
+    // We need to conver the session to a bool
+    const boolSession = !!(session === true || session === 'true');
+    yield put(fetchSessionValidSuccessful(boolSession));
   } catch (e) {
     yield put(fetchSessionValidRejected());
   }
