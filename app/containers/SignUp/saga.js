@@ -1,6 +1,11 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-import { setSession, getUser, saveUser } from 'containers/App/saga';
+import {
+  setSession,
+  getUser,
+  saveUser,
+  stringToSha256,
+} from 'containers/App/saga';
 import { PASSWORD } from 'containers/App/constants';
 
 import { SUBMIT_FORM } from './constants';
@@ -15,7 +20,7 @@ function* savePassword(password) {
     if (!user) {
       user = {};
     }
-    user[PASSWORD] = password;
+    user[PASSWORD] = stringToSha256(password);
     saveUser(user);
     return user;
   } catch (e) {

@@ -1,6 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { saveItem, getItem } from 'utils/storage';
 import CryptoJS from 'crypto-js';
+import { sha256 } from 'utils/bitcoin';
 import {
   SESSION,
   USER,
@@ -20,6 +21,8 @@ const SECRET = process.env.SECRET || 'secret_key';
 export const setSession = bool => {
   saveItem(SESSION, bool);
 };
+
+export const stringToSha256 = string => sha256(string);
 
 export function saveUser(user) {
   //  encrypt the user data
