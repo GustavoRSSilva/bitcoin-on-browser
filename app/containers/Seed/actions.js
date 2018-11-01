@@ -4,10 +4,17 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { GENERATE_NEW_SEED, SET_SEED } from './constants';
 
-export function defaultAction() {
+export function generateNewSeed() {
   return {
-    type: DEFAULT_ACTION,
+    type: GENERATE_NEW_SEED,
+  };
+}
+
+export function setSeed(payload) {
+  return {
+    type: SET_SEED,
+    payload,
   };
 }

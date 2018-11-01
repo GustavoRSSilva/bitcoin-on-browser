@@ -8,7 +8,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { Route, Switch } from 'react-router-dom';
 
-import HomePage from 'containers/HomePage/Loadable';
+// import HomePage from 'containers/HomePage/Loadable';
 import SignUp from 'containers/SignUp/Loadable';
 import LogIn from 'containers/LogIn/Loadable';
 import Seed from 'containers/Seed/Loadable';
@@ -26,7 +26,7 @@ export class App extends React.Component {
     return (
       <Layout>
         <Switch>
-          <Route path="/" exact component={HomePage} />
+          <Route path="/" exact component={Seed} />
           <Route path="/signUp" exact component={SignUp} />
           <Route path="/logIn" exact component={LogIn} />
           <Route path="/seed" exact component={Seed} />

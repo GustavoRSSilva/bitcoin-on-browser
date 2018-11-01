@@ -115,20 +115,20 @@ export class LogIn extends React.Component {
       <div>
         <Title>
           <FormattedMessage {...messages.app_title} />
-          <form onSubmit={this.handleSubmitForm}>
-            <Input
-              value={password || ''}
-              onChange={this.handleSetPassword}
-              placeholder={formatMessage(messages.password)}
-            />
-
-            {this.renderErrorMessage()}
-
-            <Button type="submit">
-              <FormattedMessage {...messages.submit} />
-            </Button>
-          </form>
         </Title>
+        <form onSubmit={this.handleSubmitForm}>
+          <Input
+            value={password || ''}
+            onChange={this.handleSetPassword}
+            placeholder={formatMessage(messages.password)}
+          />
+
+          {this.renderErrorMessage()}
+
+          <Button type="submit">
+            <FormattedMessage {...messages.submit} />
+          </Button>
+        </form>
       </div>
     );
   }
