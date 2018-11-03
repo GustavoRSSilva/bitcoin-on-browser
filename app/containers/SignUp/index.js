@@ -114,25 +114,25 @@ export class SignUp extends React.Component {
       <div>
         <Title>
           <FormattedMessage {...messages.app_title} />
-          <form onSubmit={this.handleSubmitForm}>
-            <Input
-              value={password || ''}
-              onChange={this.handleSetPassword}
-              placeholder={formatMessage(messages.new_password)}
-            />
-            <Input
-              value={confirmPassword || ''}
-              onChange={this.handleSetConfirmPassword}
-              placeholder={formatMessage(messages.confirm_password)}
-            />
-
-            {this.renderErrorMessage()}
-
-            <Button type="submit">
-              <FormattedMessage {...messages.submit} />
-            </Button>
-          </form>
         </Title>
+        <form onSubmit={this.handleSubmitForm}>
+          <Input
+            value={password || ''}
+            onChange={this.handleSetPassword}
+            placeholder={formatMessage(messages.new_password)}
+          />
+          <Input
+            value={confirmPassword || ''}
+            onChange={this.handleSetConfirmPassword}
+            placeholder={formatMessage(messages.confirm_password)}
+          />
+
+          {this.renderErrorMessage()}
+
+          <Button type="submit">
+            <FormattedMessage {...messages.submit} />
+          </Button>
+        </form>
       </div>
     );
   }
