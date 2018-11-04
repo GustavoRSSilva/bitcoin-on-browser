@@ -7,8 +7,10 @@ import {
   SESSION,
   USER,
   PASSWORD,
+  SEED,
   FETCH_USER_CREATED,
   FETCH_SESSION_VALID,
+  FETCH_SEED_CREATED,
 } from './constants';
 
 import {
@@ -16,6 +18,8 @@ import {
   fetchUserCreatedSuccessful,
   fetchSessionValidRejected,
   fetchSessionValidSuccessful,
+  fetchSeedCreatedRejected,
+  fetchSeedCreatedSuccessful,
 } from './actions';
 const { Buffer } = require('buffer/');
 
@@ -32,19 +36,26 @@ const compareUint8Array = (buf1, buf2) => {
   return true;
 };
 
-export const setSession = bool => {
-  saveItem(SESSION, bool);
-};
+export function* setSession(bool) {
+  yield saveItem(SESSION, bool);
+}
 
 export const stringToSha256 = string => sha256(string);
 
-export function saveUser(user) {
+export function* saveUser(user) {
   //  encrypt the user data
   const encryptData = CryptoJS.AES.encrypt(
     JSON.stringify(user),
     SECRET,
   ).toString();
-  saveItem(USER, encryptData);
+  yield saveItem(USER, encryptData);
+  return user;
+}
+
+export function* saveSeed(seed) {
+  const user = yield getUser();
+  user[SEED] = btoa(seed);
+  return yield saveUser(user);
 }
 
 export function* getUser() {
@@ -59,6 +70,15 @@ export function* getUser() {
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   } catch (e) {
     //  If there is no user, return null
+    return null;
+  }
+}
+
+export function* getSeed() {
+  try {
+    const user = yield getUser();
+    return atob(user[SEED]);
+  } catch (e) {
     return null;
   }
 }
@@ -83,7 +103,8 @@ export function* getSession() {
 function* callGetUserCreated() {
   try {
     const user = yield call(getUser);
-    yield put(fetchUserCreatedSuccessful(user));
+    const boolIsCreated = !!user;
+    yield put(fetchUserCreatedSuccessful(boolIsCreated));
   } catch (e) {
     yield put(fetchUserCreatedRejected());
   }
@@ -100,6 +121,16 @@ function* callGetSessionValid() {
   }
 }
 
+function* callGetSeedCreated() {
+  try {
+    const seed = yield call(getSeed);
+    const boolIsCreated = !!seed;
+    yield put(fetchSeedCreatedSuccessful(boolIsCreated));
+  } catch (e) {
+    yield put(fetchSeedCreatedRejected());
+  }
+}
+
 function* fetchUserCreatedSaga() {
   yield takeLatest(FETCH_USER_CREATED, callGetUserCreated);
 }
@@ -108,7 +139,15 @@ function* fetchSessionValidSaga() {
   yield takeLatest(FETCH_SESSION_VALID, callGetSessionValid);
 }
 
+function* fetchSeedCreatedSaga() {
+  yield takeLatest(FETCH_SEED_CREATED, callGetSeedCreated);
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
-  yield [fetchUserCreatedSaga(), fetchSessionValidSaga()];
+  yield [
+    fetchUserCreatedSaga(),
+    fetchSessionValidSaga(),
+    fetchSeedCreatedSaga(),
+  ];
 }

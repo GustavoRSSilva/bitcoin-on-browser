@@ -17,7 +17,7 @@ import Button from 'components/common/Button';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import * as actions from './actions';
-import { makeSelectSeedString } from './selectors';
+import { selectSeedString, selectSaveSeedState } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -35,8 +35,17 @@ export class Seed extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    const { saveSeedState, history } = this.props;
+    //  Checks if the seed was successfuly save,
+    //  If so redirect to the homepage
+    if (saveSeedState.data === true) {
+      history.push('/');
+    }
+  }
+
   render() {
-    const { seed, generateNewSeed } = this.props;
+    const { seed, generateNewSeed, saveSeed } = this.props;
 
     return (
       <div>
@@ -50,18 +59,25 @@ export class Seed extends React.Component {
         <Button onClick={() => generateNewSeed()}>
           <FormattedMessage {...messages.generate_new_seed} />
         </Button>
+        <Button onClick={() => saveSeed(seed)}>
+          <FormattedMessage {...messages.save} />
+        </Button>
       </div>
     );
   }
 }
 
 Seed.propTypes = {
+  history: PropTypes.object.isRequired,
   seed: PropTypes.string,
   generateNewSeed: PropTypes.func.isRequired,
+  saveSeed: PropTypes.func.isRequired,
+  saveSeedState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  seed: makeSelectSeedString(),
+  seed: selectSeedString(),
+  saveSeedState: selectSaveSeedState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

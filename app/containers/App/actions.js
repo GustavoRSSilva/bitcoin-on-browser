@@ -11,6 +11,9 @@ import {
   FETCH_SESSION_VALID,
   FETCH_SESSION_VALID_REJECTED,
   FETCH_SESSION_VALID_SUCCESSFUL,
+  FETCH_SEED_CREATED,
+  FETCH_SEED_CREATED_REJECTED,
+  FETCH_SEED_CREATED_SUCCESSFUL,
 } from './constants';
 
 export function fetchUserCreated() {
@@ -48,6 +51,25 @@ export function fetchSessionValidRejected(payload) {
 export function fetchSessionValidSuccessful(payload) {
   return {
     type: FETCH_SESSION_VALID_SUCCESSFUL,
+    payload,
+  };
+}
+
+export function fetchSeedCreated() {
+  return {
+    type: FETCH_SEED_CREATED,
+  };
+}
+
+export function fetchSeedCreatedRejected() {
+  return {
+    type: FETCH_SEED_CREATED_REJECTED,
+  };
+}
+
+export function fetchSeedCreatedSuccessful(payload) {
+  return {
+    type: FETCH_SEED_CREATED_SUCCESSFUL,
     payload,
   };
 }

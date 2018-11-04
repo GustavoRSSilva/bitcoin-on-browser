@@ -14,6 +14,10 @@ import {
   FETCH_SESSION_VALID,
   FETCH_SESSION_VALID_REJECTED,
   FETCH_SESSION_VALID_SUCCESSFUL,
+  SEED_CREATED_STATE,
+  FETCH_SEED_CREATED,
+  FETCH_SEED_CREATED_REJECTED,
+  FETCH_SEED_CREATED_SUCCESSFUL,
 } from './constants';
 
 const setState = (requesting = false, error = null, data = null) => ({
@@ -25,6 +29,7 @@ const setState = (requesting = false, error = null, data = null) => ({
 export const initialState = fromJS({
   [USER_CREATED_STATE]: setState(),
   [SESSION_VALID_STATE]: setState(),
+  [SEED_CREATED_STATE]: setState(),
 });
 
 function appReducer(state = initialState, action) {
@@ -50,6 +55,18 @@ function appReducer(state = initialState, action) {
     case FETCH_SESSION_VALID_SUCCESSFUL:
       return state.set(
         SESSION_VALID_STATE,
+        setState(false, null, action.payload),
+      );
+
+    case FETCH_SEED_CREATED:
+      return state.set(SEED_CREATED_STATE, setState(true));
+
+    case FETCH_SEED_CREATED_REJECTED:
+      return state.set(SEED_CREATED_STATE, setState(false, true));
+
+    case FETCH_SEED_CREATED_SUCCESSFUL:
+      return state.set(
+        SEED_CREATED_STATE,
         setState(false, null, action.payload),
       );
 

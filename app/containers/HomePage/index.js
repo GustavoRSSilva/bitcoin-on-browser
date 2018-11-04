@@ -17,6 +17,7 @@ import injectReducer from 'utils/injectReducer';
 import {
   selectSessionValidState,
   selectUserCreatedState,
+  selectSeedCreatedState,
 } from 'containers/App/selectors';
 
 import * as actions from './actions';
@@ -27,9 +28,14 @@ import messages from './messages';
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.Component {
   componentWillMount() {
-    const { fetchSessionValid, fetchUserCreated } = this.props;
+    const {
+      fetchSessionValid,
+      fetchUserCreated,
+      fetchSeedCreated,
+    } = this.props;
     fetchUserCreated();
     fetchSessionValid();
+    fetchSeedCreated();
   }
 
   isRequesting() {
@@ -38,17 +44,26 @@ export class HomePage extends React.Component {
     return sessionValidState[requesting] || userCreatedState[requesting];
   }
 
-  isUserCreated() {
+  //  @dev - check if the user object is NOT created
+  //  Only after the user is fetched and returnned false
+  isUserNotCreated() {
     const { userCreatedState } = this.props;
-    return !(userCreatedState.data === null);
+    return userCreatedState.data === false || userCreatedState.error === true;
   }
 
-  isSessionValid() {
+  isSessionNotValid() {
     const { sessionValidState } = this.props;
-    return !(
-      this.isUserCreated() &&
-      sessionValidState &&
-      sessionValidState.data === false
+    return (
+      !this.isUserNotCreated() &&
+      (sessionValidState.data === false || sessionValidState.error === true)
+    );
+  }
+
+  isSeedNotCreated() {
+    const { seedCreatedState } = this.props;
+    return (
+      !this.isUserNotCreated() &&
+      (seedCreatedState.data === false || seedCreatedState.error === true)
     );
   }
 
@@ -59,15 +74,20 @@ export class HomePage extends React.Component {
       return <div>requesting</div>;
     }
 
-    // check if there is a user
-    if (!this.isUserCreated()) {
+    // check if there is not a user
+    if (this.isUserNotCreated()) {
       history.push('/signUp');
       return null;
     }
 
     //  check if the user is valid, if not redirect to the login page
-    if (!this.isSessionValid()) {
+    if (this.isSessionNotValid()) {
       history.push('/logIn');
+      return null;
+    }
+
+    if (this.isSeedNotCreated()) {
+      history.push('/seed');
       return null;
     }
 
@@ -85,11 +105,14 @@ HomePage.propTypes = {
   userCreatedState: PropTypes.object.isRequired,
   fetchSessionValid: PropTypes.func.isRequired,
   sessionValidState: PropTypes.object.isRequired,
+  fetchSeedCreated: PropTypes.func.isRequired,
+  seedCreatedState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   userCreatedState: selectUserCreatedState(),
   sessionValidState: selectSessionValidState(),
+  seedCreatedState: selectSeedCreatedState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
