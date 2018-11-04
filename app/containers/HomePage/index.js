@@ -46,7 +46,7 @@ export class HomePage extends React.Component {
 
   isUserCreated() {
     const { userCreatedState } = this.props;
-    return !(userCreatedState.data === null);
+    return !!userCreatedState.data;
   }
 
   isSessionValid() {

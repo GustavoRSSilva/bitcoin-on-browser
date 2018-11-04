@@ -8,6 +8,8 @@ import {
 } from 'containers/App/saga';
 import { PASSWORD } from 'containers/App/constants';
 
+import { fetchUserCreated } from 'containers/App/actions';
+
 import { SUBMIT_FORM } from './constants';
 import { submitFormRejected, submitFormSuccessful } from './actions';
 
@@ -33,7 +35,10 @@ function* savePassword(password) {
 function* callSubmitForm(action) {
   try {
     yield call(savePassword, action.payload);
+
     yield put(submitFormSuccessful());
+    //  we need to set the user created to true
+    yield put(fetchUserCreated());
   } catch (e) {
     yield put(submitFormRejected('something went wrong'));
   }

@@ -15,9 +15,9 @@ function* callSubmitForm(action) {
     const validSession = yield call(validateSession, action.payload);
     //  set the session as valid
     yield setSession(validSession);
+    yield put(submitFormSuccessful(validSession));
     // update the session value
     yield put(fetchSessionValid());
-    yield put(submitFormSuccessful(validSession));
   } catch (e) {
     yield put(submitFormRejected('something went wrong'));
   }
