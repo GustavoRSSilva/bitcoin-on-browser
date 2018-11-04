@@ -4,7 +4,11 @@
  *
  */
 
-import { fetchUserCreated, fetchSessionValid } from 'containers/App/actions';
+import {
+  fetchUserCreated,
+  fetchSessionValid,
+  fetchSeedCreated,
+} from 'containers/App/actions';
 import { DEFAULT_ACTION } from './constants';
 
 export function defaultAction() {
@@ -13,4 +17,4 @@ export function defaultAction() {
   };
 }
 
-export { fetchSessionValid, fetchUserCreated };
+export { fetchSessionValid, fetchUserCreated, fetchSeedCreated };

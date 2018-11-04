@@ -1,12 +1,20 @@
 const isExtension = !!(chrome && chrome.storage);
 
 //  Save data on the browser
-export const saveItem = (key, value) => {
-  if (isExtension) {
-    return chrome.storage.local.set({ [key]: value }, () => null);
-  }
+export const saveItem = function saveItem(key, value) {
+  return new Promise((resolve, reject) => {
+    if (!key) {
+      reject();
+    }
 
-  return window.localStorage.setItem([key], value);
+    if (isExtension) {
+      return chrome.storage.local.set({ [key]: value }, () => {
+        resolve(value);
+      });
+    }
+    window.localStorage.setItem([key], value);
+    return resolve(value);
+  });
 };
 
 //  Fetch data from the browser async

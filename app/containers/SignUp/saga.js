@@ -21,7 +21,7 @@ function* savePassword(password) {
       user = {};
     }
     user[PASSWORD] = stringToSha256(password);
-    saveUser(user);
+    yield saveUser(user);
     return user;
   } catch (e) {
     throw e;

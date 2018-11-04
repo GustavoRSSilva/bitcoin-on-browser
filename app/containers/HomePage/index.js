@@ -17,6 +17,7 @@ import injectReducer from 'utils/injectReducer';
 import {
   selectSessionValidState,
   selectUserCreatedState,
+  selectSeedCreatedState,
 } from 'containers/App/selectors';
 
 import * as actions from './actions';
@@ -27,9 +28,14 @@ import messages from './messages';
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.Component {
   componentWillMount() {
-    const { fetchSessionValid, fetchUserCreated } = this.props;
+    const {
+      fetchSessionValid,
+      fetchUserCreated,
+      fetchSeedCreated,
+    } = this.props;
     fetchUserCreated();
     fetchSessionValid();
+    fetchSeedCreated();
   }
 
   isRequesting() {
@@ -50,6 +56,11 @@ export class HomePage extends React.Component {
       sessionValidState &&
       sessionValidState.data === false
     );
+  }
+
+  isSeedCreated() {
+    const { seedCreatedState } = this.props;
+    return !(seedCreatedState.data === null);
   }
 
   render() {
@@ -85,11 +96,14 @@ HomePage.propTypes = {
   userCreatedState: PropTypes.object.isRequired,
   fetchSessionValid: PropTypes.func.isRequired,
   sessionValidState: PropTypes.object.isRequired,
+  fetchSeedCreated: PropTypes.func.isRequired,
+  seedCreatedState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   userCreatedState: selectUserCreatedState(),
   sessionValidState: selectSessionValidState(),
+  seedCreatedState: selectSeedCreatedState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
