@@ -17,6 +17,8 @@ function* callSubmitForm(action) {
     yield setSession(validSession);
     // update the session value
     yield put(fetchSessionValid());
+
+    //  set successful and redirect
     yield put(submitFormSuccessful(validSession));
   } catch (e) {
     yield put(submitFormRejected('something went wrong'));

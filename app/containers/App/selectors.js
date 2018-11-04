@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
-import { SESSION_VALID_STATE, USER_CREATED_STATE } from './constants';
+import {
+  SESSION_VALID_STATE,
+  USER_CREATED_STATE,
+  SEED_CREATED_STATE,
+} from './constants';
 
 /**
  * Direct selector to the app state domain
@@ -20,6 +24,9 @@ const selectSessionValidState = () =>
     subState.get(SESSION_VALID_STATE),
   );
 
+const selectSeedCreatedState = () =>
+  createSelector(selectAppDomain, subState => subState.get(SEED_CREATED_STATE));
+
 /**
  * Default selector used by App
  */
@@ -28,4 +35,9 @@ const makeSelectApp = () =>
   createSelector(selectAppDomain, substate => substate.toJS());
 
 export default makeSelectApp;
-export { selectAppDomain, selectSessionValidState, selectUserCreatedState };
+export {
+  selectAppDomain,
+  selectSessionValidState,
+  selectUserCreatedState,
+  selectSeedCreatedState,
+};

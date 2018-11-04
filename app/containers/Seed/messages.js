@@ -19,4 +19,8 @@ export default defineMessages({
     id: 'app.containers.Seed.generate_new_seed',
     defaultMessage: 'New seed',
   },
+  save: {
+    id: 'app.containers.Seed.save',
+    defaultMessage: 'Save',
+  },
 });
