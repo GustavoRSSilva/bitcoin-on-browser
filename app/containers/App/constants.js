@@ -6,8 +6,11 @@
 
 const path = 'app/App/';
 
+// WARNING: do not change this value
+//  see public/invalidateSession.js
+export const SESSION = 'as';
+
 export const USER = 'se';
-export const SESSION = 'u';
 export const PASSWORD = 's';
 export const SEED = 'p';
 
