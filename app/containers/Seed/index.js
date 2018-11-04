@@ -37,7 +37,6 @@ export class Seed extends React.Component {
 
   componentDidUpdate() {
     const { saveSeedState, history } = this.props;
-
     //  Checks if the seed was successfuly save,
     //  If so redirect to the homepage
     if (saveSeedState.data === true) {

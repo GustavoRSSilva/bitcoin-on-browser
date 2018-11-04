@@ -44,23 +44,27 @@ export class HomePage extends React.Component {
     return sessionValidState[requesting] || userCreatedState[requesting];
   }
 
-  isUserCreated() {
+  //  @dev - check if the user object is NOT created
+  //  Only after the user is fetched and returnned false
+  isUserNotCreated() {
     const { userCreatedState } = this.props;
-    return !!userCreatedState.data;
+    return userCreatedState.data === false || userCreatedState.error === true;
   }
 
-  isSessionValid() {
+  isSessionNotValid() {
     const { sessionValidState } = this.props;
-    return !(
-      this.isUserCreated() &&
-      sessionValidState &&
-      sessionValidState.data === false
+    return (
+      !this.isUserNotCreated() &&
+      (sessionValidState.data === false || sessionValidState.error === true)
     );
   }
 
-  isSeedCreated() {
+  isSeedNotCreated() {
     const { seedCreatedState } = this.props;
-    return !(seedCreatedState.data === null);
+    return (
+      !this.isUserNotCreated() &&
+      (seedCreatedState.data === false || seedCreatedState.error === true)
+    );
   }
 
   render() {
@@ -70,15 +74,20 @@ export class HomePage extends React.Component {
       return <div>requesting</div>;
     }
 
-    // check if there is a user
-    if (!this.isUserCreated()) {
+    // check if there is not a user
+    if (this.isUserNotCreated()) {
       history.push('/signUp');
       return null;
     }
 
     //  check if the user is valid, if not redirect to the login page
-    if (!this.isSessionValid()) {
+    if (this.isSessionNotValid()) {
       history.push('/logIn');
+      return null;
+    }
+
+    if (this.isSeedNotCreated()) {
+      history.push('/seed');
       return null;
     }
 

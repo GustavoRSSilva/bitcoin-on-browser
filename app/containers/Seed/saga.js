@@ -3,6 +3,7 @@ import { takeLatest, call, put } from 'redux-saga/effects';
 import { generateMnemonic } from 'utils/bitcoin';
 
 import { saveSeed, getSeed } from 'containers/App/saga';
+import { fetchSeedCreated } from 'containers/App/actions';
 
 import { GENERATE_NEW_SEED, SAVE_SEED } from './constants';
 import { setSeed, saveSeedRejected, saveSeedSuccessful } from './actions';
@@ -18,6 +19,9 @@ function* callSaveSeed(action) {
   try {
     yield call(saveSeed, action.payload);
     const seed = yield getSeed();
+
+    yield put(fetchSeedCreated());
+
     yield put(saveSeedSuccessful(!!seed));
   } catch (e) {
     yield put(saveSeedRejected());

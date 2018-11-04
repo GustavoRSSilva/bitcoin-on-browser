@@ -18,6 +18,8 @@ import {
   fetchUserCreatedSuccessful,
   fetchSessionValidRejected,
   fetchSessionValidSuccessful,
+  fetchSeedCreatedRejected,
+  fetchSeedCreatedSuccessful,
 } from './actions';
 const { Buffer } = require('buffer/');
 
@@ -73,8 +75,12 @@ export function* getUser() {
 }
 
 export function* getSeed() {
-  const user = yield getUser();
-  return atob(user[SEED]);
+  try {
+    const user = yield getUser();
+    return atob(user[SEED]);
+  } catch (e) {
+    return null;
+  }
 }
 
 export function* validateSession(password) {
@@ -119,9 +125,9 @@ function* callGetSeedCreated() {
   try {
     const seed = yield call(getSeed);
     const boolIsCreated = !!seed;
-    yield put(fetchUserCreatedSuccessful(boolIsCreated));
+    yield put(fetchSeedCreatedSuccessful(boolIsCreated));
   } catch (e) {
-    yield put(fetchUserCreatedRejected());
+    yield put(fetchSeedCreatedRejected());
   }
 }
 
