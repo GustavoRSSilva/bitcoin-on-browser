@@ -35,9 +35,6 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 import './styles/global-styles';
 
-// constants
-import { setSession } from './containers/App/saga';
-
 // Create redux store with history
 const initialState = {};
 const history = createHistory();
@@ -86,11 +83,4 @@ if (!window.Intl) {
 // we do not want it installed
 if (process.env.NODE_ENV === 'production') {
   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
-}
-
-//  Do no persisnt the password
-if (chrome && chrome.runtime && chrome.runtime.onStartup) {
-  chrome.runtime.onStartup.addListener(() => {
-    setSession(false);
-  });
 }
