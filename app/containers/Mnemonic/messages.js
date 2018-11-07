@@ -9,15 +9,11 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.containers.Mnemonic.header',
-    defaultMessage: 'This is Mnemonic container !',
-  },
-  app_title: {
-    id: 'app.containers.Mnemonic.app_title',
-    defaultMessage: 'Bitcoin on browser',
+    defaultMessage: 'Mnemonic',
   },
   generate_new_mnemonic: {
     id: 'app.containers.Mnemonic.generate_new_mnemonic',
-    defaultMessage: 'New mnemonic',
+    defaultMessage: 'New',
   },
   save: {
     id: 'app.containers.Mnemonic.save',

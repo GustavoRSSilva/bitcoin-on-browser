@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { btcOrange } from 'styles/colors';
-import { big } from 'styles/fontSize';
+import { large } from 'styles/fontSize';
 
 export const Header = styled.header`
   width: 100%;
   height: 50px;
   border-bottom: 1px solid ${btcOrange};
-  font-size: ${big};
+  font-size: ${large};
   text-transform: uppercase;
   font-weight: bold;
 
