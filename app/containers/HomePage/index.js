@@ -92,9 +92,14 @@ export class HomePage extends React.Component {
       return null;
     }
 
+    const activeAddress = this.props.activeAddressFetchState.data;
+
     return (
       <div>
-        <FormattedMessage {...messages.header} />
+        <FormattedMessage
+          {...messages.active_address}
+          values={{ address: activeAddress }}
+        />
       </div>
     );
   }
