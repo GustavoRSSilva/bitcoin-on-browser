@@ -17,7 +17,7 @@ import injectReducer from 'utils/injectReducer';
 import {
   selectSessionValidState,
   selectUserCreatedState,
-  selectSeedCreatedState,
+  selectMnemonicCreatedState,
 } from 'containers/App/selectors';
 
 import * as actions from './actions';
@@ -31,11 +31,11 @@ export class HomePage extends React.Component {
     const {
       fetchSessionValid,
       fetchUserCreated,
-      fetchSeedCreated,
+      fetchMnemonicCreated,
     } = this.props;
     fetchUserCreated();
     fetchSessionValid();
-    fetchSeedCreated();
+    fetchMnemonicCreated();
   }
 
   isRequesting() {
@@ -59,11 +59,12 @@ export class HomePage extends React.Component {
     );
   }
 
-  isSeedNotCreated() {
-    const { seedCreatedState } = this.props;
+  isMnemonicNotCreated() {
+    const { mnemonicCreatedState } = this.props;
     return (
       !this.isUserNotCreated() &&
-      (seedCreatedState.data === false || seedCreatedState.error === true)
+      (mnemonicCreatedState.data === false ||
+        mnemonicCreatedState.error === true)
     );
   }
 
@@ -86,8 +87,8 @@ export class HomePage extends React.Component {
       return null;
     }
 
-    if (this.isSeedNotCreated()) {
-      history.push('/seed');
+    if (this.isMnemonicNotCreated()) {
+      history.push('/mnemonic');
       return null;
     }
 
@@ -105,14 +106,14 @@ HomePage.propTypes = {
   userCreatedState: PropTypes.object.isRequired,
   fetchSessionValid: PropTypes.func.isRequired,
   sessionValidState: PropTypes.object.isRequired,
-  fetchSeedCreated: PropTypes.func.isRequired,
-  seedCreatedState: PropTypes.object.isRequired,
+  fetchMnemonicCreated: PropTypes.func.isRequired,
+  mnemonicCreatedState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   userCreatedState: selectUserCreatedState(),
   sessionValidState: selectSessionValidState(),
-  seedCreatedState: selectSeedCreatedState(),
+  mnemonicCreatedState: selectMnemonicCreatedState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

@@ -1,6 +1,6 @@
 /**
  *
- * Seed
+ * Mnemonic
  *
  */
 
@@ -17,49 +17,49 @@ import Button from 'components/common/Button';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import * as actions from './actions';
-import { selectSeedString, selectSaveSeedState } from './selectors';
+import { selectMnemonicString, selectSaveMnemonicState } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { Title, SeedFragment } from './styles';
+import { Title, MnemonicFragment } from './styles';
 
 /* eslint-disable react/prefer-stateless-function */
-export class Seed extends React.Component {
+export class Mnemonic extends React.Component {
   componentWillMount() {
-    const { generateNewSeed } = this.props;
-    //  TODO: fetch Seed
-    const seed = null;
-    //  If no seed generate a new one
-    if (!seed) {
-      generateNewSeed();
+    const { generateNewMnemonic } = this.props;
+    //  TODO: fetch Mnemonic
+    const mnemonic = null;
+    //  If no mnemonic generate a new one
+    if (!mnemonic) {
+      generateNewMnemonic();
     }
   }
 
   componentDidUpdate() {
-    const { saveSeedState, history } = this.props;
-    //  Checks if the seed was successfuly save,
+    const { saveMnemonicState, history } = this.props;
+    //  Checks if the mnemonic was successfuly save,
     //  If so redirect to the homepage
-    if (saveSeedState.data === true) {
+    if (saveMnemonicState.data === true) {
       history.push('/');
     }
   }
 
   render() {
-    const { seed, generateNewSeed, saveSeed } = this.props;
+    const { mnemonic, generateNewMnemonic, saveMnemonic } = this.props;
 
     return (
       <div>
         <Title>
           <FormattedMessage {...messages.app_title} />
         </Title>
-        <SeedFragment>
-          <TextArea rows="4" readOnly value={seed} />
-        </SeedFragment>
+        <MnemonicFragment>
+          <TextArea rows="4" readOnly value={mnemonic} />
+        </MnemonicFragment>
 
-        <Button onClick={() => generateNewSeed()}>
-          <FormattedMessage {...messages.generate_new_seed} />
+        <Button onClick={() => generateNewMnemonic()}>
+          <FormattedMessage {...messages.generate_new_mnemonic} />
         </Button>
-        <Button onClick={() => saveSeed(seed)}>
+        <Button onClick={() => saveMnemonic(mnemonic)}>
           <FormattedMessage {...messages.save} />
         </Button>
       </div>
@@ -67,17 +67,17 @@ export class Seed extends React.Component {
   }
 }
 
-Seed.propTypes = {
+Mnemonic.propTypes = {
   history: PropTypes.object.isRequired,
-  seed: PropTypes.string,
-  generateNewSeed: PropTypes.func.isRequired,
-  saveSeed: PropTypes.func.isRequired,
-  saveSeedState: PropTypes.object.isRequired,
+  mnemonic: PropTypes.string,
+  generateNewMnemonic: PropTypes.func.isRequired,
+  saveMnemonic: PropTypes.func.isRequired,
+  saveMnemonicState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  seed: selectSeedString(),
-  saveSeedState: selectSaveSeedState(),
+  mnemonic: selectMnemonicString(),
+  saveMnemonicState: selectSaveMnemonicState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -87,11 +87,11 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'seed', reducer });
-const withSaga = injectSaga({ key: 'seed', saga });
+const withReducer = injectReducer({ key: 'mnemonic', reducer });
+const withSaga = injectSaga({ key: 'mnemonic', saga });
 
 export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(Seed);
+)(Mnemonic);

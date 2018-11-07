@@ -1,6 +1,6 @@
 /**
  *
- * Asynchronously loads the component for Seed
+ * Asynchronously loads the component for Mnemonic
  *
  */
 

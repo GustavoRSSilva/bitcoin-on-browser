@@ -14,10 +14,14 @@ import {
   FETCH_SESSION_VALID,
   FETCH_SESSION_VALID_REJECTED,
   FETCH_SESSION_VALID_SUCCESSFUL,
-  SEED_CREATED_STATE,
-  FETCH_SEED_CREATED,
-  FETCH_SEED_CREATED_REJECTED,
-  FETCH_SEED_CREATED_SUCCESSFUL,
+  MNEMONIC_CREATED_STATE,
+  FETCH_MNEMONIC_CREATED,
+  FETCH_MNEMONIC_CREATED_REJECTED,
+  FETCH_MNEMONIC_CREATED_SUCCESSFUL,
+  SAVE_ADDRESS_STATE,
+  SAVE_ADDRESS,
+  SAVE_ADDRESS_REJECTED,
+  SAVE_ADDRESS_SUCCESSFUL,
 } from './constants';
 
 const setState = (requesting = false, error = null, data = null) => ({
@@ -29,7 +33,8 @@ const setState = (requesting = false, error = null, data = null) => ({
 export const initialState = fromJS({
   [USER_CREATED_STATE]: setState(),
   [SESSION_VALID_STATE]: setState(),
-  [SEED_CREATED_STATE]: setState(),
+  [MNEMONIC_CREATED_STATE]: setState(),
+  [SAVE_ADDRESS_STATE]: setState(),
 });
 
 function appReducer(state = initialState, action) {
@@ -58,15 +63,27 @@ function appReducer(state = initialState, action) {
         setState(false, null, action.payload),
       );
 
-    case FETCH_SEED_CREATED:
-      return state.set(SEED_CREATED_STATE, setState(true));
+    case FETCH_MNEMONIC_CREATED:
+      return state.set(MNEMONIC_CREATED_STATE, setState(true));
 
-    case FETCH_SEED_CREATED_REJECTED:
-      return state.set(SEED_CREATED_STATE, setState(false, true));
+    case FETCH_MNEMONIC_CREATED_REJECTED:
+      return state.set(MNEMONIC_CREATED_STATE, setState(false, true));
 
-    case FETCH_SEED_CREATED_SUCCESSFUL:
+    case FETCH_MNEMONIC_CREATED_SUCCESSFUL:
       return state.set(
-        SEED_CREATED_STATE,
+        MNEMONIC_CREATED_STATE,
+        setState(false, null, action.payload),
+      );
+
+    case SAVE_ADDRESS:
+      return state.set(SAVE_ADDRESS_STATE, setState(true));
+
+    case SAVE_ADDRESS_REJECTED:
+      return state.set(SAVE_ADDRESS_STATE, setState(false, true));
+
+    case SAVE_ADDRESS_SUCCESSFUL:
+      return state.set(
+        SAVE_ADDRESS_STATE,
         setState(false, null, action.payload),
       );
 

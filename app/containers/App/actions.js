@@ -11,9 +11,12 @@ import {
   FETCH_SESSION_VALID,
   FETCH_SESSION_VALID_REJECTED,
   FETCH_SESSION_VALID_SUCCESSFUL,
-  FETCH_SEED_CREATED,
-  FETCH_SEED_CREATED_REJECTED,
-  FETCH_SEED_CREATED_SUCCESSFUL,
+  FETCH_MNEMONIC_CREATED,
+  FETCH_MNEMONIC_CREATED_REJECTED,
+  FETCH_MNEMONIC_CREATED_SUCCESSFUL,
+  SAVE_ADDRESS,
+  SAVE_ADDRESS_REJECTED,
+  SAVE_ADDRESS_SUCCESSFUL,
 } from './constants';
 
 export function fetchUserCreated() {
@@ -55,21 +58,42 @@ export function fetchSessionValidSuccessful(payload) {
   };
 }
 
-export function fetchSeedCreated() {
+export function fetchMnemonicCreated() {
   return {
-    type: FETCH_SEED_CREATED,
+    type: FETCH_MNEMONIC_CREATED,
   };
 }
 
-export function fetchSeedCreatedRejected() {
+export function fetchMnemonicCreatedRejected() {
   return {
-    type: FETCH_SEED_CREATED_REJECTED,
+    type: FETCH_MNEMONIC_CREATED_REJECTED,
   };
 }
 
-export function fetchSeedCreatedSuccessful(payload) {
+export function fetchMnemonicCreatedSuccessful(payload) {
   return {
-    type: FETCH_SEED_CREATED_SUCCESSFUL,
+    type: FETCH_MNEMONIC_CREATED_SUCCESSFUL,
+    payload,
+  };
+}
+
+export function saveAddress(payload) {
+  return {
+    type: SAVE_ADDRESS,
+    payload,
+  };
+}
+
+export function saveAddressRejected(payload) {
+  return {
+    type: SAVE_ADDRESS_REJECTED,
+    payload,
+  };
+}
+
+export function saveAddressSuccessful(payload) {
+  return {
+    type: SAVE_ADDRESS_SUCCESSFUL,
     payload,
   };
 }

@@ -47,7 +47,7 @@ export class SignUp extends React.Component {
     //  Checks if the submit form is successful
     //  If so redirect to the homepage
     if (submitFormState.data) {
-      history.push('/seed');
+      history.push('/mnemonic');
     }
   }
 
