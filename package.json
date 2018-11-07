@@ -166,6 +166,7 @@
     "minimist": "1.2.0",
     "prop-types": "15.6.1",
     "react": "16.4.1",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "16.4.1",
     "react-helmet": "5.2.0",
     "react-intl": "2.4.0",

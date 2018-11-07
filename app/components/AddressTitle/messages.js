@@ -13,6 +13,10 @@ export default defineMessages({
   },
   active_address: {
     id: 'app.containers.HomePage.active_address',
-    defaultMessage: 'Active address: {address}',
+    defaultMessage: 'Active address:',
+  },
+  copy_to_clipboard: {
+    id: 'app.containers.HomePage.copy_to_clipboard',
+    defaultMessage: 'Copy to clipboard',
   },
 });
