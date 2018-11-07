@@ -95,7 +95,6 @@ export class HomePage extends React.Component {
     }
 
     const activeAddress = this.props.activeAddressFetchState.data;
-    console.log(this.props);
 
     return (
       <div>
