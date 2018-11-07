@@ -17,7 +17,7 @@ import injectReducer from 'utils/injectReducer';
 import {
   selectSessionValidState,
   selectUserCreatedState,
-  selectSeedCreatedState,
+  selectActiveAddressFetchState,
 } from 'containers/App/selectors';
 
 import * as actions from './actions';
@@ -31,11 +31,11 @@ export class HomePage extends React.Component {
     const {
       fetchSessionValid,
       fetchUserCreated,
-      fetchSeedCreated,
+      fetchActiveAddress,
     } = this.props;
     fetchUserCreated();
     fetchSessionValid();
-    fetchSeedCreated();
+    fetchActiveAddress();
   }
 
   isRequesting() {
@@ -59,11 +59,12 @@ export class HomePage extends React.Component {
     );
   }
 
-  isSeedNotCreated() {
-    const { seedCreatedState } = this.props;
+  isActiveAddressNotCreated() {
+    const { activeAddressFetchState } = this.props;
     return (
       !this.isUserNotCreated() &&
-      (seedCreatedState.data === false || seedCreatedState.error === true)
+      (activeAddressFetchState.data === false ||
+        activeAddressFetchState.error === true)
     );
   }
 
@@ -86,14 +87,19 @@ export class HomePage extends React.Component {
       return null;
     }
 
-    if (this.isSeedNotCreated()) {
-      history.push('/seed');
+    if (this.isActiveAddressNotCreated()) {
+      history.push('/mnemonic');
       return null;
     }
 
+    const activeAddress = this.props.activeAddressFetchState.data;
+
     return (
       <div>
-        <FormattedMessage {...messages.header} />
+        <FormattedMessage
+          {...messages.active_address}
+          values={{ address: activeAddress }}
+        />
       </div>
     );
   }
@@ -105,14 +111,14 @@ HomePage.propTypes = {
   userCreatedState: PropTypes.object.isRequired,
   fetchSessionValid: PropTypes.func.isRequired,
   sessionValidState: PropTypes.object.isRequired,
-  fetchSeedCreated: PropTypes.func.isRequired,
-  seedCreatedState: PropTypes.object.isRequired,
+  fetchActiveAddress: PropTypes.func.isRequired,
+  activeAddressFetchState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   userCreatedState: selectUserCreatedState(),
   sessionValidState: selectSessionValidState(),
-  seedCreatedState: selectSeedCreatedState(),
+  activeAddressFetchState: selectActiveAddressFetchState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

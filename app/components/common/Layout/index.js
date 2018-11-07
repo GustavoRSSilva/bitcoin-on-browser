@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   padding: 20px;
   margin: 0 auto;
   background-color: #fafafa;
+  overflow: hidden;
 
   ${onDesktop} {
     margin: 20px calc((100% - ${extensionWidth}) / 2);
