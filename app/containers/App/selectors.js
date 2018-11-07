@@ -3,7 +3,8 @@ import { initialState } from './reducer';
 import {
   SESSION_VALID_STATE,
   USER_CREATED_STATE,
-  SEED_CREATED_STATE,
+  ACTIVE_ADDRESS_FETCH_STATE,
+  SAVE_ADDRESS_STATE,
 } from './constants';
 
 /**
@@ -24,9 +25,13 @@ const selectSessionValidState = () =>
     subState.get(SESSION_VALID_STATE),
   );
 
-const selectSeedCreatedState = () =>
-  createSelector(selectAppDomain, subState => subState.get(SEED_CREATED_STATE));
+const selectActiveAddressFetchState = () =>
+  createSelector(selectAppDomain, subState =>
+    subState.get(ACTIVE_ADDRESS_FETCH_STATE),
+  );
 
+const selectsaveAddressState = () =>
+  createSelector(selectAppDomain, subState => subState.get(SAVE_ADDRESS_STATE));
 /**
  * Default selector used by App
  */
@@ -39,5 +44,6 @@ export {
   selectAppDomain,
   selectSessionValidState,
   selectUserCreatedState,
-  selectSeedCreatedState,
+  selectActiveAddressFetchState,
+  selectsaveAddressState,
 };

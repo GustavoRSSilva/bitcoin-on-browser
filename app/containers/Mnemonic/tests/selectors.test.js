@@ -1,7 +1,7 @@
 // import { fromJS } from 'immutable';
-// import { selectSeedDomain } from '../selectors';
+// import { selectMnemonicDomain } from '../selectors';
 
-describe('selectSeedDomain', () => {
+describe('selectMnemonicDomain', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

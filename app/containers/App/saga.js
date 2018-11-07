@@ -7,10 +7,13 @@ import {
   SESSION,
   USER,
   PASSWORD,
-  SEED,
+  MNEMONIC,
+  ACTIVE_ADDRESS,
+  USER_ADDRESSES,
   FETCH_USER_CREATED,
   FETCH_SESSION_VALID,
-  FETCH_SEED_CREATED,
+  FETCH_ACTIVE_ADDRESS,
+  SAVE_ADDRESS,
 } from './constants';
 
 import {
@@ -18,8 +21,10 @@ import {
   fetchUserCreatedSuccessful,
   fetchSessionValidRejected,
   fetchSessionValidSuccessful,
-  fetchSeedCreatedRejected,
-  fetchSeedCreatedSuccessful,
+  fetchActiveAddressRejected,
+  fetchActiveAddressSuccessful,
+  saveAddressRejected,
+  saveAddressSuccessful,
 } from './actions';
 const { Buffer } = require('buffer/');
 
@@ -52,9 +57,18 @@ export function* saveUser(user) {
   return user;
 }
 
-export function* saveSeed(seed) {
+export function* saveMnemonic(mnemonic) {
   const user = yield getUser();
-  user[SEED] = btoa(seed);
+  user[MNEMONIC] = btoa(mnemonic);
+  return yield saveUser(user);
+}
+
+export function* saveAddress(address) {
+  const user = yield getUser();
+  //    add teh address as the active address
+  user[ACTIVE_ADDRESS] = address;
+  const userAddresses = user[USER_ADDRESSES] || [];
+  user[USER_ADDRESSES] = [...userAddresses, address];
   return yield saveUser(user);
 }
 
@@ -74,10 +88,19 @@ export function* getUser() {
   }
 }
 
-export function* getSeed() {
+export function* getMnemonic() {
   try {
     const user = yield getUser();
-    return atob(user[SEED]);
+    return atob(user[MNEMONIC]);
+  } catch (e) {
+    return null;
+  }
+}
+
+export function* getUserActiveAddress() {
+  try {
+    const user = yield getUser();
+    return user[ACTIVE_ADDRESS];
   } catch (e) {
     return null;
   }
@@ -121,13 +144,21 @@ function* callGetSessionValid() {
   }
 }
 
-function* callGetSeedCreated() {
+function* callGetActiveAddress() {
   try {
-    const seed = yield call(getSeed);
-    const boolIsCreated = !!seed;
-    yield put(fetchSeedCreatedSuccessful(boolIsCreated));
+    const address = yield call(getUserActiveAddress);
+    yield put(fetchActiveAddressSuccessful(address));
   } catch (e) {
-    yield put(fetchSeedCreatedRejected());
+    yield put(fetchActiveAddressRejected());
+  }
+}
+
+function* callSaveAddress(action) {
+  try {
+    const result = yield call(saveAddress, action.payload);
+    yield put(saveAddressSuccessful(result));
+  } catch (e) {
+    yield put(saveAddressRejected());
   }
 }
 
@@ -139,8 +170,12 @@ function* fetchSessionValidSaga() {
   yield takeLatest(FETCH_SESSION_VALID, callGetSessionValid);
 }
 
-function* fetchSeedCreatedSaga() {
-  yield takeLatest(FETCH_SEED_CREATED, callGetSeedCreated);
+function* fetchActiveAddressSaga() {
+  yield takeLatest(FETCH_ACTIVE_ADDRESS, callGetActiveAddress);
+}
+
+function* saveAddressSaga() {
+  yield takeLatest(SAVE_ADDRESS, callSaveAddress);
 }
 
 // Individual exports for testing
@@ -148,6 +183,7 @@ export default function* defaultSaga() {
   yield [
     fetchUserCreatedSaga(),
     fetchSessionValidSaga(),
-    fetchSeedCreatedSaga(),
+    fetchActiveAddressSaga(),
+    saveAddressSaga(),
   ];
 }

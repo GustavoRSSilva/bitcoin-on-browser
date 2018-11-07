@@ -8,6 +8,6 @@ export const Title = styled.div`
   text-align: center;
 `;
 
-export const SeedFragment = styled.div`
+export const MnemonicFragment = styled.div`
   margin: 20px 0;
 `;

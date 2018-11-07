@@ -11,9 +11,12 @@ import {
   FETCH_SESSION_VALID,
   FETCH_SESSION_VALID_REJECTED,
   FETCH_SESSION_VALID_SUCCESSFUL,
-  FETCH_SEED_CREATED,
-  FETCH_SEED_CREATED_REJECTED,
-  FETCH_SEED_CREATED_SUCCESSFUL,
+  FETCH_ACTIVE_ADDRESS,
+  FETCH_ACTIVE_ADDRESS_REJECTED,
+  FETCH_ACTIVE_ADDRESS_SUCCESSFUL,
+  SAVE_ADDRESS,
+  SAVE_ADDRESS_REJECTED,
+  SAVE_ADDRESS_SUCCESSFUL,
 } from './constants';
 
 export function fetchUserCreated() {
@@ -55,21 +58,42 @@ export function fetchSessionValidSuccessful(payload) {
   };
 }
 
-export function fetchSeedCreated() {
+export function fetchActiveAddress() {
   return {
-    type: FETCH_SEED_CREATED,
+    type: FETCH_ACTIVE_ADDRESS,
   };
 }
 
-export function fetchSeedCreatedRejected() {
+export function fetchActiveAddressRejected() {
   return {
-    type: FETCH_SEED_CREATED_REJECTED,
+    type: FETCH_ACTIVE_ADDRESS_REJECTED,
   };
 }
 
-export function fetchSeedCreatedSuccessful(payload) {
+export function fetchActiveAddressSuccessful(payload) {
   return {
-    type: FETCH_SEED_CREATED_SUCCESSFUL,
+    type: FETCH_ACTIVE_ADDRESS_SUCCESSFUL,
+    payload,
+  };
+}
+
+export function saveAddress(payload) {
+  return {
+    type: SAVE_ADDRESS,
+    payload,
+  };
+}
+
+export function saveAddressRejected(payload) {
+  return {
+    type: SAVE_ADDRESS_REJECTED,
+    payload,
+  };
+}
+
+export function saveAddressSuccessful(payload) {
+  return {
+    type: SAVE_ADDRESS_SUCCESSFUL,
     payload,
   };
 }

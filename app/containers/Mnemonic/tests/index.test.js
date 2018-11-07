@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import { Seed } from '../index';
+// import { Mnemonic } from '../index';
 
-describe('<Seed />', () => {
+describe('<Mnemonic />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

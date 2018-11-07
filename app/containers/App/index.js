@@ -11,7 +11,7 @@ import { Route, Switch } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import SignUp from 'containers/SignUp/Loadable';
 import LogIn from 'containers/LogIn/Loadable';
-import Seed from 'containers/Seed/Loadable';
+import Mnemonic from 'containers/Mnemonic/Loadable';
 import NotSupportedPage from 'containers/NotSupportedPage/Loadable';
 import Layout from 'components/common/Layout';
 
@@ -29,7 +29,7 @@ export class App extends React.Component {
           <Route path="/" exact component={HomePage} />
           <Route path="/signUp" exact component={SignUp} />
           <Route path="/logIn" exact component={LogIn} />
-          <Route path="/seed" exact component={Seed} />
+          <Route path="/mnemonic" exact component={Mnemonic} />
           <Route component={NotSupportedPage} />
         </Switch>
       </Layout>
