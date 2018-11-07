@@ -20,6 +20,8 @@ import {
   selectActiveAddressFetchState,
 } from 'containers/App/selectors';
 
+import AddressTitle from 'components/AddressTitle';
+
 import * as actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
@@ -96,10 +98,9 @@ export class HomePage extends React.Component {
 
     return (
       <div>
-        <FormattedMessage
-          {...messages.active_address}
-          values={{ address: activeAddress }}
-        />
+        <AddressTitle address={activeAddress} />
+
+        <FormattedMessage {...messages.header} />
       </div>
     );
   }
