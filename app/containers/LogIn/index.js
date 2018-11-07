@@ -17,6 +17,7 @@ import injectReducer from 'utils/injectReducer';
 import Input from 'components/common/Input';
 import Button from 'components/common/Button';
 import { Error } from 'components/common/Messages';
+import PageTitle from 'components/common/PageTitle';
 
 import {
   selectPassword,
@@ -28,7 +29,7 @@ import * as actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { Title } from './styles';
+import { Wrapper } from './styles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class LogIn extends React.Component {
@@ -112,10 +113,10 @@ export class LogIn extends React.Component {
     const { password } = this.props;
     const { formatMessage } = this.props.intl;
     return (
-      <div>
-        <Title>
-          <FormattedMessage {...messages.app_title} />
-        </Title>
+      <Wrapper>
+        <PageTitle>
+          <FormattedMessage {...messages.header} />
+        </PageTitle>
         <form onSubmit={this.handleSubmitForm}>
           <Input
             value={password || ''}
@@ -129,7 +130,7 @@ export class LogIn extends React.Component {
             <FormattedMessage {...messages.submit} />
           </Button>
         </form>
-      </div>
+      </Wrapper>
     );
   }
 }

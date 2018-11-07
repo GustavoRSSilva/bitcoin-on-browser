@@ -9,11 +9,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.containers.SignUp.header',
-    defaultMessage: 'This is SignUp container !',
-  },
-  app_title: {
-    id: 'app.containers.SignUp.app_title',
-    defaultMessage: 'Bitcoin on browser',
+    defaultMessage: 'Sign Up',
   },
   new_password: {
     id: 'app.containers.SignUp.password',

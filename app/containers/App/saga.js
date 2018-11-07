@@ -102,7 +102,7 @@ export function* getUserActiveAddress() {
     const user = yield getUser();
     return user[ACTIVE_ADDRESS];
   } catch (e) {
-    return null;
+    return false;
   }
 }
 
@@ -147,7 +147,11 @@ function* callGetSessionValid() {
 function* callGetActiveAddress() {
   try {
     const address = yield call(getUserActiveAddress);
-    yield put(fetchActiveAddressSuccessful(address));
+    if (address) {
+      yield put(fetchActiveAddressSuccessful(address));
+    } else {
+      yield put(fetchActiveAddressRejected());
+    }
   } catch (e) {
     yield put(fetchActiveAddressRejected());
   }

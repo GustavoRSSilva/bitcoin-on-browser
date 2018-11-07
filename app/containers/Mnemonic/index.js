@@ -13,6 +13,7 @@ import { bindActionCreators, compose } from 'redux';
 
 import TextArea from 'components/common/TextArea';
 import Button from 'components/common/Button';
+import PageTitle from 'components/common/PageTitle';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -21,7 +22,7 @@ import { selectMnemonicString, selectSaveMnemonicState } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { Title, MnemonicFragment } from './styles';
+import { Wrapper, MnemonicFragment } from './styles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Mnemonic extends React.Component {
@@ -48,10 +49,10 @@ export class Mnemonic extends React.Component {
     const { mnemonic, generateNewMnemonic, saveMnemonic } = this.props;
 
     return (
-      <div>
-        <Title>
-          <FormattedMessage {...messages.app_title} />
-        </Title>
+      <Wrapper>
+        <PageTitle>
+          <FormattedMessage {...messages.header} />
+        </PageTitle>
         <MnemonicFragment>
           <TextArea rows="4" readOnly value={mnemonic} />
         </MnemonicFragment>
@@ -62,7 +63,7 @@ export class Mnemonic extends React.Component {
         <Button onClick={() => saveMnemonic(mnemonic)}>
           <FormattedMessage {...messages.save} />
         </Button>
-      </div>
+      </Wrapper>
     );
   }
 }
