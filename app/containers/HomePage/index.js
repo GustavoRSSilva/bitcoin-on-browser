@@ -17,7 +17,7 @@ import injectReducer from 'utils/injectReducer';
 import {
   selectSessionValidState,
   selectUserCreatedState,
-  selectMnemonicCreatedState,
+  selectActiveAddressFetchState,
 } from 'containers/App/selectors';
 
 import * as actions from './actions';
@@ -31,11 +31,11 @@ export class HomePage extends React.Component {
     const {
       fetchSessionValid,
       fetchUserCreated,
-      fetchMnemonicCreated,
+      fetchActiveAddress,
     } = this.props;
     fetchUserCreated();
     fetchSessionValid();
-    fetchMnemonicCreated();
+    fetchActiveAddress();
   }
 
   isRequesting() {
@@ -59,12 +59,12 @@ export class HomePage extends React.Component {
     );
   }
 
-  isMnemonicNotCreated() {
-    const { mnemonicCreatedState } = this.props;
+  isActiveAddressNotCreated() {
+    const { activeAddressFetchState } = this.props;
     return (
       !this.isUserNotCreated() &&
-      (mnemonicCreatedState.data === false ||
-        mnemonicCreatedState.error === true)
+      (activeAddressFetchState.data === false ||
+        activeAddressFetchState.error === true)
     );
   }
 
@@ -87,7 +87,7 @@ export class HomePage extends React.Component {
       return null;
     }
 
-    if (this.isMnemonicNotCreated()) {
+    if (this.isActiveAddressNotCreated()) {
       history.push('/mnemonic');
       return null;
     }
@@ -106,14 +106,14 @@ HomePage.propTypes = {
   userCreatedState: PropTypes.object.isRequired,
   fetchSessionValid: PropTypes.func.isRequired,
   sessionValidState: PropTypes.object.isRequired,
-  fetchMnemonicCreated: PropTypes.func.isRequired,
-  mnemonicCreatedState: PropTypes.object.isRequired,
+  fetchActiveAddress: PropTypes.func.isRequired,
+  activeAddressFetchState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   userCreatedState: selectUserCreatedState(),
   sessionValidState: selectSessionValidState(),
-  mnemonicCreatedState: selectMnemonicCreatedState(),
+  activeAddressFetchState: selectActiveAddressFetchState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

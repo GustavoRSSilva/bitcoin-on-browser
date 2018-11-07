@@ -12,7 +12,7 @@ import {
   USER_ADDRESSES,
   FETCH_USER_CREATED,
   FETCH_SESSION_VALID,
-  FETCH_MNEMONIC_CREATED,
+  FETCH_ACTIVE_ADDRESS,
   SAVE_ADDRESS,
 } from './constants';
 
@@ -21,8 +21,8 @@ import {
   fetchUserCreatedSuccessful,
   fetchSessionValidRejected,
   fetchSessionValidSuccessful,
-  fetchMnemonicCreatedRejected,
-  fetchMnemonicCreatedSuccessful,
+  fetchActiveAddressRejected,
+  fetchActiveAddressSuccessful,
   saveAddressRejected,
   saveAddressSuccessful,
 } from './actions';
@@ -97,6 +97,15 @@ export function* getMnemonic() {
   }
 }
 
+export function* getUserActiveAddress() {
+  try {
+    const user = yield getUser();
+    return user[ACTIVE_ADDRESS];
+  } catch (e) {
+    return null;
+  }
+}
+
 export function* validateSession(password) {
   const sha256Pass = stringToSha256(password);
   const user = yield getUser();
@@ -135,13 +144,12 @@ function* callGetSessionValid() {
   }
 }
 
-function* callGetMnemonicCreated() {
+function* callGetActiveAddress() {
   try {
-    const mnemonic = yield call(getMnemonic);
-    const boolIsCreated = !!mnemonic;
-    yield put(fetchMnemonicCreatedSuccessful(boolIsCreated));
+    const address = yield call(getUserActiveAddress);
+    yield put(fetchActiveAddressSuccessful(address));
   } catch (e) {
-    yield put(fetchMnemonicCreatedRejected());
+    yield put(fetchActiveAddressRejected());
   }
 }
 
@@ -162,8 +170,8 @@ function* fetchSessionValidSaga() {
   yield takeLatest(FETCH_SESSION_VALID, callGetSessionValid);
 }
 
-function* fetchMnemonicCreatedSaga() {
-  yield takeLatest(FETCH_MNEMONIC_CREATED, callGetMnemonicCreated);
+function* fetchActiveAddressSaga() {
+  yield takeLatest(FETCH_ACTIVE_ADDRESS, callGetActiveAddress);
 }
 
 function* saveAddressSaga() {
@@ -175,7 +183,7 @@ export default function* defaultSaga() {
   yield [
     fetchUserCreatedSaga(),
     fetchSessionValidSaga(),
-    fetchMnemonicCreatedSaga(),
+    fetchActiveAddressSaga(),
     saveAddressSaga(),
   ];
 }

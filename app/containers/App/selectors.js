@@ -3,7 +3,7 @@ import { initialState } from './reducer';
 import {
   SESSION_VALID_STATE,
   USER_CREATED_STATE,
-  MNEMONIC_CREATED_STATE,
+  ACTIVE_ADDRESS_FETCH_STATE,
   SAVE_ADDRESS_STATE,
 } from './constants';
 
@@ -25,9 +25,9 @@ const selectSessionValidState = () =>
     subState.get(SESSION_VALID_STATE),
   );
 
-const selectMnemonicCreatedState = () =>
+const selectActiveAddressFetchState = () =>
   createSelector(selectAppDomain, subState =>
-    subState.get(MNEMONIC_CREATED_STATE),
+    subState.get(ACTIVE_ADDRESS_FETCH_STATE),
   );
 
 const selectsaveAddressState = () =>
@@ -44,6 +44,6 @@ export {
   selectAppDomain,
   selectSessionValidState,
   selectUserCreatedState,
-  selectMnemonicCreatedState,
+  selectActiveAddressFetchState,
   selectsaveAddressState,
 };

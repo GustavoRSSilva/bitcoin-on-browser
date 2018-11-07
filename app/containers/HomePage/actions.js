@@ -7,7 +7,7 @@
 import {
   fetchUserCreated,
   fetchSessionValid,
-  fetchMnemonicCreated,
+  fetchActiveAddress,
 } from 'containers/App/actions';
 import { DEFAULT_ACTION } from './constants';
 
@@ -17,4 +17,4 @@ export function defaultAction() {
   };
 }
 
-export { fetchSessionValid, fetchUserCreated, fetchMnemonicCreated };
+export { fetchSessionValid, fetchUserCreated, fetchActiveAddress };

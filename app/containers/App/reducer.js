@@ -14,10 +14,10 @@ import {
   FETCH_SESSION_VALID,
   FETCH_SESSION_VALID_REJECTED,
   FETCH_SESSION_VALID_SUCCESSFUL,
-  MNEMONIC_CREATED_STATE,
-  FETCH_MNEMONIC_CREATED,
-  FETCH_MNEMONIC_CREATED_REJECTED,
-  FETCH_MNEMONIC_CREATED_SUCCESSFUL,
+  ACTIVE_ADDRESS_FETCH_STATE,
+  FETCH_ACTIVE_ADDRESS,
+  FETCH_ACTIVE_ADDRESS_REJECTED,
+  FETCH_ACTIVE_ADDRESS_SUCCESSFUL,
   SAVE_ADDRESS_STATE,
   SAVE_ADDRESS,
   SAVE_ADDRESS_REJECTED,
@@ -33,7 +33,7 @@ const setState = (requesting = false, error = null, data = null) => ({
 export const initialState = fromJS({
   [USER_CREATED_STATE]: setState(),
   [SESSION_VALID_STATE]: setState(),
-  [MNEMONIC_CREATED_STATE]: setState(),
+  [ACTIVE_ADDRESS_FETCH_STATE]: setState(),
   [SAVE_ADDRESS_STATE]: setState(),
 });
 
@@ -63,15 +63,15 @@ function appReducer(state = initialState, action) {
         setState(false, null, action.payload),
       );
 
-    case FETCH_MNEMONIC_CREATED:
-      return state.set(MNEMONIC_CREATED_STATE, setState(true));
+    case FETCH_ACTIVE_ADDRESS:
+      return state.set(ACTIVE_ADDRESS_FETCH_STATE, setState(true));
 
-    case FETCH_MNEMONIC_CREATED_REJECTED:
-      return state.set(MNEMONIC_CREATED_STATE, setState(false, true));
+    case FETCH_ACTIVE_ADDRESS_REJECTED:
+      return state.set(ACTIVE_ADDRESS_FETCH_STATE, setState(false, true));
 
-    case FETCH_MNEMONIC_CREATED_SUCCESSFUL:
+    case FETCH_ACTIVE_ADDRESS_SUCCESSFUL:
       return state.set(
-        MNEMONIC_CREATED_STATE,
+        ACTIVE_ADDRESS_FETCH_STATE,
         setState(false, null, action.payload),
       );
 

@@ -11,9 +11,9 @@ import {
   FETCH_SESSION_VALID,
   FETCH_SESSION_VALID_REJECTED,
   FETCH_SESSION_VALID_SUCCESSFUL,
-  FETCH_MNEMONIC_CREATED,
-  FETCH_MNEMONIC_CREATED_REJECTED,
-  FETCH_MNEMONIC_CREATED_SUCCESSFUL,
+  FETCH_ACTIVE_ADDRESS,
+  FETCH_ACTIVE_ADDRESS_REJECTED,
+  FETCH_ACTIVE_ADDRESS_SUCCESSFUL,
   SAVE_ADDRESS,
   SAVE_ADDRESS_REJECTED,
   SAVE_ADDRESS_SUCCESSFUL,
@@ -58,21 +58,21 @@ export function fetchSessionValidSuccessful(payload) {
   };
 }
 
-export function fetchMnemonicCreated() {
+export function fetchActiveAddress() {
   return {
-    type: FETCH_MNEMONIC_CREATED,
+    type: FETCH_ACTIVE_ADDRESS,
   };
 }
 
-export function fetchMnemonicCreatedRejected() {
+export function fetchActiveAddressRejected() {
   return {
-    type: FETCH_MNEMONIC_CREATED_REJECTED,
+    type: FETCH_ACTIVE_ADDRESS_REJECTED,
   };
 }
 
-export function fetchMnemonicCreatedSuccessful(payload) {
+export function fetchActiveAddressSuccessful(payload) {
   return {
-    type: FETCH_MNEMONIC_CREATED_SUCCESSFUL,
+    type: FETCH_ACTIVE_ADDRESS_SUCCESSFUL,
     payload,
   };
 }
