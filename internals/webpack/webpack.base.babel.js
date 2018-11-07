@@ -128,6 +128,7 @@ module.exports = options => ({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         SECRET: JSON.stringify(process.env.SECRET),
+        BITSTAMP_TICKER_URL: JSON.stringify(process.env.BITSTAMP_TICKER_URL),
       },
     }),
   ]),

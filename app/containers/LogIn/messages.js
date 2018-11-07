@@ -9,7 +9,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.containers.LogIn.header',
-    defaultMessage: 'This is LogIn container !',
+    defaultMessage: 'Login',
   },
   app_title: {
     id: 'app.containers.LogIn.app_title',

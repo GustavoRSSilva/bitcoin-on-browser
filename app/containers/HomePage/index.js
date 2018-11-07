@@ -21,11 +21,13 @@ import {
 } from 'containers/App/selectors';
 
 import AddressTitle from 'components/AddressTitle';
+import PageTitle from 'components/common/PageTitle';
 
 import * as actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import { TransactionsFragment } from './styles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.Component {
@@ -99,8 +101,11 @@ export class HomePage extends React.Component {
     return (
       <div>
         <AddressTitle address={activeAddress} />
-
-        <FormattedMessage {...messages.header} />
+        <TransactionsFragment>
+          <PageTitle>
+            <FormattedMessage {...messages.header} />
+          </PageTitle>
+        </TransactionsFragment>
       </div>
     );
   }
