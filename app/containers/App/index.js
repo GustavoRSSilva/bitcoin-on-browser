@@ -8,6 +8,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { Route, Switch } from 'react-router-dom';
 
+import Header from 'components/Header';
 import HomePage from 'containers/HomePage/Loadable';
 import SignUp from 'containers/SignUp/Loadable';
 import LogIn from 'containers/LogIn/Loadable';
@@ -25,6 +26,7 @@ export class App extends React.Component {
   render() {
     return (
       <Layout>
+        <Header />
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/signUp" exact component={SignUp} />
