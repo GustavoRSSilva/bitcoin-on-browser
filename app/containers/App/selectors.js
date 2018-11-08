@@ -5,6 +5,7 @@ import {
   USER_CREATED_STATE,
   ACTIVE_ADDRESS_FETCH_STATE,
   SAVE_ADDRESS_STATE,
+  ADDRESS_BALANCE_FETCH_STATE,
 } from './constants';
 
 /**
@@ -30,8 +31,14 @@ const selectActiveAddressFetchState = () =>
     subState.get(ACTIVE_ADDRESS_FETCH_STATE),
   );
 
-const selectsaveAddressState = () =>
+const selectSaveAddressState = () =>
   createSelector(selectAppDomain, subState => subState.get(SAVE_ADDRESS_STATE));
+
+const selectAddressBalanceFetchState = () =>
+  createSelector(selectAppDomain, subState =>
+    subState.get(ADDRESS_BALANCE_FETCH_STATE),
+  );
+
 /**
  * Default selector used by App
  */
@@ -45,5 +52,6 @@ export {
   selectSessionValidState,
   selectUserCreatedState,
   selectActiveAddressFetchState,
-  selectsaveAddressState,
+  selectSaveAddressState,
+  selectAddressBalanceFetchState,
 };

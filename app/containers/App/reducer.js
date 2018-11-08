@@ -22,6 +22,10 @@ import {
   SAVE_ADDRESS,
   SAVE_ADDRESS_REJECTED,
   SAVE_ADDRESS_SUCCESSFUL,
+  ADDRESS_BALANCE_FETCH_STATE,
+  FETCH_ADDRESS_BALANCE,
+  FETCH_ADDRESS_BALANCE_REJECTED,
+  FETCH_ADDRESS_BALANCE_SUCCESSFUL,
 } from './constants';
 
 const setState = (requesting = false, error = null, data = null) => ({
@@ -35,6 +39,7 @@ export const initialState = fromJS({
   [SESSION_VALID_STATE]: setState(),
   [ACTIVE_ADDRESS_FETCH_STATE]: setState(),
   [SAVE_ADDRESS_STATE]: setState(),
+  [ADDRESS_BALANCE_FETCH_STATE]: setState(),
 });
 
 function appReducer(state = initialState, action) {
@@ -84,6 +89,19 @@ function appReducer(state = initialState, action) {
     case SAVE_ADDRESS_SUCCESSFUL:
       return state.set(
         SAVE_ADDRESS_STATE,
+        setState(false, null, action.payload),
+      );
+
+    //    Fetch address balance
+    case FETCH_ADDRESS_BALANCE:
+      return state.set(ADDRESS_BALANCE_FETCH_STATE, setState(true));
+
+    case FETCH_ADDRESS_BALANCE_REJECTED:
+      return state.set(ADDRESS_BALANCE_FETCH_STATE, setState(false, true));
+
+    case FETCH_ADDRESS_BALANCE_SUCCESSFUL:
+      return state.set(
+        ADDRESS_BALANCE_FETCH_STATE,
         setState(false, null, action.payload),
       );
 

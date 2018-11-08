@@ -1,7 +1,9 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { saveItem, getItem } from 'utils/storage';
 import CryptoJS from 'crypto-js';
+
 import { sha256 } from 'utils/bitcoin';
+import { getAddressBalance } from 'utils/blockstreamAPI';
 
 import {
   SESSION,
@@ -14,6 +16,7 @@ import {
   FETCH_SESSION_VALID,
   FETCH_ACTIVE_ADDRESS,
   SAVE_ADDRESS,
+  FETCH_ADDRESS_BALANCE,
 } from './constants';
 
 import {
@@ -25,7 +28,11 @@ import {
   fetchActiveAddressSuccessful,
   saveAddressRejected,
   saveAddressSuccessful,
+  fetchAddressBalance,
+  fetchAddressBalanceRejected,
+  fetchAddressBalanceSuccessful,
 } from './actions';
+
 const { Buffer } = require('buffer/');
 
 const SECRET = process.env.SECRET || 'secret_key';
@@ -41,11 +48,11 @@ const compareUint8Array = (buf1, buf2) => {
   return true;
 };
 
+export const stringToSha256 = string => sha256(string);
+
 export function* setSession(bool) {
   yield saveItem(SESSION, bool);
 }
-
-export const stringToSha256 = string => sha256(string);
 
 export function* saveUser(user) {
   //  encrypt the user data
@@ -63,7 +70,7 @@ export function* saveMnemonic(mnemonic) {
   return yield saveUser(user);
 }
 
-export function* saveAddress(address) {
+function* saveAddress(address) {
   const user = yield getUser();
   //    add teh address as the active address
   user[ACTIVE_ADDRESS] = address;
@@ -148,6 +155,7 @@ function* callGetActiveAddress() {
   try {
     const address = yield call(getUserActiveAddress);
     if (address) {
+      yield put(fetchAddressBalance(address));
       yield put(fetchActiveAddressSuccessful(address));
     } else {
       yield put(fetchActiveAddressRejected());
@@ -163,6 +171,15 @@ function* callSaveAddress(action) {
     yield put(saveAddressSuccessful(result));
   } catch (e) {
     yield put(saveAddressRejected());
+  }
+}
+
+function* callGetAddressBalance(action) {
+  try {
+    const result = yield call(getAddressBalance, action.payload);
+    yield put(fetchAddressBalanceSuccessful(result.data));
+  } catch (e) {
+    yield put(fetchAddressBalanceRejected());
   }
 }
 
@@ -182,6 +199,10 @@ function* saveAddressSaga() {
   yield takeLatest(SAVE_ADDRESS, callSaveAddress);
 }
 
+function* fetchAddressBalanceSaga() {
+  yield takeLatest(FETCH_ADDRESS_BALANCE, callGetAddressBalance);
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
@@ -189,5 +210,6 @@ export default function* defaultSaga() {
     fetchSessionValidSaga(),
     fetchActiveAddressSaga(),
     saveAddressSaga(),
+    fetchAddressBalanceSaga(),
   ];
 }

@@ -17,6 +17,9 @@ import {
   SAVE_ADDRESS,
   SAVE_ADDRESS_REJECTED,
   SAVE_ADDRESS_SUCCESSFUL,
+  FETCH_ADDRESS_BALANCE,
+  FETCH_ADDRESS_BALANCE_REJECTED,
+  FETCH_ADDRESS_BALANCE_SUCCESSFUL,
 } from './constants';
 
 export function fetchUserCreated() {
@@ -94,6 +97,27 @@ export function saveAddressRejected(payload) {
 export function saveAddressSuccessful(payload) {
   return {
     type: SAVE_ADDRESS_SUCCESSFUL,
+    payload,
+  };
+}
+
+export function fetchAddressBalance(payload) {
+  return {
+    type: FETCH_ADDRESS_BALANCE,
+    payload,
+  };
+}
+
+export function fetchAddressBalanceRejected(payload) {
+  return {
+    type: FETCH_ADDRESS_BALANCE_REJECTED,
+    payload,
+  };
+}
+
+export function fetchAddressBalanceSuccessful(payload) {
+  return {
+    type: FETCH_ADDRESS_BALANCE_SUCCESSFUL,
     payload,
   };
 }

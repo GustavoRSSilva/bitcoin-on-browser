@@ -18,10 +18,12 @@ import {
   selectSessionValidState,
   selectUserCreatedState,
   selectActiveAddressFetchState,
+  selectAddressBalanceFetchState,
 } from 'containers/App/selectors';
 
 import AddressTitle from 'components/AddressTitle';
 import PageTitle from 'components/common/PageTitle';
+import AddressBalance from 'components/AddressBalance';
 
 import * as actions from './actions';
 import reducer from './reducer';
@@ -97,10 +99,12 @@ export class HomePage extends React.Component {
     }
 
     const activeAddress = this.props.activeAddressFetchState.data;
+    const balance = this.props.addressBalanceFetchState.data;
 
     return (
       <div>
         <AddressTitle address={activeAddress} />
+        <AddressBalance balance={balance} />
         <TransactionsFragment>
           <PageTitle>
             <FormattedMessage {...messages.header} />
@@ -119,12 +123,14 @@ HomePage.propTypes = {
   sessionValidState: PropTypes.object.isRequired,
   fetchActiveAddress: PropTypes.func.isRequired,
   activeAddressFetchState: PropTypes.object.isRequired,
+  addressBalanceFetchState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   userCreatedState: selectUserCreatedState(),
   sessionValidState: selectSessionValidState(),
   activeAddressFetchState: selectActiveAddressFetchState(),
+  addressBalanceFetchState: selectAddressBalanceFetchState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

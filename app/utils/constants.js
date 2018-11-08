@@ -11,3 +11,6 @@ export const TWENTY_FOUR_WORDS_MNEMONIC = 256;
 export const BTC = 'btc';
 export const USD = 'usd';
 export const EUR = 'eur';
+
+export const BITSTAMP_TICKER_URL = 'https://www.bitstamp.net/api/v2/ticker/';
+export const BLOCKSTREAM_API_URL = 'https://blockstream.info/api/';

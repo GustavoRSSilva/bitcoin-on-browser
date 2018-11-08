@@ -35,3 +35,9 @@ export const SAVE_ADDRESS_STATE = 'save_address_state';
 export const SAVE_ADDRESS = `${path}SAVE_ADDRESS`;
 export const SAVE_ADDRESS_REJECTED = `${path}SAVE_ADDRESS_REJECTED`;
 export const SAVE_ADDRESS_SUCCESSFUL = `${path}SAVE_ADDRESS_SUCCESSFUL`;
+
+// fetch the address balance
+export const ADDRESS_BALANCE_FETCH_STATE = 'address_balance_fetch_state';
+export const FETCH_ADDRESS_BALANCE = `${path}FETCH_ADDRESS_BALANCE`;
+export const FETCH_ADDRESS_BALANCE_REJECTED = `${path}FETCH_ADDRESS_BALANCE_REJECTED`;
+export const FETCH_ADDRESS_BALANCE_SUCCESSFUL = `${path}FETCH_ADDRESS_BALANCE_SUCCESSFUL`;
