@@ -11,6 +11,7 @@ The extension will works as a small RPC that will comunicate with a public node.
 
 - Create or import new seed/account
 - New address
+- List btc balance
 - Create Channels
 - List Channels
 - Send funds
