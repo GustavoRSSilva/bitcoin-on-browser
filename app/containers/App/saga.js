@@ -1,7 +1,9 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { saveItem, getItem } from 'utils/storage';
 import CryptoJS from 'crypto-js';
+import axios from 'axios';
 
+import { COINDESK_CURRENT_PRICE_URL } from 'utils/constants';
 import { sha256 } from 'utils/bitcoin';
 import { getAddressBalance } from 'utils/blockstreamAPI';
 
@@ -17,6 +19,7 @@ import {
   FETCH_ACTIVE_ADDRESS,
   SAVE_ADDRESS,
   FETCH_ADDRESS_BALANCE,
+  FETCH_BTC_TO_FIAT_VALUE,
 } from './constants';
 
 import {
@@ -31,6 +34,9 @@ import {
   fetchAddressBalance,
   fetchAddressBalanceRejected,
   fetchAddressBalanceSuccessful,
+  fetchBtcToFiatValue,
+  fetchBtcToFiatValueRejected,
+  fetchBtcToFiatValueSuccessful,
 } from './actions';
 
 const { Buffer } = require('buffer/');
@@ -49,6 +55,9 @@ const compareUint8Array = (buf1, buf2) => {
 };
 
 export const stringToSha256 = string => sha256(string);
+
+export const getBtcToFiatValue = () =>
+  axios.get(`${COINDESK_CURRENT_PRICE_URL}`);
 
 export function* setSession(bool) {
   yield saveItem(SESSION, bool);
@@ -177,9 +186,22 @@ function* callSaveAddress(action) {
 function* callGetAddressBalance(action) {
   try {
     const result = yield call(getAddressBalance, action.payload);
+    yield put(fetchBtcToFiatValue());
     yield put(fetchAddressBalanceSuccessful(result.data));
   } catch (e) {
+    console.log(e);
     yield put(fetchAddressBalanceRejected());
+  }
+}
+
+function* callGetBtcToFiatValue() {
+  try {
+    console.log('a começar!!!');
+    const result = yield call(getBtcToFiatValue);
+    console.log('yoooo', result);
+    yield put(fetchBtcToFiatValueSuccessful(result.data));
+  } catch (e) {
+    yield put(fetchBtcToFiatValueRejected());
   }
 }
 
@@ -203,6 +225,10 @@ function* fetchAddressBalanceSaga() {
   yield takeLatest(FETCH_ADDRESS_BALANCE, callGetAddressBalance);
 }
 
+function* fetchBtcToFiatValueSaga() {
+  yield takeLatest(FETCH_BTC_TO_FIAT_VALUE, callGetBtcToFiatValue);
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
@@ -211,5 +237,6 @@ export default function* defaultSaga() {
     fetchActiveAddressSaga(),
     saveAddressSaga(),
     fetchAddressBalanceSaga(),
+    fetchBtcToFiatValueSaga(),
   ];
 }

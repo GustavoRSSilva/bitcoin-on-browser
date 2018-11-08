@@ -20,6 +20,9 @@ import {
   FETCH_ADDRESS_BALANCE,
   FETCH_ADDRESS_BALANCE_REJECTED,
   FETCH_ADDRESS_BALANCE_SUCCESSFUL,
+  FETCH_BTC_TO_FIAT_VALUE,
+  FETCH_BTC_TO_FIAT_VALUE_REJECTED,
+  FETCH_BTC_TO_FIAT_VALUE_SUCCESSFUL,
 } from './constants';
 
 export function fetchUserCreated() {
@@ -118,6 +121,27 @@ export function fetchAddressBalanceRejected(payload) {
 export function fetchAddressBalanceSuccessful(payload) {
   return {
     type: FETCH_ADDRESS_BALANCE_SUCCESSFUL,
+    payload,
+  };
+}
+
+export function fetchBtcToFiatValue(payload) {
+  return {
+    type: FETCH_BTC_TO_FIAT_VALUE,
+    payload,
+  };
+}
+
+export function fetchBtcToFiatValueRejected(payload) {
+  return {
+    type: FETCH_BTC_TO_FIAT_VALUE_REJECTED,
+    payload,
+  };
+}
+
+export function fetchBtcToFiatValueSuccessful(payload) {
+  return {
+    type: FETCH_BTC_TO_FIAT_VALUE_SUCCESSFUL,
     payload,
   };
 }

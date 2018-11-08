@@ -6,6 +6,7 @@ import {
   ACTIVE_ADDRESS_FETCH_STATE,
   SAVE_ADDRESS_STATE,
   ADDRESS_BALANCE_FETCH_STATE,
+  BTC_TO_FIAT_FETCH_STATE,
 } from './constants';
 
 /**
@@ -39,6 +40,11 @@ const selectAddressBalanceFetchState = () =>
     subState.get(ADDRESS_BALANCE_FETCH_STATE),
   );
 
+const selectBtcToFiatFetchState = () =>
+  createSelector(selectAppDomain, subState =>
+    subState.get(BTC_TO_FIAT_FETCH_STATE),
+  );
+
 /**
  * Default selector used by App
  */
@@ -54,4 +60,5 @@ export {
   selectActiveAddressFetchState,
   selectSaveAddressState,
   selectAddressBalanceFetchState,
+  selectBtcToFiatFetchState,
 };

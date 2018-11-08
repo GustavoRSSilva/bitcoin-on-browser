@@ -41,3 +41,9 @@ export const ADDRESS_BALANCE_FETCH_STATE = 'address_balance_fetch_state';
 export const FETCH_ADDRESS_BALANCE = `${path}FETCH_ADDRESS_BALANCE`;
 export const FETCH_ADDRESS_BALANCE_REJECTED = `${path}FETCH_ADDRESS_BALANCE_REJECTED`;
 export const FETCH_ADDRESS_BALANCE_SUCCESSFUL = `${path}FETCH_ADDRESS_BALANCE_SUCCESSFUL`;
+
+//  Fetch the value of btc to fiat
+export const BTC_TO_FIAT_FETCH_STATE = 'btc_to_fiat_fetch_state';
+export const FETCH_BTC_TO_FIAT_VALUE = `${path}FETCH_BTC_TO_FIAT_VALUE`;
+export const FETCH_BTC_TO_FIAT_VALUE_REJECTED = `${path}FETCH_BTC_TO_FIAT_VALUE_REJECTED`;
+export const FETCH_BTC_TO_FIAT_VALUE_SUCCESSFUL = `${path}FETCH_BTC_TO_FIAT_VALUE_SUCCESSFUL`;

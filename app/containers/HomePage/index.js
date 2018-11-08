@@ -19,6 +19,7 @@ import {
   selectUserCreatedState,
   selectActiveAddressFetchState,
   selectAddressBalanceFetchState,
+  selectBtcToFiatFetchState,
 } from 'containers/App/selectors';
 
 import AddressTitle from 'components/AddressTitle';
@@ -101,10 +102,15 @@ export class HomePage extends React.Component {
     const activeAddress = this.props.activeAddressFetchState.data;
     const balance = this.props.addressBalanceFetchState.data;
 
+    // TODO: set this value to the future be either USD, Eur, GBP, etc.
+    //  As for now it is only available in USD.
+    const btcToFiat = this.props.btcToFiatFetchState.data
+      ? this.props.btcToFiatFetchState.data.bpi.USD
+      : null;
     return (
       <div>
         <AddressTitle address={activeAddress} />
-        <AddressBalance balance={balance} />
+        <AddressBalance balance={balance} btcToFiat={btcToFiat} />
         <TransactionsFragment>
           <PageTitle>
             <FormattedMessage {...messages.header} />
@@ -124,6 +130,7 @@ HomePage.propTypes = {
   fetchActiveAddress: PropTypes.func.isRequired,
   activeAddressFetchState: PropTypes.object.isRequired,
   addressBalanceFetchState: PropTypes.object.isRequired,
+  btcToFiatFetchState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -131,6 +138,7 @@ const mapStateToProps = createStructuredSelector({
   sessionValidState: selectSessionValidState(),
   activeAddressFetchState: selectActiveAddressFetchState(),
   addressBalanceFetchState: selectAddressBalanceFetchState(),
+  btcToFiatFetchState: selectBtcToFiatFetchState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

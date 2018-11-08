@@ -15,24 +15,21 @@ import messages from './messages';
 import { Wrapper, Title, Balance, Delta, BalanceFiat } from './styles';
 
 const convertSatoshiToMBtc = value => value / 10 ** 5;
-const convertBtcToMBtc = value => value * 10 ** 3;
+const convertUsdBtcToUsdMBtc = value => value / 10 ** 3;
 
 function AddressBalance(props) {
-  if (!props.balance) {
+  const { balance, btcToFiat } = props;
+  if (!balance || !btcToFiat) {
     return null;
   }
 
-  const mempoolBalanceMBTC = convertSatoshiToMBtc(
-    props.balance.mempool_balance,
-  );
-  const confirmedBalanceMBTC = convertSatoshiToMBtc(
-    props.balance.confirmed_balance,
-  );
-  const totalBalanceMBTC = convertSatoshiToMBtc(props.balance.total_received);
+  const mempoolBalanceMBTC = convertSatoshiToMBtc(balance.mempool_balance);
+  const confirmedBalanceMBTC = convertSatoshiToMBtc(balance.confirmed_balance);
+  const totalBalanceMBTC = convertSatoshiToMBtc(balance.total_received);
 
   const fiatCur = USD;
-  const mbtcValue = convertBtcToMBtc(6500);
-  const fiatAmount = totalBalanceMBTC / mbtcValue;
+  const mbtcValue = convertUsdBtcToUsdMBtc(btcToFiat.rate_float);
+  const fiatAmount = totalBalanceMBTC * mbtcValue;
 
   const delta = mempoolBalanceMBTC > 0;
   const balanceHTML = mempoolBalanceMBTC ? (
@@ -63,6 +60,7 @@ function AddressBalance(props) {
 
 AddressBalance.propTypes = {
   balance: PropTypes.object,
+  btcToFiat: PropTypes.object,
 };
 
 export default AddressBalance;
