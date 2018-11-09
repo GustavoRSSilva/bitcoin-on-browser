@@ -20,6 +20,7 @@ import {
   selectActiveAddressFetchState,
   selectAddressBalanceFetchState,
   selectBtcToFiatFetchState,
+  selectAddressTransactionsFetchState,
 } from 'containers/App/selectors';
 
 import AddressTitle from 'components/AddressTitle';
@@ -107,6 +108,8 @@ export class HomePage extends React.Component {
     const btcToFiat = this.props.btcToFiatFetchState.data
       ? this.props.btcToFiatFetchState.data.bpi.USD
       : null;
+
+    console.log(this.props);
     return (
       <div>
         <AddressTitle address={activeAddress} />
@@ -139,6 +142,7 @@ const mapStateToProps = createStructuredSelector({
   activeAddressFetchState: selectActiveAddressFetchState(),
   addressBalanceFetchState: selectAddressBalanceFetchState(),
   btcToFiatFetchState: selectBtcToFiatFetchState(),
+  addressTransactionsFetchState: selectAddressTransactionsFetchState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

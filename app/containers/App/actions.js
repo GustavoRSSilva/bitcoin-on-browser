@@ -23,6 +23,9 @@ import {
   FETCH_BTC_TO_FIAT_VALUE,
   FETCH_BTC_TO_FIAT_VALUE_REJECTED,
   FETCH_BTC_TO_FIAT_VALUE_SUCCESSFUL,
+  FETCH_ADDRESS_TRANSACTIONS,
+  FETCH_ADDRESS_TRANSACTIONS_REJECTED,
+  FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL,
 } from './constants';
 
 export function fetchUserCreated() {
@@ -142,6 +145,28 @@ export function fetchBtcToFiatValueRejected(payload) {
 export function fetchBtcToFiatValueSuccessful(payload) {
   return {
     type: FETCH_BTC_TO_FIAT_VALUE_SUCCESSFUL,
+    payload,
+  };
+}
+
+//  Fetch the address transactions
+export function fetchAddressTransactions(payload) {
+  return {
+    type: FETCH_ADDRESS_TRANSACTIONS,
+    payload,
+  };
+}
+
+export function fetchAddressTransactionsRejected(payload) {
+  return {
+    type: FETCH_ADDRESS_TRANSACTIONS_REJECTED,
+    payload,
+  };
+}
+
+export function fetchAddressTransactionsSuccessful(payload) {
+  return {
+    type: FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL,
     payload,
   };
 }

@@ -5,7 +5,10 @@ import axios from 'axios';
 
 import { COINDESK_CURRENT_PRICE_URL } from 'utils/constants';
 import { sha256 } from 'utils/bitcoin';
-import { getAddressBalance } from 'utils/blockstreamAPI';
+import {
+  getAddressBalance,
+  getAddressTransactions,
+} from 'utils/blockstreamAPI';
 
 import {
   SESSION,
@@ -20,6 +23,7 @@ import {
   SAVE_ADDRESS,
   FETCH_ADDRESS_BALANCE,
   FETCH_BTC_TO_FIAT_VALUE,
+  FETCH_ADDRESS_TRANSACTIONS,
 } from './constants';
 
 import {
@@ -37,6 +41,9 @@ import {
   fetchBtcToFiatValue,
   fetchBtcToFiatValueRejected,
   fetchBtcToFiatValueSuccessful,
+  fetchAddressTransactions,
+  fetchAddressTransactionsRejected,
+  fetchAddressTransactionsSuccessful,
 } from './actions';
 
 const { Buffer } = require('buffer/');
@@ -165,6 +172,7 @@ function* callGetActiveAddress() {
     const address = yield call(getUserActiveAddress);
     if (address) {
       yield put(fetchAddressBalance(address));
+      yield put(fetchAddressTransactions(address));
       yield put(fetchActiveAddressSuccessful(address));
     } else {
       yield put(fetchActiveAddressRejected());
@@ -189,19 +197,25 @@ function* callGetAddressBalance(action) {
     yield put(fetchBtcToFiatValue());
     yield put(fetchAddressBalanceSuccessful(result.data));
   } catch (e) {
-    console.log(e);
     yield put(fetchAddressBalanceRejected());
   }
 }
 
 function* callGetBtcToFiatValue() {
   try {
-    console.log('a começar!!!');
     const result = yield call(getBtcToFiatValue);
-    console.log('yoooo', result);
     yield put(fetchBtcToFiatValueSuccessful(result.data));
   } catch (e) {
     yield put(fetchBtcToFiatValueRejected());
+  }
+}
+
+function* callGetaddressTransactions(action) {
+  try {
+    const result = yield call(getAddressTransactions, action.payload);
+    yield put(fetchAddressTransactionsSuccessful(result.data));
+  } catch (e) {
+    yield put(fetchAddressTransactionsRejected());
   }
 }
 
@@ -229,6 +243,10 @@ function* fetchBtcToFiatValueSaga() {
   yield takeLatest(FETCH_BTC_TO_FIAT_VALUE, callGetBtcToFiatValue);
 }
 
+function* fetchAddressTransactionsSaga() {
+  yield takeLatest(FETCH_ADDRESS_TRANSACTIONS, callGetaddressTransactions);
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
@@ -238,5 +256,6 @@ export default function* defaultSaga() {
     saveAddressSaga(),
     fetchAddressBalanceSaga(),
     fetchBtcToFiatValueSaga(),
+    fetchAddressTransactionsSaga(),
   ];
 }

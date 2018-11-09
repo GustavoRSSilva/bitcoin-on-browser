@@ -16,6 +16,9 @@ export const Wrapper = styled.div`
 export const Title = styled.div`
   font-size: ${extraSmall};
   text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 0px;
+  margin-top: 10px;
 `;
 
 export const Balance = styled.div`
