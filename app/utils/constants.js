@@ -11,3 +11,9 @@ export const TWENTY_FOUR_WORDS_MNEMONIC = 256;
 export const BTC = 'btc';
 export const USD = 'usd';
 export const EUR = 'eur';
+
+export const COINDESK_CURRENT_PRICE_URL =
+  'https://api.coindesk.com/v1/bpi/currentprice.json';
+
+export const BLOCKSTREAM_URL = 'https://blockstream.info/';
+export const BLOCKSTREAM_API_URL = `${BLOCKSTREAM_URL}api/`;
