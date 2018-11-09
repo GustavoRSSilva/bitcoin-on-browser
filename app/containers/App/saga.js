@@ -1,7 +1,14 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { saveItem, getItem } from 'utils/storage';
 import CryptoJS from 'crypto-js';
+import axios from 'axios';
+
+import { COINDESK_CURRENT_PRICE_URL } from 'utils/constants';
 import { sha256 } from 'utils/bitcoin';
+import {
+  getAddressBalance,
+  getAddressTransactions,
+} from 'utils/blockstreamAPI';
 
 import {
   SESSION,
@@ -14,6 +21,9 @@ import {
   FETCH_SESSION_VALID,
   FETCH_ACTIVE_ADDRESS,
   SAVE_ADDRESS,
+  FETCH_ADDRESS_BALANCE,
+  FETCH_BTC_TO_FIAT_VALUE,
+  FETCH_ADDRESS_TRANSACTIONS,
 } from './constants';
 
 import {
@@ -25,7 +35,17 @@ import {
   fetchActiveAddressSuccessful,
   saveAddressRejected,
   saveAddressSuccessful,
+  fetchAddressBalance,
+  fetchAddressBalanceRejected,
+  fetchAddressBalanceSuccessful,
+  fetchBtcToFiatValue,
+  fetchBtcToFiatValueRejected,
+  fetchBtcToFiatValueSuccessful,
+  fetchAddressTransactions,
+  fetchAddressTransactionsRejected,
+  fetchAddressTransactionsSuccessful,
 } from './actions';
+
 const { Buffer } = require('buffer/');
 
 const SECRET = process.env.SECRET || 'secret_key';
@@ -41,11 +61,14 @@ const compareUint8Array = (buf1, buf2) => {
   return true;
 };
 
+export const stringToSha256 = string => sha256(string);
+
+export const getBtcToFiatValue = () =>
+  axios.get(`${COINDESK_CURRENT_PRICE_URL}`);
+
 export function* setSession(bool) {
   yield saveItem(SESSION, bool);
 }
-
-export const stringToSha256 = string => sha256(string);
 
 export function* saveUser(user) {
   //  encrypt the user data
@@ -63,7 +86,7 @@ export function* saveMnemonic(mnemonic) {
   return yield saveUser(user);
 }
 
-export function* saveAddress(address) {
+function* saveAddress(address) {
   const user = yield getUser();
   //    add teh address as the active address
   user[ACTIVE_ADDRESS] = address;
@@ -148,6 +171,9 @@ function* callGetActiveAddress() {
   try {
     const address = yield call(getUserActiveAddress);
     if (address) {
+      yield put(fetchAddressBalance(address));
+      // yield put(fetchAddressTransactions(address));
+      yield put(fetchAddressTransactions('32mqB1XgtDRSF8tZS8iYzD5u1xGBS2XFkv'));
       yield put(fetchActiveAddressSuccessful(address));
     } else {
       yield put(fetchActiveAddressRejected());
@@ -163,6 +189,34 @@ function* callSaveAddress(action) {
     yield put(saveAddressSuccessful(result));
   } catch (e) {
     yield put(saveAddressRejected());
+  }
+}
+
+function* callGetAddressBalance(action) {
+  try {
+    const result = yield call(getAddressBalance, action.payload);
+    yield put(fetchBtcToFiatValue());
+    yield put(fetchAddressBalanceSuccessful(result.data));
+  } catch (e) {
+    yield put(fetchAddressBalanceRejected());
+  }
+}
+
+function* callGetBtcToFiatValue() {
+  try {
+    const result = yield call(getBtcToFiatValue);
+    yield put(fetchBtcToFiatValueSuccessful(result.data));
+  } catch (e) {
+    yield put(fetchBtcToFiatValueRejected());
+  }
+}
+
+function* callGetaddressTransactions(action) {
+  try {
+    const result = yield call(getAddressTransactions, action.payload);
+    yield put(fetchAddressTransactionsSuccessful(result.data));
+  } catch (e) {
+    yield put(fetchAddressTransactionsRejected());
   }
 }
 
@@ -182,6 +236,18 @@ function* saveAddressSaga() {
   yield takeLatest(SAVE_ADDRESS, callSaveAddress);
 }
 
+function* fetchAddressBalanceSaga() {
+  yield takeLatest(FETCH_ADDRESS_BALANCE, callGetAddressBalance);
+}
+
+function* fetchBtcToFiatValueSaga() {
+  yield takeLatest(FETCH_BTC_TO_FIAT_VALUE, callGetBtcToFiatValue);
+}
+
+function* fetchAddressTransactionsSaga() {
+  yield takeLatest(FETCH_ADDRESS_TRANSACTIONS, callGetaddressTransactions);
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
@@ -189,5 +255,8 @@ export default function* defaultSaga() {
     fetchSessionValidSaga(),
     fetchActiveAddressSaga(),
     saveAddressSaga(),
+    fetchAddressBalanceSaga(),
+    fetchBtcToFiatValueSaga(),
+    fetchAddressTransactionsSaga(),
   ];
 }

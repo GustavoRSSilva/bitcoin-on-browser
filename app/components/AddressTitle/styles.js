@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 
 export const AddressFragment = styled.div`
   height: 36px;
-  max-width: 220px;
+  max-width: 240px;
   margin: 7px auto;
   border-radius: 5px;
   padding: 0 10px;
