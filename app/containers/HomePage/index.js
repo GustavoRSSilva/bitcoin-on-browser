@@ -7,7 +7,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
@@ -24,14 +23,12 @@ import {
 } from 'containers/App/selectors';
 
 import AddressTitle from 'components/AddressTitle';
-import PageTitle from 'components/common/PageTitle';
 import AddressBalance from 'components/AddressBalance';
+import AddressTransactions from 'components/AddressTransactions';
 
 import * as actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
-import { TransactionsFragment } from './styles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.Component {
@@ -100,25 +97,29 @@ export class HomePage extends React.Component {
       return null;
     }
 
-    const activeAddress = this.props.activeAddressFetchState.data;
-    const balance = this.props.addressBalanceFetchState.data;
+    const {
+      activeAddressFetchState,
+      addressBalanceFetchState,
+      btcToFiatFetchState,
+      addressTransactionsFetchState,
+    } = this.props;
+
+    const activeAddress = activeAddressFetchState.data;
+    const balance = addressBalanceFetchState.data;
 
     // TODO: set this value to the future be either USD, Eur, GBP, etc.
     //  As for now it is only available in USD.
-    const btcToFiat = this.props.btcToFiatFetchState.data
-      ? this.props.btcToFiatFetchState.data.bpi.USD
+    const btcToFiat = btcToFiatFetchState.data
+      ? btcToFiatFetchState.data.bpi.USD
       : null;
 
-    console.log(this.props);
+    const transactions = addressTransactionsFetchState.data || [];
+
     return (
       <div>
         <AddressTitle address={activeAddress} />
         <AddressBalance balance={balance} btcToFiat={btcToFiat} />
-        <TransactionsFragment>
-          <PageTitle>
-            <FormattedMessage {...messages.header} />
-          </PageTitle>
-        </TransactionsFragment>
+        <AddressTransactions transactions={transactions} />
       </div>
     );
   }
@@ -134,6 +135,7 @@ HomePage.propTypes = {
   activeAddressFetchState: PropTypes.object.isRequired,
   addressBalanceFetchState: PropTypes.object.isRequired,
   btcToFiatFetchState: PropTypes.object.isRequired,
+  addressTransactionsFetchState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

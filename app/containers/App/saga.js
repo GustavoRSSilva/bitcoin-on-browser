@@ -172,7 +172,8 @@ function* callGetActiveAddress() {
     const address = yield call(getUserActiveAddress);
     if (address) {
       yield put(fetchAddressBalance(address));
-      yield put(fetchAddressTransactions(address));
+      // yield put(fetchAddressTransactions(address));
+      yield put(fetchAddressTransactions('32mqB1XgtDRSF8tZS8iYzD5u1xGBS2XFkv'));
       yield put(fetchActiveAddressSuccessful(address));
     } else {
       yield put(fetchActiveAddressRejected());

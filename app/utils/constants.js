@@ -14,4 +14,6 @@ export const EUR = 'eur';
 
 export const COINDESK_CURRENT_PRICE_URL =
   'https://api.coindesk.com/v1/bpi/currentprice.json';
-export const BLOCKSTREAM_API_URL = 'https://blockstream.info/api/';
+
+export const BLOCKSTREAM_URL = 'https://blockstream.info/';
+export const BLOCKSTREAM_API_URL = `${BLOCKSTREAM_URL}api/`;
