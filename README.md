@@ -9,9 +9,9 @@ The extension will works as a small RPC that will comunicate with a public node.
 
 ## Roadmap
 
-- User Login
 - Create or import new seed/account
 - New address
+- List btc balance
 - Create Channels
 - List Channels
 - Send funds
