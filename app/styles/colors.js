@@ -1,5 +1,7 @@
 export const red = '#BB0000';
+export const lightGreen = '	#90EE90';
 export const green = '#7FFF00';
+export const yellow = '#F0E68C';
 export const btcOrange = '#FF9500';
 export const inputShadow = 'rgba(255, 149, 0, 0.5)';
 export const dark = '#090C14';

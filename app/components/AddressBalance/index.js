@@ -8,14 +8,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { USD } from 'utils/constants';
+import {
+  transSatToUnit,
+  convertSatsToUnit,
+  convertFiatBtcToFiatUnit,
+} from 'utils/conversion';
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 import { Wrapper, Title, Balance, Delta, BalanceFiat } from './styles';
-
-const convertSatoshiToMBtc = value => value / 10 ** 5;
-const convertUsdBtcToUsdMBtc = value => value / 10 ** 3;
 
 function AddressBalance(props) {
   const { balance, btcToFiat } = props;
@@ -23,24 +25,23 @@ function AddressBalance(props) {
     return null;
   }
 
-  const mempoolBalanceMBTC = convertSatoshiToMBtc(balance.mempool_balance);
-  const confirmedBalanceMBTC = convertSatoshiToMBtc(balance.confirmed_balance);
-  const totalBalanceMBTC = convertSatoshiToMBtc(balance.total_received);
+  const { amount: totalBalance, unit } = transSatToUnit(balance.total_received);
+  const mempoolBalanceMBTC = convertSatsToUnit(balance.mempool_balance, unit);
 
   const fiatCur = USD;
-  const mbtcValue = convertUsdBtcToUsdMBtc(btcToFiat.rate_float);
-  const fiatAmount = totalBalanceMBTC * mbtcValue;
+  const value = convertFiatBtcToFiatUnit(btcToFiat.rate_float, unit);
+  const fiatAmount = (totalBalance * value).toFixed(2);
 
   const delta = mempoolBalanceMBTC > 0;
   const balanceHTML = mempoolBalanceMBTC ? (
     <span>
-      {confirmedBalanceMBTC}{' '}
+      {totalBalance}{' '}
       <Delta delta={delta}>
         {delta ? '+' : '-'} {Math.abs(mempoolBalanceMBTC)}
       </Delta>
     </span>
   ) : (
-    <span>{confirmedBalanceMBTC}</span>
+    <span>{totalBalance}</span>
   );
 
   return (
@@ -49,7 +50,7 @@ function AddressBalance(props) {
         <FormattedMessage {...messages.balance} />
       </Title>
       <Balance>
-        {balanceHTML} <FormattedMessage {...messages.mili_bitcoin} />
+        {balanceHTML} <FormattedMessage {...messages[unit]} />
       </Balance>
       <BalanceFiat>
         {fiatAmount} <span>{fiatCur}</span>
