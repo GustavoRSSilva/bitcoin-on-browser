@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { grey } from 'styles/colors';
+import { grey, lightGreen, yellow, ivory } from 'styles/colors';
 import { extraSmall } from 'styles/fontSize';
 
 export const Title = styled.div`
@@ -35,4 +35,20 @@ export const Confirmed = styled.div`
   font-size: ${extraSmall};
   text-transform: uppercase;
   letter-spacing: 1px;
+  border-radius: 5px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  color: ${ivory};
+  font-weight: bold;
+  letter-space: 1px;
+  width: 50%;
+  margin: 10px 25%;
+
+  ${props => {
+    if (props.confirmed) {
+      return `background-color: ${lightGreen}`;
+    }
+    return `background-color: ${yellow}`;
+  }};
 `;

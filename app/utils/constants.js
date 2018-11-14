@@ -9,6 +9,8 @@ export const TWENTY_ONE_WORDS_MNEMONIC = 224;
 export const TWENTY_FOUR_WORDS_MNEMONIC = 256;
 
 export const BTC = 'btc';
+export const MBTC = 'mbtc';
+export const SAT = 'sat';
 export const USD = 'usd';
 export const EUR = 'eur';
 
