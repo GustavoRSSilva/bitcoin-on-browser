@@ -15,8 +15,16 @@ export default defineMessages({
     id: 'app.components.AddressBalance.balance',
     defaultMessage: 'balance',
   },
-  mili_bitcoin: {
-    id: 'app.components.AddressBalance.mili_bitcoin',
+  btc: {
+    id: 'app.components.AddressBalance.btc',
+    defaultMessage: 'BTC',
+  },
+  mbtc: {
+    id: 'app.components.AddressBalance.mbtc',
     defaultMessage: 'mBTC',
+  },
+  sat: {
+    id: 'app.components.AddressBalance.sat',
+    defaultMessage: 'Sat',
   },
 });
