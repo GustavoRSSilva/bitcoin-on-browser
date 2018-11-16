@@ -1,11 +1,15 @@
 import { SAT, MBTC, BTC } from './constants';
 
-// reduces the value to a smaller unit
+/*
+ *  @dev converts an amount in satoshis to be displayed in the screen
+ *  @returns - amount {string} - the amount
+ *  @returns - unit {string} - the right unit
+ * */
 export const transSatToUnit = (amountInSat = 0) => {
   let amount = parseFloat(amountInSat);
   let unit = SAT;
   if (amount < 1000) {
-    return { amount, unit };
+    return { amount: `${amount}`, unit };
   } else if (amount / 10 ** 5 < 1000) {
     amount /= 10 ** 5;
     unit = MBTC;
@@ -19,7 +23,9 @@ export const transSatToUnit = (amountInSat = 0) => {
   return { amount, unit };
 };
 
-//  convert satoshi to a unit from BTC or MBTC.
+/*
+*  @dev convert satoshi to a unit from BTC or MBTC.
+ * */
 export const convertSatsToUnit = (amountInSat = 0, unit) => {
   if (!amountInSat || !unit) {
     return 0;
@@ -28,10 +34,10 @@ export const convertSatsToUnit = (amountInSat = 0, unit) => {
   let val = amountInSat;
   switch (unit) {
     case BTC:
-      val /= 10 ** 3;
+      val /= 10 ** 8;
       break;
     case MBTC:
-      val /= 10 ** 8;
+      val /= 10 ** 5;
       break;
     case SAT:
     default:
