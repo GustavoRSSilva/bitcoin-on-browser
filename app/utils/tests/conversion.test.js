@@ -1,5 +1,5 @@
 /**
- * Test injectors
+ * Test conversion
  */
 
 import {
@@ -20,24 +20,21 @@ describe('conversion', () => {
     const valueInSat = 10;
     const expectedValue = { amount: '10', unit: SAT };
     const result = transSatToUnit(valueInSat);
-    expect(result.amount).toBe(expectedValue.amount);
-    expect(result.unit).toBe(expectedValue.unit);
+    expect(result).toMatchObject(expectedValue);
   });
 
   it('should correctly transform 989872 satoshis into amount and unit', () => {
     const valueInSat = 989872;
     const expectedValue = { amount: '9.8987', unit: MBTC };
     const result = transSatToUnit(valueInSat);
-    expect(result.amount).toBe(expectedValue.amount);
-    expect(result.unit).toBe(expectedValue.unit);
+    expect(result).toMatchObject(expectedValue);
   });
 
   it('should correctly transform 265342553 satoshis into amount and unit', () => {
     const valueInSat = 265342553;
     const expectedValue = { amount: '2.6534', unit: BTC };
     const result = transSatToUnit(valueInSat);
-    expect(result.amount).toBe(expectedValue.amount);
-    expect(result.unit).toBe(expectedValue.unit);
+    expect(result).toMatchObject(expectedValue);
   });
 
   it('should correctly convert 5643.20 USD/BTC into USD/MBTC and USD/SAT', () => {
