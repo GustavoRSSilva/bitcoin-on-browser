@@ -9,11 +9,9 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import { BLOCKSTREAM_URL } from 'utils/constants';
-// import {
-//   transSatToUnit,
-//   convertSatsToUnit,
-//   convertFiatBtcToFiatUnit,
-// } from 'utils/conversion';
+import { transSatToUnit, getFiatAmount } from 'utils/conversion';
+
+import { calculateTransactionAddressRecieved } from 'utils/transaction';
 
 import { Transaction as Wrapper, Fragment, TransId, Confirmed } from './styles';
 
@@ -25,9 +23,11 @@ function Transaction(props) {
   const txId = transaction.txid;
   const minTxId = `${txId.slice(0, 9)}...${txId.slice(-9)}`;
   const rateFloat = btcToFiat ? btcToFiat.rate_float : 0;
-  // TODO: calculate the amount I make or loss in this transaction
-  // const { amount, unit } = transSatToUnit();
-  // const valueFiat = convertFiatBtcToFiatUnit(rateFloat, unit);
+
+  const { amount, unit } = transSatToUnit(
+    calculateTransactionAddressRecieved(transaction, address),
+  );
+  const valueFiat = getFiatAmount(amount, rateFloat, unit);
 
   return (
     <Wrapper title={txId}>
@@ -43,8 +43,11 @@ function Transaction(props) {
           </Confirmed>
         </Fragment>
         <Fragment width="40%">
-          {address}
-          {rateFloat}
+          <span>
+            {amount} {unit}
+          </span>
+          <br />
+          <span>{valueFiat} USD</span>
         </Fragment>
       </a>
     </Wrapper>

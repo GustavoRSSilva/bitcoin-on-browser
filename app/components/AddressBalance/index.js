@@ -11,7 +11,7 @@ import { USD } from 'utils/constants';
 import {
   transSatToUnit,
   convertSatsToUnit,
-  convertFiatBtcToFiatUnit,
+  getFiatAmount,
 } from 'utils/conversion';
 
 import { FormattedMessage } from 'react-intl';
@@ -29,8 +29,7 @@ function AddressBalance(props) {
   const mempoolBalanceMBTC = convertSatsToUnit(balance.mempool_balance, unit);
 
   const fiatCur = USD;
-  const value = convertFiatBtcToFiatUnit(btcToFiat.rate_float, unit);
-  const fiatAmount = (totalBalance * value).toFixed(2);
+  const fiatAmount = getFiatAmount(totalBalance, btcToFiat.rate_float, unit);
 
   const delta = mempoolBalanceMBTC > 0;
   const balanceHTML = mempoolBalanceMBTC ? (

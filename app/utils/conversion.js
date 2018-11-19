@@ -7,10 +7,14 @@ import { SAT, MBTC, BTC } from './constants';
  * */
 export const transSatToUnit = (amountInSat = 0) => {
   let amount = parseFloat(amountInSat);
+
+  // Convert the amount to absolute to avoid negative numbers
+  const amountABS = Math.abs(amount);
+
   let unit = SAT;
-  if (amount < 1000) {
+  if (amountABS < 1000) {
     return { amount: `${amount}`, unit };
-  } else if (amount / 10 ** 5 < 1000) {
+  } else if (amountABS / 10 ** 5 < 1000) {
     amount /= 10 ** 5;
     unit = MBTC;
   } else {
@@ -23,9 +27,9 @@ export const transSatToUnit = (amountInSat = 0) => {
   return { amount, unit };
 };
 
-/*
-*  @dev convert satoshi to a unit from BTC or MBTC.
- * */
+/**
+ *  @dev convert satoshi to a unit from BTC or MBTC.
+ */
 export const convertSatsToUnit = (amountInSat = 0, unit) => {
   if (!amountInSat || !unit) {
     return 0;
@@ -49,7 +53,9 @@ export const convertSatsToUnit = (amountInSat = 0, unit) => {
   return val;
 };
 
-//  @params - value {float|int} value in btc
+/**
+ *  @params - value {float|int} value in btc
+ */
 export const convertFiatBtcToFiatUnit = (value, unit) => {
   let val = value;
   switch (unit) {
@@ -64,4 +70,9 @@ export const convertFiatBtcToFiatUnit = (value, unit) => {
       break;
   }
   return val;
+};
+
+export const getFiatAmount = (amount, fiatToBtc, unit) => {
+  const valueInFiat = amount * convertFiatBtcToFiatUnit(fiatToBtc, unit);
+  return valueInFiat.toFixed(2);
 };

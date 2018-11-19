@@ -10,4 +10,5 @@ export const ivory = '#fffff0';
 export const primaryButton = 'rgba(30, 144, 255, 0.5)';
 export const primaryButtonHover = 'rgba(30, 144, 255, 0.65)';
 export const grey = '#CCCCCC';
+export const steelGrey = '#43464B';
 export const lightBlue = '#00CAFF';

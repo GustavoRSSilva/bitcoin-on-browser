@@ -30,6 +30,13 @@ describe('conversion', () => {
     expect(result).toMatchObject(expectedValue);
   });
 
+  it('should correctly transform -1119872 satoshis into amount and unit', () => {
+    const valueInSat = -1119872;
+    const expectedValue = { amount: '-11.1987', unit: MBTC };
+    const result = transSatToUnit(valueInSat);
+    expect(result).toMatchObject(expectedValue);
+  });
+
   it('should correctly transform 265342553 satoshis into amount and unit', () => {
     const valueInSat = 265342553;
     const expectedValue = { amount: '2.6534', unit: BTC };
