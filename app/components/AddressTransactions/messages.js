@@ -9,7 +9,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.components.AddressTransactions.header',
-    defaultMessage: 'Transactions:',
+    defaultMessage: 'Transactions',
   },
   transaction_title: {
     id: 'app.components.AddressTransactions.transaction_title',
