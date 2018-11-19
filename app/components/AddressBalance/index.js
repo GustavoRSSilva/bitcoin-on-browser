@@ -26,29 +26,26 @@ function AddressBalance(props) {
   }
 
   const { unit } = transSatToUnit(balance.total_received);
-  const mempoolBalanceMBTC = convertSatsToUnit(balance.mempool_balance, unit);
-  const confirmedBalanceMBTC = convertSatsToUnit(
-    balance.confirmed_balance,
-    unit,
-  );
+  const mempoolBalance = convertSatsToUnit(balance.mempool_balance, unit);
+  const confirmedBalance = convertSatsToUnit(balance.confirmed_balance, unit);
 
   const fiatCur = USD;
   const fiatAmount = getFiatAmount(
-    confirmedBalanceMBTC,
+    confirmedBalance,
     btcToFiat.rate_float,
     unit,
   );
 
-  const delta = mempoolBalanceMBTC > 0;
-  const balanceHTML = mempoolBalanceMBTC ? (
+  const delta = mempoolBalance > 0;
+  const balanceHTML = mempoolBalance ? (
     <span>
-      {confirmedBalanceMBTC}{' '}
+      {confirmedBalance}{' '}
       <Delta delta={delta}>
-        {delta ? '+' : '-'} {Math.abs(mempoolBalanceMBTC)}
+        {delta ? '+' : '-'} {Math.abs(mempoolBalance)}
       </Delta>
     </span>
   ) : (
-    <span>{confirmedBalanceMBTC}</span>
+    <span>{confirmedBalance}</span>
   );
 
   return (
