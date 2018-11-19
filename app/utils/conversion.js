@@ -1,5 +1,8 @@
 import { SAT, MBTC, BTC } from './constants';
 
+export const toFixed = (amount = 0, places) =>
+  parseFloat(amount.toFixed(places));
+
 /*
  *  @dev converts an amount in satoshis to be displayed in the screen
  *  @returns - amount {string} - the amount
@@ -13,7 +16,7 @@ export const transSatToUnit = (amountInSat = 0) => {
 
   let unit = SAT;
   if (amountABS < 1000) {
-    return { amount: `${amount}`, unit };
+    return { amount, unit };
   } else if (amountABS / 10 ** 5 < 1000) {
     amount /= 10 ** 5;
     unit = MBTC;
@@ -22,7 +25,7 @@ export const transSatToUnit = (amountInSat = 0) => {
     unit = BTC;
   }
 
-  amount = amount.toFixed(4);
+  amount = toFixed(amount, 4);
 
   return { amount, unit };
 };
@@ -48,7 +51,7 @@ export const convertSatsToUnit = (amountInSat = 0, unit) => {
       break;
   }
 
-  val = val.toFixed(4);
+  val = toFixed(val, 4);
 
   return val;
 };
@@ -74,5 +77,5 @@ export const convertFiatBtcToFiatUnit = (value, unit) => {
 
 export const getFiatAmount = (amount, fiatToBtc, unit) => {
   const valueInFiat = amount * convertFiatBtcToFiatUnit(fiatToBtc, unit);
-  return valueInFiat.toFixed(2);
+  return toFixed(valueInFiat, 2);
 };

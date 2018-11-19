@@ -13,9 +13,10 @@ export const Transaction = styled.div`
   height: 80px;
   padding: 0 20px;
   background-color: ${steelGrey};
+  border: 1px solid ${grey};
   border-radius: 5px;
   margin: 5px 3px;
-  padding: 10px 0;
+  padding: 10px 17px;
 
   margin-top: 10px;
   color: ${grey};

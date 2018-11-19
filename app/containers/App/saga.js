@@ -174,7 +174,7 @@ function* callGetActiveAddress() {
     if (true) {
       // TODO: just for test, remove this after
       //  remove this bofore merging
-      const addressAux = '32mqB1XgtDRSF8tZS8iYzD5u1xGBS2XFkv';
+      const addressAux = '1Nkz35kczGaH53962uAtFfREtKQjBYhNyk';
       yield put(fetchAddressBalance(addressAux));
       yield put(fetchAddressTransactions(addressAux));
       yield put(fetchActiveAddressSuccessful(addressAux));
