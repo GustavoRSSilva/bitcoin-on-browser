@@ -25,22 +25,30 @@ function AddressBalance(props) {
     return null;
   }
 
-  const { amount: totalBalance, unit } = transSatToUnit(balance.total_received);
+  const { unit } = transSatToUnit(balance.total_received);
   const mempoolBalanceMBTC = convertSatsToUnit(balance.mempool_balance, unit);
+  const confirmedBalanceMBTC = convertSatsToUnit(
+    balance.confirmed_balance,
+    unit,
+  );
 
   const fiatCur = USD;
-  const fiatAmount = getFiatAmount(totalBalance, btcToFiat.rate_float, unit);
+  const fiatAmount = getFiatAmount(
+    confirmedBalanceMBTC,
+    btcToFiat.rate_float,
+    unit,
+  );
 
   const delta = mempoolBalanceMBTC > 0;
   const balanceHTML = mempoolBalanceMBTC ? (
     <span>
-      {totalBalance}{' '}
+      {confirmedBalanceMBTC}{' '}
       <Delta delta={delta}>
         {delta ? '+' : '-'} {Math.abs(mempoolBalanceMBTC)}
       </Delta>
     </span>
   ) : (
-    <span>{totalBalance}</span>
+    <span>{confirmedBalanceMBTC}</span>
   );
 
   return (
