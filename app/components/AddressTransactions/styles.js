@@ -1,17 +1,31 @@
 import styled from 'styled-components';
-import { grey, lightGreen, yellow, ivory } from 'styles/colors';
+import {
+  grey,
+  steelGrey,
+  lightGreen,
+  yellow,
+  ivory,
+  lightBlue,
+} from 'styles/colors';
 import { extraSmall } from 'styles/fontSize';
 
 export const Title = styled.div`
-  color: ${grey};
+  margin-top: 40px;
+  color: ${lightBlue};
   width: 100%;
   padding: 0 20px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
 `;
 
 export const Transaction = styled.div`
-  width: 100%;
-  height: 60px;
-  padding: 0 20px;
+  width: calc(100% - 6px);
+  height: 80px;
+  background-color: ${steelGrey};
+  border: 1px solid ${grey};
+  border-radius: 5px;
+  margin: 5px 3px;
 
   margin-top: 10px;
   color: ${grey};
@@ -21,6 +35,13 @@ export const Transaction = styled.div`
     height: 100%;
     display: flex;
     flex-direction: columns;
+    padding: 10px 17px;
+  }
+
+  &:hover {
+    cursos: pointer;
+    border: 1px solid ${lightBlue};
+    color: ${lightBlue};
   }
 `;
 

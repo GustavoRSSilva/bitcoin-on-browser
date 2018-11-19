@@ -1,4 +1,4 @@
-# React Boilerplate
+# Bitcoin on browser
 
 Before opening a new issue, please take a moment to review our [**community guidelines**](https://github.com/react-boilerplate/react-boilerplate/blob/master/.github/CONTRIBUTING.md) to make the contribution process easy and effective for everyone involved.
 
@@ -9,12 +9,12 @@ For questions related to the boilerplate itself, you can also find answers on ou
 https://gitter.im/mxstbr/react-boilerplate
 
 **Before opening a new issue, you may find an answer in already closed issues**:
-https://github.com/react-boilerplate/react-boilerplate/issues?q=is%3Aissue+is%3Aclosed
+https://github.com/GustavoRSSilva/bitcoin-on-browser/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed
 
 ## Issue Type
 
-- [ ] Bug (https://github.com/react-boilerplate/react-boilerplate/blob/master/.github/CONTRIBUTING.md#bug-reports)
-- [ ] Feature (https://github.com/react-boilerplate/react-boilerplate/blob/master/.github/CONTRIBUTING.md#feature-requests)
+- [ ] Bug (https://github.com/GustavoRSSilva/bitcoin-on-browser/blob/master/.github/CONTRIBUTING.md#bug-reports)
+- [ ] Feature (https://github.com/GustavoRSSilva/bitcoin-on-browser/blob/master/.github/CONTRIBUTING.md#feature-requests)
 
 ## Description
 

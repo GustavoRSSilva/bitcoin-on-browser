@@ -16,6 +16,10 @@ import { Title } from './styles';
 function AddressTransactions(props) {
   const { transactions, btcToFiat, address } = props;
 
+  if (!transactions.length) {
+    return null;
+  }
+
   return (
     <div>
       <Title>
