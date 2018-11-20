@@ -13,7 +13,13 @@ import { transSatToUnit, getFiatAmount } from 'utils/conversion';
 
 import { calculateTransactionAddressRecieved } from 'utils/transaction';
 
-import { Transaction as Wrapper, Fragment, TransId, Confirmed } from './styles';
+import {
+  Transaction as Wrapper,
+  Fragment,
+  TransId,
+  Confirmed,
+  Amount,
+} from './styles';
 
 import messages from './messages';
 
@@ -49,11 +55,10 @@ function Transaction(props) {
           </Confirmed>
         </Fragment>
         <Fragment width="40%">
-          <span>
+          <Amount>
             {amount} {unit}
-          </span>
-          <br />
-          <span>{valueFiat} USD</span>
+          </Amount>
+          <Amount>{valueFiat} USD</Amount>
         </Fragment>
       </a>
     </Wrapper>
