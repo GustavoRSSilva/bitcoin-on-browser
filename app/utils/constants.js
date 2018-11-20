@@ -21,3 +21,6 @@ export const BLOCKSTREAM_URL = 'https://blockstream.info/';
 
 export const MAINNET = 'bitcoin';
 export const TESTNET = 'testnet';
+
+//  Default selected network
+export const DEFAULT_SELECTED_NETWORK = TESTNET;
