@@ -59,7 +59,9 @@ export const Fragment = styled.div`
   overflow: hidden;
 `;
 
-export const TransId = styled.span;
+export const TransId = styled.span`
+    width; 100%;
+`;
 
 export const Confirmed = styled.div`
   font-size: ${extraSmall};
@@ -80,4 +82,9 @@ export const Confirmed = styled.div`
     }
     return `background-color: ${yellow}`;
   }};
+`;
+
+export const Amount = styled.div`
+  width: 100%;
+  text-align: center;
 `;

@@ -13,7 +13,12 @@ import messages from './messages';
 import Transaction from './Transaction';
 import { Title, NoTransactions } from './styles';
 
-const renderTransactions = (transactions = [], btcToFiat, address) => {
+const renderTransactions = (
+  transactions = [],
+  btcToFiat,
+  address,
+  networkId,
+) => {
   if (!transactions.length) {
     return (
       <NoTransactions>
@@ -28,24 +33,26 @@ const renderTransactions = (transactions = [], btcToFiat, address) => {
       transaction={transaction}
       btcToFiat={btcToFiat}
       address={address}
+      networkId={networkId}
     />
   ));
 };
 
 function AddressTransactions(props) {
-  const { transactions, btcToFiat, address } = props;
+  const { transactions, btcToFiat, address, networkId } = props;
 
   return (
     <div>
       <Title>
         <FormattedMessage {...messages.header} />
       </Title>
-      {renderTransactions(transactions, btcToFiat, address)}
+      {renderTransactions(transactions, btcToFiat, address, networkId)}
     </div>
   );
 }
 
 AddressTransactions.propTypes = {
+  networkId: PropTypes.string.isRequired,
   transactions: PropTypes.array.isRequired,
   btcToFiat: PropTypes.object,
   address: PropTypes.string,

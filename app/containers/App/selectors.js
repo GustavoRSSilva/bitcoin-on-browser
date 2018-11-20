@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 import {
+  NETWORK_ID,
   SESSION_VALID_STATE,
   USER_CREATED_STATE,
   ACTIVE_ADDRESS_FETCH_STATE,
@@ -19,6 +20,9 @@ const selectAppDomain = state => state.get('app', initialState);
 /**
  * Other specific selectors
  */
+
+const selectNetworkId = () =>
+  createSelector(selectAppDomain, subState => subState.get(NETWORK_ID));
 
 const selectUserCreatedState = () =>
   createSelector(selectAppDomain, subState => subState.get(USER_CREATED_STATE));
@@ -60,6 +64,7 @@ const makeSelectApp = () =>
 
 export default makeSelectApp;
 export {
+  selectNetworkId,
   selectAppDomain,
   selectSessionValidState,
   selectUserCreatedState,

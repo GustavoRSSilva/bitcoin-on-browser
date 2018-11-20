@@ -12,11 +12,15 @@ export default defineMessages({
     defaultMessage: 'This is the AddressTitle component !',
   },
   active_address: {
-    id: 'app.containers.HomePage.active_address',
+    id: 'app.containers.AddressTitle.active_address',
     defaultMessage: 'Active address:',
   },
   copy_to_clipboard: {
-    id: 'app.containers.HomePage.copy_to_clipboard',
+    id: 'app.containers.AddressTitle.copy_to_clipboard',
     defaultMessage: 'Copy to clipboard',
+  },
+  active_network: {
+    id: 'app.containers.AddressTitle.active_network',
+    defaultMessage: 'Active network:',
   },
 });

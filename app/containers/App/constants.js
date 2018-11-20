@@ -16,6 +16,9 @@ export const MNEMONIC = 'p';
 export const ACTIVE_ADDRESS = 'ad';
 export const USER_ADDRESSES = 'uer';
 
+export const NETWORK_ID = 'network_id';
+export const CHANGE_NETWORK_ID = `${path}CHANGE_NETWORK_ID`;
+
 export const USER_CREATED_STATE = 'user_created_state';
 export const FETCH_USER_CREATED = `${path}FETCH_USER_CREATED`;
 export const FETCH_USER_CREATED_REJECTED = `${path}FETCH_USER_CREATED_REJECTED`;
