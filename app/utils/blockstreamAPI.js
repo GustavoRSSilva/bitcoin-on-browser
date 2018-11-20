@@ -1,9 +1,12 @@
 import axios from 'axios';
 
-import { BLOCKSTREAM_API_URL } from './constants';
+import { BLOCKSTREAM_URL, MAINNET, TESTNET } from './constants';
 
-export const getAddressBalance = address =>
-  axios.get(`${BLOCKSTREAM_API_URL}address/${address}`);
+const getBlockstreamApiUrl = networkId =>
+  `${BLOCKSTREAM_URL}${networkId === TESTNET ? 'testnet/' : ''}api/`;
 
-export const getAddressTransactions = address =>
-  axios.get(`${BLOCKSTREAM_API_URL}address/${address}/txs`);
+export const getAddressBalance = (address, networkId = MAINNET) =>
+  axios.get(`${getBlockstreamApiUrl(networkId)}address/${address}`);
+
+export const getAddressTransactions = (address, networkId = MAINNET) =>
+  axios.get(`${getBlockstreamApiUrl(networkId)}address/${address}/txs`);
