@@ -27,7 +27,6 @@ function* callSaveMnemonic(action) {
     const selectedNetwork = yield select(selectNetworkId());
     const address = getAddressFromMnemonic(mnemonic, 0, selectedNetwork);
     yield put(saveAddress(address));
-
     yield put(fetchActiveAddress());
 
     yield put(saveMnemonicSuccessful(!!mnemonic));

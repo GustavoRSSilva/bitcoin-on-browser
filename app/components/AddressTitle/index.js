@@ -10,23 +10,38 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { Wrapper, AddressFragment, NetworkFragment } from './styles';
+import { AVAILABLE_NETWORKS } from 'utils/constants';
+import {
+  Wrapper,
+  AddressFragment,
+  NetworkFragment,
+  SelectFragment,
+} from './styles';
 
 import messages from './messages';
 
 function AddressTitle(props) {
-  const { address, networkId } = props;
+  const { address, networkId, handleChangeNetwork } = props;
 
   if (!address) {
     return null;
   }
 
   const { formatMessage } = props.intl;
+
   return (
     <Wrapper>
       <NetworkFragment>
         <FormattedMessage {...messages.active_network} />
-        <span>{networkId}</span>
+        <SelectFragment>
+          <select value={networkId} onChange={handleChangeNetwork}>
+            {AVAILABLE_NETWORKS.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </SelectFragment>
       </NetworkFragment>
       <CopyToClipboard text={address}>
         <AddressFragment title={formatMessage(messages.copy_to_clipboard)}>
@@ -42,6 +57,7 @@ AddressTitle.propTypes = {
   intl: intlShape.isRequired,
   address: PropTypes.string,
   networkId: PropTypes.string.isRequired,
+  handleChangeNetwork: PropTypes.func.isRequired,
 };
 
 export default injectIntl(AddressTitle);
