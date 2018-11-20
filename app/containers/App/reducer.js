@@ -5,7 +5,12 @@
  */
 
 import { fromJS } from 'immutable';
+
+import { DEFAULT_SELECTED_NETWORK } from 'utils/constants';
+
 import {
+  NETWORK_ID,
+  CHANGE_NETWORK_ID,
   USER_CREATED_STATE,
   FETCH_USER_CREATED,
   FETCH_USER_CREATED_REJECTED,
@@ -50,10 +55,14 @@ export const initialState = fromJS({
   [ADDRESS_BALANCE_FETCH_STATE]: setState(),
   [BTC_TO_FIAT_FETCH_STATE]: setState(),
   [ADDRESS_TRANSACTIONS_FETCH_STATE]: setState(),
+  [NETWORK_ID]: DEFAULT_SELECTED_NETWORK,
 });
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
+    case CHANGE_NETWORK_ID:
+      return state.set(NETWORK_ID, action.payload);
+
     case FETCH_USER_CREATED:
       return state.set(USER_CREATED_STATE, setState(true));
 

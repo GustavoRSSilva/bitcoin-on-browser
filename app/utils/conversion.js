@@ -1,4 +1,4 @@
-import { SAT, MBTC, BTC } from './constants';
+import { SAT, MBTC, BTC, TESTNET } from './constants';
 
 export const toFixed = (amount = 0, places) =>
   parseFloat(amount.toFixed(places));
@@ -75,7 +75,12 @@ export const convertFiatBtcToFiatUnit = (value, unit) => {
   return val;
 };
 
-export const getFiatAmount = (amount, fiatToBtc, unit) => {
+export const getFiatAmount = (amount, fiatToBtc, unit, networkId) => {
+  //  Testnet BTC has no value
+  if (networkId === TESTNET) {
+    return 0;
+  }
+
   const valueInFiat = amount * convertFiatBtcToFiatUnit(fiatToBtc, unit);
   return toFixed(valueInFiat, 2);
 };

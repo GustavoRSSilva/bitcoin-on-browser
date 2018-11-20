@@ -18,4 +18,9 @@ export const COINDESK_CURRENT_PRICE_URL =
   'https://api.coindesk.com/v1/bpi/currentprice.json';
 
 export const BLOCKSTREAM_URL = 'https://blockstream.info/';
-export const BLOCKSTREAM_API_URL = `${BLOCKSTREAM_URL}api/`;
+
+export const MAINNET = 'bitcoin';
+export const TESTNET = 'testnet';
+
+//  Default selected network
+export const DEFAULT_SELECTED_NETWORK = TESTNET;

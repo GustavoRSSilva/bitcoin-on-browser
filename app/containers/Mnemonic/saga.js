@@ -1,9 +1,10 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, select } from 'redux-saga/effects';
 
 import { generateMnemonic, getAddressFromMnemonic } from 'utils/bitcoin';
 
 import { saveMnemonic, getMnemonic } from 'containers/App/saga';
 import { fetchActiveAddress, saveAddress } from 'containers/App/actions';
+import { selectNetworkId } from 'containers/App/selectors';
 
 import { GENERATE_NEW_MNEMONIC, SAVE_MNEMONIC } from './constants';
 import {
@@ -23,7 +24,8 @@ function* callSaveMnemonic(action) {
   try {
     yield call(saveMnemonic, action.payload);
     const mnemonic = yield getMnemonic();
-    const address = getAddressFromMnemonic(mnemonic);
+    const selectedNetwork = yield select(selectNetworkId());
+    const address = getAddressFromMnemonic(mnemonic, 0, selectedNetwork);
     yield put(saveAddress(address));
 
     yield put(fetchActiveAddress());

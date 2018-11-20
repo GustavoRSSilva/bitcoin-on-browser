@@ -14,6 +14,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
 import {
+  selectNetworkId,
   selectSessionValidState,
   selectUserCreatedState,
   selectActiveAddressFetchState,
@@ -102,6 +103,7 @@ export class HomePage extends React.Component {
       addressBalanceFetchState,
       btcToFiatFetchState,
       addressTransactionsFetchState,
+      networkId,
     } = this.props;
 
     const activeAddress = activeAddressFetchState.data;
@@ -117,12 +119,17 @@ export class HomePage extends React.Component {
 
     return (
       <div>
-        <AddressTitle address={activeAddress} />
-        <AddressBalance balance={balance} btcToFiat={btcToFiat} />
+        <AddressTitle address={activeAddress} networkId={networkId} />
+        <AddressBalance
+          balance={balance}
+          btcToFiat={btcToFiat}
+          networkId={networkId}
+        />
         <AddressTransactions
           transactions={transactions}
           btcToFiat={btcToFiat}
           address={activeAddress}
+          networkId={networkId}
         />
       </div>
     );
@@ -130,6 +137,7 @@ export class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
+  networkId: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
   fetchUserCreated: PropTypes.func.isRequired,
   userCreatedState: PropTypes.object.isRequired,
@@ -143,6 +151,7 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  networkId: selectNetworkId(),
   userCreatedState: selectUserCreatedState(),
   sessionValidState: selectSessionValidState(),
   activeAddressFetchState: selectActiveAddressFetchState(),
