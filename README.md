@@ -16,10 +16,10 @@ The extension will works as a small RPC that will comunicate with a public node.
 3. cd /path/to/repository
 
 4. install packages  
-\``` npm i ```
+``` npm i ```
 
-5. build the project
-\``` npm run build ```
+5. build the project  
+``` npm run build ```
 
 6. go to chrome://extensions/
 
@@ -36,10 +36,10 @@ The extension will works as a small RPC that will comunicate with a public node.
 3. cd /path/to/repository
 
 4. install packages  
-\``` npm i ```
+``` npm i ```
 
-5. run the project
-\``` npm run start ```
+5. run the project  
+``` npm run start ```
 
 
 ## Roadmap
