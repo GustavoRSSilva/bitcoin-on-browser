@@ -11,28 +11,36 @@ import { FormattedMessage } from 'react-intl';
 
 import messages from './messages';
 import Transaction from './Transaction';
-import { Title } from './styles';
+import { Title, NoTransactions } from './styles';
+
+const renderTransactions = (transactions = [], btcToFiat, address) => {
+  if (!transactions.length) {
+    return (
+      <NoTransactions>
+        <FormattedMessage {...messages.no_transactions_found} />
+      </NoTransactions>
+    );
+  }
+
+  return transactions.map(transaction => (
+    <Transaction
+      key={transaction.txid}
+      transaction={transaction}
+      btcToFiat={btcToFiat}
+      address={address}
+    />
+  ));
+};
 
 function AddressTransactions(props) {
   const { transactions, btcToFiat, address } = props;
-
-  if (!transactions.length) {
-    return null;
-  }
 
   return (
     <div>
       <Title>
         <FormattedMessage {...messages.header} />
       </Title>
-      {transactions.map(transaction => (
-        <Transaction
-          key={transaction.txid}
-          transaction={transaction}
-          btcToFiat={btcToFiat}
-          address={address}
-        />
-      ))}
+      {renderTransactions(transactions, btcToFiat, address)}
     </div>
   );
 }

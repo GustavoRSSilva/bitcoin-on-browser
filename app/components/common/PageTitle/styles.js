@@ -8,5 +8,5 @@ export const Title = styled.div`
   font-size: ${extraLarge};
   color: ${white};
   text-transform: uppercase;
-  font.weight: bold;
+  font-weight: bold;
 `;
