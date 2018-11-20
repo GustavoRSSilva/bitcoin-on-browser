@@ -79,6 +79,6 @@ module.exports = require('./webpack.base.babel')({
 
   performance: {
     assetFilter: assetFilename =>
-      !/(\.map$)|(^(images\.|favicon\.))/.test(assetFilename),
+      !/(\.map$)|(^(main\.|favicon\.))/.test(assetFilename),
   },
 });
