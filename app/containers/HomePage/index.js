@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -118,7 +118,7 @@ export class HomePage extends React.Component {
     const transactions = addressTransactionsFetchState.data || [];
 
     return (
-      <div>
+      <Fragment>
         <AddressTitle address={activeAddress} networkId={networkId} />
         <AddressBalance
           balance={balance}
@@ -131,7 +131,7 @@ export class HomePage extends React.Component {
           address={activeAddress}
           networkId={networkId}
         />
-      </div>
+      </Fragment>
     );
   }
 }
