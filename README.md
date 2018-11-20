@@ -47,6 +47,7 @@ The extension will works as a small RPC that will comunicate with a public node.
 - Create or import new seed/account
 - New address
 - List address balance (done)
+- Receive and send funds
 - List address transactions (done)
 - WYLTCAC (Would you like to create a channel)
 - Create Channels
