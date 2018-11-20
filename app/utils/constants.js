@@ -19,3 +19,6 @@ export const COINDESK_CURRENT_PRICE_URL =
 
 export const BLOCKSTREAM_URL = 'https://blockstream.info/';
 export const BLOCKSTREAM_API_URL = `${BLOCKSTREAM_URL}api/`;
+
+export const MAINNET = 'bitcoin';
+export const TESTNET = 'testnet';
