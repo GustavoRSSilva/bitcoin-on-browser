@@ -39,7 +39,7 @@ export const Transaction = styled.div`
   }
 
   &:hover {
-    cursos: pointer;
+    cursor: pointer;
     border: 1px solid ${lightBlue};
     color: ${lightBlue};
   }
@@ -50,19 +50,18 @@ export const Fragment = styled.div`
   overflow: hidden;
 `;
 
-export const TransId = styled.span``;
+export const TransId = styled.span;
 
 export const Confirmed = styled.div`
   font-size: ${extraSmall};
   text-transform: uppercase;
-  letter-spacing: 1px;
   border-radius: 5px;
   height: 22px;
   line-height: 22px;
   text-align: center;
   color: ${ivory};
   font-weight: bold;
-  letter-space: 1px;
+  letter-spacing: 1px;
   width: 50%;
   margin: 10px 25%;
 
