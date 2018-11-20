@@ -7,7 +7,7 @@ import {
   ivory,
   lightBlue,
 } from 'styles/colors';
-import { extraSmall } from 'styles/fontSize';
+import { extraSmall, large } from 'styles/fontSize';
 
 export const Title = styled.div`
   margin-top: 40px;
@@ -17,6 +17,15 @@ export const Title = styled.div`
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
+`;
+
+export const NoTransactions = styled.div`
+  width: 100%;
+  text-align: center;
+  font-size: ${large};
+  color: ${grey};
+  font-weight: bold;
+  margin-top: 10px;
 `;
 
 export const Transaction = styled.div`

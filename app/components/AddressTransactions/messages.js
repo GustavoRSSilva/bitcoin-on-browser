@@ -23,4 +23,8 @@ export default defineMessages({
     id: 'app.components.AddressTransactions.pending',
     defaultMessage: 'pending',
   },
+  no_transactions_found: {
+    id: 'app.components.AddressTransactions.no_transactions_found',
+    defaultMessage: 'No transactions found!',
+  },
 });
