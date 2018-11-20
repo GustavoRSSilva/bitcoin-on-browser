@@ -33,13 +33,12 @@ function Transaction(props) {
   const { confirmed = false } = transaction.status;
   const txId = transaction.txid;
   const minTxId = `${txId.slice(0, 9)}...${txId.slice(-9)}`;
-  const rateFloat =
-    btcToFiat && networkId === MAINNET ? btcToFiat.rate_float : 0;
+  const rateFloat = btcToFiat ? btcToFiat.rate_float : 0;
 
   const { amount, unit } = transSatToUnit(
     calculateTransactionAddressRecieved(transaction, address),
   );
-  const valueFiat = getFiatAmount(amount, rateFloat, unit);
+  const valueFiat = getFiatAmount(amount, rateFloat, unit, networkId);
 
   return (
     <Wrapper title={txId}>

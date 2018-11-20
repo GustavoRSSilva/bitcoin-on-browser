@@ -20,7 +20,7 @@ import messages from './messages';
 import { Wrapper, Title, Balance, Delta, BalanceFiat } from './styles';
 
 function AddressBalance(props) {
-  const { balance, btcToFiat } = props;
+  const { balance, btcToFiat, networkId } = props;
   if (!balance || !btcToFiat) {
     return null;
   }
@@ -34,6 +34,7 @@ function AddressBalance(props) {
     confirmedBalance,
     btcToFiat.rate_float,
     unit,
+    networkId,
   );
 
   const delta = mempoolBalance > 0;
@@ -66,6 +67,7 @@ function AddressBalance(props) {
 AddressBalance.propTypes = {
   balance: PropTypes.object,
   btcToFiat: PropTypes.object,
+  networkId: PropTypes.string.isRequired,
 };
 
 export default AddressBalance;

@@ -120,7 +120,11 @@ export class HomePage extends React.Component {
     return (
       <div>
         <AddressTitle address={activeAddress} networkId={networkId} />
-        <AddressBalance balance={balance} btcToFiat={btcToFiat} />
+        <AddressBalance
+          balance={balance}
+          btcToFiat={btcToFiat}
+          networkId={networkId}
+        />
         <AddressTransactions
           transactions={transactions}
           btcToFiat={btcToFiat}
