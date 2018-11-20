@@ -10,12 +10,12 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { Wrapper, AddressFragment } from './styles';
+import { Wrapper, AddressFragment, NetworkFragment } from './styles';
 
 import messages from './messages';
 
 function AddressTitle(props) {
-  const { address } = props;
+  const { address, networkId } = props;
 
   if (!address) {
     return null;
@@ -24,6 +24,10 @@ function AddressTitle(props) {
   const { formatMessage } = props.intl;
   return (
     <Wrapper>
+      <NetworkFragment>
+        <FormattedMessage {...messages.active_network} />
+        <span>{networkId}</span>
+      </NetworkFragment>
       <CopyToClipboard text={address}>
         <AddressFragment title={formatMessage(messages.copy_to_clipboard)}>
           <FormattedMessage {...messages.active_address} />
@@ -37,6 +41,7 @@ function AddressTitle(props) {
 AddressTitle.propTypes = {
   intl: intlShape.isRequired,
   address: PropTypes.string,
+  networkId: PropTypes.string.isRequired,
 };
 
 export default injectIntl(AddressTitle);
