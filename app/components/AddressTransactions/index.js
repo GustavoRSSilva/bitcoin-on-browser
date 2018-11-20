@@ -17,7 +17,7 @@ function AddressTransactions(props) {
   const { transactions, btcToFiat, address } = props;
 
   if (!transactions.length) {
-    return null;
+    return <span>No transactions found!</span>;
   }
 
   return (
