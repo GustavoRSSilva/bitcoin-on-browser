@@ -20,6 +20,7 @@ import {
   convertAmountUnitToBtc,
 } from 'utils/conversion';
 
+import BackArrow from 'components/common/BackArrow';
 import QRCode from 'components/common/QRCode';
 import appMessages from 'containers/App/messages';
 
@@ -97,8 +98,7 @@ export class Receive extends React.Component {
   }
 
   renderBackArrow() {
-    //  Todo add back arrow
-    return null;
+    return <BackArrow to="/" target="homepage" />;
   }
 
   renderReceiveForm() {
