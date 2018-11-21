@@ -15,6 +15,7 @@ import {
   AMOUNT_FIAT,
   UNIT_FIAT,
   SET_FORM_VALUES,
+  RESET_FORM_VALUES,
 } from './constants';
 
 const setDefaultFormValues = () => ({
@@ -25,13 +26,16 @@ const setDefaultFormValues = () => ({
 });
 
 export const initialState = fromJS({
-  [FORM_VALUES]: setDefaultFormValues(),
+  [FORM_VALUES]: { ...setDefaultFormValues() },
 });
 
 function receiveReducer(state = initialState, action) {
   switch (action.type) {
     case SET_FORM_VALUES:
-      return state.set(FORM_VALUES, action.payload);
+      return state.set(FORM_VALUES, { ...action.payload });
+
+    case RESET_FORM_VALUES:
+      return state.set(FORM_VALUES, setDefaultFormValues());
 
     default:
       return state;

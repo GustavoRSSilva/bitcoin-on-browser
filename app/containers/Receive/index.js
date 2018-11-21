@@ -25,7 +25,6 @@ import {
   selectActiveAddressFetchState,
   selectNetworkId,
   selectBtcToFiatFetchState,
-  selectFormValues,
 } from 'containers/App/selectors';
 
 import {
@@ -34,6 +33,7 @@ import {
   AMOUNT_FIAT,
   UNIT_FIAT,
 } from './constants';
+import { selectFormValues } from './selectors';
 import * as actions from './actions';
 import reducer from './reducer';
 // import messages from './messages';
@@ -41,8 +41,8 @@ import reducer from './reducer';
 /* eslint-disable react/prefer-stateless-function */
 export class Receive extends React.Component {
   componentWillMount() {
-    const { fetchActiveAddress } = this.props;
-
+    const { fetchActiveAddress, resetFormValues } = this.props;
+    resetFormValues();
     fetchActiveAddress();
   }
 
@@ -52,15 +52,20 @@ export class Receive extends React.Component {
    *       On TESTNET (bitcoin testnet) the amount in fiat is always zero
    */
   handleChangeAmount(evt, target) {
-    evt.preventDefault();
+    //  thw value needs to pass the regex
+    if (evt.target.value && !evt.target.validity.valid) {
+      return null;
+    }
 
-    const { value } = evt.target;
+    const value = parseFloat(evt.target.value) || 0;
     const {
       receiveFormValues,
-      setFormValue,
+      setFormValues,
       btcToFiatFetchState,
       networkId,
     } = this.props;
+
+    const formValues = receiveFormValues;
 
     // TODO: set this value to the future be either USD, Eur, GBP, etc.
     //  As for now it is only available in USD.
@@ -71,24 +76,23 @@ export class Receive extends React.Component {
     const unitCrypto = receiveFormValues[UNIT_CRYPTO];
 
     if (target === AMOUNT_CRYPTO) {
-      receiveFormValues[AMOUNT_CRYPTO] = value;
-      receiveFormValues[AMOUNT_FIAT] = getFiatAmountFromCrypto(
+      formValues[AMOUNT_CRYPTO] = value;
+      formValues[AMOUNT_FIAT] = getFiatAmountFromCrypto(
         value,
         btcToFiat,
         unitCrypto,
         networkId,
       );
     } else if (target === AMOUNT_FIAT && networkId !== TESTNET) {
-      receiveFormValues[AMOUNT_FIAT] = value;
-      receiveFormValues[AMOUNT_CRYPTO] = getBtcAmountFromFiat(
+      formValues[AMOUNT_FIAT] = value;
+      formValues[AMOUNT_CRYPTO] = getBtcAmountFromFiat(
         value,
         btcToFiat,
         unitCrypto,
         networkId,
       );
     }
-
-    return setFormValue(receiveFormValues);
+    return setFormValues(formValues);
   }
 
   renderBackArrow() {
@@ -97,9 +101,9 @@ export class Receive extends React.Component {
   }
 
   renderReceiveForm() {
-    const { receiveFormValues, networkId } = this.props;
+    const { receiveFormValues } = this.props;
 
-    if (!receiveFormValues.unit) {
+    if (!receiveFormValues[UNIT_CRYPTO]) {
       return null;
     }
 
@@ -107,8 +111,9 @@ export class Receive extends React.Component {
       <div>
         <label htmlFor={AMOUNT_CRYPTO}>
           <input
+            type="text"
+            pattern="^\d*(\.\d*)?$"
             id={AMOUNT_CRYPTO}
-            type="number"
             value={receiveFormValues[AMOUNT_CRYPTO]}
             onChange={evt => this.handleChangeAmount(evt, AMOUNT_CRYPTO)}
           />
@@ -116,13 +121,13 @@ export class Receive extends React.Component {
         </label>
         <label htmlFor={AMOUNT_FIAT}>
           <input
+            type="text"
+            pattern="^\d*(\.\d*)?$"
             id={AMOUNT_FIAT}
-            type="number"
             value={receiveFormValues[AMOUNT_FIAT]}
-            disable={networkId === TESTNET}
             onChange={evt => this.handleChangeAmount(evt, AMOUNT_FIAT)}
           />
-          <FormattedMessage {...appMessages[UNIT_FIAT]} />
+          <FormattedMessage {...appMessages[receiveFormValues[UNIT_FIAT]]} />
         </label>
       </div>
     );
@@ -146,8 +151,9 @@ Receive.propTypes = {
   activeAddressFetchState: PropTypes.object.isRequired,
   btcToFiatFetchState: PropTypes.object.isRequired,
   receiveFormValues: PropTypes.object.isRequired,
-  setFormValue: PropTypes.func.isRequired,
+  setFormValues: PropTypes.func.isRequired,
   fetchActiveAddress: PropTypes.func.isRequired,
+  resetFormValues: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
