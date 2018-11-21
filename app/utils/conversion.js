@@ -75,7 +75,8 @@ export const convertFiatBtcToFiatUnit = (value, unit) => {
   return val;
 };
 
-export const getFiatAmount = (amount, fiatToBtc, unit, networkId) => {
+//  TODO: change fiatToBtc to btcToFiat
+export const getFiatAmountFromCrypto = (amount, fiatToBtc, unit, networkId) => {
   //  Testnet BTC has no value
   if (networkId === TESTNET) {
     return 0;
@@ -83,4 +84,16 @@ export const getFiatAmount = (amount, fiatToBtc, unit, networkId) => {
 
   const valueInFiat = amount * convertFiatBtcToFiatUnit(fiatToBtc, unit);
   return toFixed(valueInFiat, 2);
+};
+
+/**
+ *  @dev convert any amount (fiat) into the Crypto unit (Btc, mBtc or Sat)
+ */
+export const getBtcAmountFromFiat = (amount, btcToFiat, unit, networkId) => {
+  if (networkId === TESTNET) {
+    return 0;
+  }
+
+  const unitToFiat = convertFiatBtcToFiatUnit(btcToFiat, unit);
+  return toFixed(unitToFiat * amount, 4);
 };
