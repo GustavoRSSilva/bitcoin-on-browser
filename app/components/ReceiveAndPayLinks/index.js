@@ -10,17 +10,21 @@ import { FormattedMessage } from 'react-intl';
 
 import messages from './messages';
 
-import { Wrapper } from './styles';
+import { Wrapper, LinkContainer } from './styles';
 
 function ReceiveAndPayLinks() {
   return (
     <Wrapper>
-      <Link to="/receive">
-        <FormattedMessage {...messages.receive} />
-      </Link>
-      <Link to="/send">
-        <FormattedMessage {...messages.send} />
-      </Link>
+      <LinkContainer>
+        <Link to="/receive">
+          <FormattedMessage {...messages.receive} />
+        </Link>
+      </LinkContainer>
+      <LinkContainer>
+        <Link to="/send">
+          <FormattedMessage {...messages.send} />
+        </Link>
+      </LinkContainer>
     </Wrapper>
   );
 }

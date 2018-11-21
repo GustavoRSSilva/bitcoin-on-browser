@@ -17,6 +17,9 @@ export const AddressContainer = styled.div`
   width: 100%;
   margin-top: 20px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   > span {
     font-size: ${small};
