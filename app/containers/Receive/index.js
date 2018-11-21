@@ -17,8 +17,10 @@ import { TESTNET } from 'utils/constants';
 import {
   getFiatAmountFromCrypto,
   getBtcAmountFromFiat,
+  convertAmountUnitToBtc,
 } from 'utils/conversion';
 
+import QRCode from 'components/common/QRCode';
 import appMessages from 'containers/App/messages';
 
 import {
@@ -36,7 +38,6 @@ import {
 import { selectFormValues } from './selectors';
 import * as actions from './actions';
 import reducer from './reducer';
-// import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Receive extends React.Component {
@@ -57,7 +58,7 @@ export class Receive extends React.Component {
       return null;
     }
 
-    const value = parseFloat(evt.target.value) || 0;
+    const value = evt.target.value || '0';
     const {
       receiveFormValues,
       setFormValues,
@@ -116,6 +117,7 @@ export class Receive extends React.Component {
             id={AMOUNT_CRYPTO}
             value={receiveFormValues[AMOUNT_CRYPTO]}
             onChange={evt => this.handleChangeAmount(evt, AMOUNT_CRYPTO)}
+            onFocus={evt => evt.target.select()}
           />
           <FormattedMessage {...appMessages[receiveFormValues[UNIT_CRYPTO]]} />
         </label>
@@ -126,10 +128,36 @@ export class Receive extends React.Component {
             id={AMOUNT_FIAT}
             value={receiveFormValues[AMOUNT_FIAT]}
             onChange={evt => this.handleChangeAmount(evt, AMOUNT_FIAT)}
+            onFocus={evt => evt.target.select()}
           />
           <FormattedMessage {...appMessages[receiveFormValues[UNIT_FIAT]]} />
         </label>
       </div>
+    );
+  }
+
+  renderQRCode(activeAddress) {
+    if (!activeAddress) {
+      return null;
+    }
+
+    const { receiveFormValues } = this.props;
+    const amountCrypto = receiveFormValues[AMOUNT_CRYPTO];
+    const unitCrypto = receiveFormValues[UNIT_CRYPTO];
+
+    const amountBtc = convertAmountUnitToBtc(
+      parseFloat(amountCrypto),
+      unitCrypto,
+    );
+
+    return (
+      <QRCode
+        key={`${activeAddress}-${amountBtc}`}
+        alt="qr-code"
+        src={`https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=bitcoin:${activeAddress}?&amount=${amountBtc}`}
+        address={activeAddress}
+        displayAddress
+      />
     );
   }
 
@@ -141,6 +169,7 @@ export class Receive extends React.Component {
       <Fragment>
         {this.renderBackArrow()}
         {this.renderReceiveForm(networkId, activeAddress)}
+        {this.renderQRCode(activeAddress)}
       </Fragment>
     );
   }

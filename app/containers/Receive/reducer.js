@@ -19,9 +19,9 @@ import {
 } from './constants';
 
 const setDefaultFormValues = () => ({
-  [AMOUNT_CRYPTO]: 0,
+  [AMOUNT_CRYPTO]: '0',
   [UNIT_CRYPTO]: BTC,
-  [AMOUNT_FIAT]: 0,
+  [AMOUNT_FIAT]: '0',
   [UNIT_FIAT]: USD,
 });
 
