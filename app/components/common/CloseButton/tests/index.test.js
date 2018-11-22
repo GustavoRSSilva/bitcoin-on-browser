@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import BackArrow from '../index';
+// import CloseButton from '../index';
 
-describe('<BackArrow />', () => {
+describe('<CloseButton />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });
