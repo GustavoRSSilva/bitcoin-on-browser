@@ -54,7 +54,7 @@ function AddressBalance(props) {
   const delta = mempoolBalance > 0;
   const balanceHTML = mempoolBalance ? (
     <span>
-      {confirmedBalance}
+      {confirmedBalance}{' '}
       <Delta delta={delta}>
         {delta ? '+' : '-'} {Math.abs(mempoolBalance)}
       </Delta>

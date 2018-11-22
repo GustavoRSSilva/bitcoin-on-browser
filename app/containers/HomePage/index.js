@@ -45,6 +45,18 @@ export class HomePage extends React.Component {
     fetchActiveAddress();
   }
 
+  componentDidUpdate() {
+    const { history } = this.props;
+
+    if (this.isUserNotCreated()) {
+      history.push('/signUp');
+    } else if (this.isSessionNotValid()) {
+      history.push('/logIn');
+    } else if (this.isActiveAddressNotCreated()) {
+      history.push('/mnemonic');
+    }
+  }
+
   isRequesting() {
     const requesting = 'requesting';
     const { sessionValidState, userCreatedState } = this.props;
@@ -76,29 +88,6 @@ export class HomePage extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
-
-    if (this.isRequesting()) {
-      return <div>requesting</div>;
-    }
-
-    // check if there is not a user
-    if (this.isUserNotCreated()) {
-      history.push('/signUp');
-      return null;
-    }
-
-    //  check if the user is valid, if not redirect to the login page
-    if (this.isSessionNotValid()) {
-      history.push('/logIn');
-      return null;
-    }
-
-    if (this.isActiveAddressNotCreated()) {
-      history.push('/mnemonic');
-      return null;
-    }
-
     const {
       activeAddressFetchState,
       addressBalanceFetchState,
