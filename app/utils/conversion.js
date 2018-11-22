@@ -33,6 +33,33 @@ export const transSatToUnit = (amountInSat = 0) => {
 /**
  *  @dev convert satoshi to a unit from BTC or MBTC.
  */
+//  TODO needs testing
+export const convertMbtcToUnit = (amountInMbtc = 0, unit) => {
+  if (!amountInMbtc || !unit) {
+    return 0;
+  }
+
+  let val = amountInMbtc;
+  switch (unit) {
+    case BTC:
+      val /= 10 ** 3;
+      break;
+    case SAT:
+      val *= 10 ** 5;
+      break;
+    case MBTC:
+    default:
+      break;
+  }
+
+  val = toFixed(val, 4);
+
+  return val;
+};
+
+/**
+ *  @dev convert satoshi to a unit from BTC or MBTC.
+ */
 export const convertSatsToUnit = (amountInSat = 0, unit) => {
   if (!amountInSat || !unit) {
     return 0;
@@ -57,6 +84,28 @@ export const convertSatsToUnit = (amountInSat = 0, unit) => {
 };
 
 /**
+ *  @dev - converts any crepto amount and unit to BTC
+ */
+//  TODO needs testing
+export const convertAmountUnitToBtc = (amount = 0, unit) => {
+  let val = amount;
+  switch (unit) {
+    case MBTC:
+      val = convertMbtcToUnit(amount, BTC);
+      break;
+
+    case SAT:
+      val = convertSatsToUnit(amount, BTC);
+      break;
+    case BTC:
+    default:
+      break;
+  }
+
+  return val;
+};
+
+/**
  *  @params - value {float|int} value in btc
  */
 export const convertFiatBtcToFiatUnit = (value, unit) => {
@@ -75,7 +124,9 @@ export const convertFiatBtcToFiatUnit = (value, unit) => {
   return val;
 };
 
-export const getFiatAmount = (amount, fiatToBtc, unit, networkId) => {
+//  TODO: change fiatToBtc to btcToFiat
+//  TODO needs testing
+export const getFiatAmountFromCrypto = (amount, fiatToBtc, unit, networkId) => {
   //  Testnet BTC has no value
   if (networkId === TESTNET) {
     return 0;
@@ -83,4 +134,17 @@ export const getFiatAmount = (amount, fiatToBtc, unit, networkId) => {
 
   const valueInFiat = amount * convertFiatBtcToFiatUnit(fiatToBtc, unit);
   return toFixed(valueInFiat, 2);
+};
+
+/**
+ *  @dev convert any amount (fiat) into the Crypto unit (Btc, mBtc or Sat)
+ */
+//  TODO needs testing
+export const getBtcAmountFromFiat = (amount, btcToFiat, unit, networkId) => {
+  if (networkId === TESTNET) {
+    return 0;
+  }
+
+  const unitToFiat = convertFiatBtcToFiatUnit(btcToFiat, unit);
+  return toFixed(unitToFiat * amount, 4);
 };

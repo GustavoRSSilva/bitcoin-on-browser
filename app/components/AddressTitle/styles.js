@@ -7,7 +7,6 @@ export const Wrapper = styled.div`
   height: 100px;
   border-bottom: 1px solid ${btcOrange};
   font-size: ${extraSmall};
-  float: left;
 `;
 
 export const AddressFragment = styled.div`
