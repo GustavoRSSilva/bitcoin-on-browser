@@ -99,7 +99,7 @@ export class HomePage extends React.Component {
     const activeAddress = activeAddressFetchState.data;
     const balance = addressBalanceFetchState.data;
 
-    // TODO: set this value to the future be either USD, Eur, GBP, etc.
+    // TODO: set this value to the future be either USD, EUR, GBP, etc.
     //  As for now it is only available in USD.
     const btcToFiat = btcToFiatFetchState.data
       ? btcToFiatFetchState.data.bpi.USD
