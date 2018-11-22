@@ -148,7 +148,6 @@ export const convertCryptoFromUnitToUnit = (
 /**
  *  @dev - converts any crepto amount and unit to BTC
  */
-//  TODO needs testing
 export const convertAmountUnitToBtc = (amount = 0, unit) => {
   let val = amount;
   switch (unit) {
