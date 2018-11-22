@@ -20,7 +20,7 @@ import {
   convertAmountUnitToBtc,
 } from 'utils/conversion';
 
-import BackArrow from 'components/common/BackArrow';
+import CloseButton from 'components/common/CloseButton';
 import QRCode from 'components/common/QRCode';
 import appMessages from 'containers/App/messages';
 
@@ -42,10 +42,20 @@ import reducer from './reducer';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Receive extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLeavePage = this.handleLeavePage.bind(this);
+  }
+
   componentWillMount() {
     const { fetchActiveAddress, resetFormValues } = this.props;
     resetFormValues();
     fetchActiveAddress();
+  }
+
+  handleLeavePage() {
+    const { history } = this.props;
+    history.goBack();
   }
 
   /**
@@ -97,8 +107,8 @@ export class Receive extends React.Component {
     return setFormValues(formValues);
   }
 
-  renderBackArrow() {
-    return <BackArrow to="/" target="homepage" />;
+  renderCloseButton() {
+    return <CloseButton onClick={this.handleLeavePage} />;
   }
 
   renderReceiveForm() {
@@ -167,7 +177,7 @@ export class Receive extends React.Component {
 
     return (
       <Fragment>
-        {this.renderBackArrow()}
+        {this.renderCloseButton()}
         {this.renderReceiveForm(networkId, activeAddress)}
         {this.renderQRCode(activeAddress)}
       </Fragment>
@@ -176,6 +186,7 @@ export class Receive extends React.Component {
 }
 
 Receive.propTypes = {
+  history: PropTypes.object.isRequired,
   networkId: PropTypes.string.isRequired,
   activeAddressFetchState: PropTypes.object.isRequired,
   btcToFiatFetchState: PropTypes.object.isRequired,

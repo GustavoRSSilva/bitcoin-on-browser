@@ -13,6 +13,9 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+
+import CloseButton from 'components/common/CloseButton';
+
 import makeSelectSend from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -20,9 +23,24 @@ import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Send extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLeavePage = this.handleLeavePage.bind(this);
+  }
+
+  handleLeavePage() {
+    const { history } = this.props;
+    history.goBack();
+  }
+
+  renderCloseButton() {
+    return <CloseButton onClick={this.handleLeavePage} />;
+  }
+
   render() {
     return (
       <div>
+        {this.renderCloseButton()}
         <FormattedMessage {...messages.header} />
       </div>
     );
@@ -30,6 +48,7 @@ export class Send extends React.Component {
 }
 
 Send.propTypes = {
+  history: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
