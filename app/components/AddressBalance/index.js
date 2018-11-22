@@ -9,10 +9,10 @@ import PropTypes from 'prop-types';
 
 import appMessages from 'containers/App/messages';
 
-import { USD } from 'utils/constants';
+import { USD, SAT } from 'utils/constants';
 import {
   transSatToUnit,
-  convertSatsToUnit,
+  convertCryptoFromUnitToUnit,
   getFiatAmountFromCrypto,
 } from 'utils/conversion';
 
@@ -28,8 +28,20 @@ function AddressBalance(props) {
   }
 
   const { unit } = transSatToUnit(balance.total_received);
-  const mempoolBalance = convertSatsToUnit(balance.mempool_balance, unit);
-  const confirmedBalance = convertSatsToUnit(balance.confirmed_balance, unit);
+
+  //  the value are in SAT, we need to convert them to the used unit with 4 decimals places
+  const mempoolBalance = convertCryptoFromUnitToUnit(
+    balance.mempool_balance,
+    SAT,
+    unit,
+    4,
+  );
+  const confirmedBalance = convertCryptoFromUnitToUnit(
+    balance.confirmed_balance,
+    SAT,
+    unit,
+    4,
+  );
 
   const fiatCur = USD;
   const fiatAmount = getFiatAmountFromCrypto(
@@ -42,7 +54,7 @@ function AddressBalance(props) {
   const delta = mempoolBalance > 0;
   const balanceHTML = mempoolBalance ? (
     <span>
-      {confirmedBalance}{' '}
+      {confirmedBalance}
       <Delta delta={delta}>
         {delta ? '+' : '-'} {Math.abs(mempoolBalance)}
       </Delta>
