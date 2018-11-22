@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import { BLOCKSTREAM_URL, MAINNET } from 'utils/constants';
-import { transSatToUnit, getFiatAmount } from 'utils/conversion';
+import { transSatToUnit, getFiatAmountFromCrypto } from 'utils/conversion';
 
 import { calculateTransactionAddressRecieved } from 'utils/transaction';
 
@@ -38,7 +38,7 @@ function Transaction(props) {
   const { amount, unit } = transSatToUnit(
     calculateTransactionAddressRecieved(transaction, address),
   );
-  const valueFiat = getFiatAmount(amount, rateFloat, unit, networkId);
+  const valueFiat = getFiatAmountFromCrypto(amount, rateFloat, unit, networkId);
 
   return (
     <Wrapper title={txId}>

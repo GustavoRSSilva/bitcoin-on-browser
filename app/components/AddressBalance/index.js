@@ -7,11 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import appMessages from 'containers/App/messages';
+
 import { USD } from 'utils/constants';
 import {
   transSatToUnit,
   convertSatsToUnit,
-  getFiatAmount,
+  getFiatAmountFromCrypto,
 } from 'utils/conversion';
 
 import { FormattedMessage } from 'react-intl';
@@ -30,7 +32,7 @@ function AddressBalance(props) {
   const confirmedBalance = convertSatsToUnit(balance.confirmed_balance, unit);
 
   const fiatCur = USD;
-  const fiatAmount = getFiatAmount(
+  const fiatAmount = getFiatAmountFromCrypto(
     confirmedBalance,
     btcToFiat.rate_float,
     unit,
@@ -55,7 +57,7 @@ function AddressBalance(props) {
         <FormattedMessage {...messages.balance} />
       </Title>
       <Balance>
-        {balanceHTML} <FormattedMessage {...messages[unit]} />
+        {balanceHTML} <FormattedMessage {...appMessages[unit]} />
       </Balance>
       <BalanceFiat>
         {fiatAmount} <span>{fiatCur}</span>
