@@ -12,11 +12,11 @@ import { bindActionCreators, compose } from 'redux';
 
 import injectReducer from 'utils/injectReducer';
 
-import { TESTNET } from 'utils/constants';
+import { TESTNET, BTC, AVAILABLE_CRYPTO_UNITS } from 'utils/constants';
 import {
   getFiatAmountFromCrypto,
   getCryptoAmountAndUnitFromFiat,
-  convertAmountUnitToBtc,
+  convertCryptoFromUnitToUnit,
 } from 'utils/conversion';
 
 import CloseButton from 'components/common/CloseButton';
@@ -40,6 +40,7 @@ export class Receive extends React.Component {
     super(props);
     this.handleLeavePage = this.handleLeavePage.bind(this);
     this.handleChangeAmount = this.handleChangeAmount.bind(this);
+    this.handleChangeUnit = this.handleChangeUnit.bind(this);
   }
 
   componentWillMount() {
@@ -105,6 +106,30 @@ export class Receive extends React.Component {
     return setFormValues(formValues);
   }
 
+  handleChangeUnit(evt, target) {
+    const { value } = evt.target;
+
+    if (!value || !AVAILABLE_CRYPTO_UNITS.includes(value)) {
+      return null;
+    }
+
+    const { receiveFormValues, setFormValues } = this.props;
+
+    const formValues = { ...receiveFormValues };
+
+    if (target === UNIT_CRYPTO) {
+      const amountCrypto = convertCryptoFromUnitToUnit(
+        receiveFormValues[AMOUNT_CRYPTO],
+        receiveFormValues[UNIT_CRYPTO],
+        value,
+      );
+      formValues[AMOUNT_CRYPTO] = amountCrypto;
+      formValues[UNIT_CRYPTO] = value;
+    }
+
+    return setFormValues(formValues);
+  }
+
   renderCloseButton() {
     return <CloseButton onClick={this.handleLeavePage} />;
   }
@@ -120,6 +145,8 @@ export class Receive extends React.Component {
       <ReceiveForm
         handleChangeAmount={this.handleChangeAmount}
         formValue={receiveFormValues}
+        availableCryptoUnits={AVAILABLE_CRYPTO_UNITS}
+        handleChangeUnit={this.handleChangeUnit}
       />
     );
   }
@@ -133,9 +160,10 @@ export class Receive extends React.Component {
     const amountCrypto = receiveFormValues[AMOUNT_CRYPTO];
     const unitCrypto = receiveFormValues[UNIT_CRYPTO];
 
-    const amountBtc = convertAmountUnitToBtc(
+    const amountBtc = convertCryptoFromUnitToUnit(
       parseFloat(amountCrypto),
       unitCrypto,
+      BTC,
     );
 
     return (

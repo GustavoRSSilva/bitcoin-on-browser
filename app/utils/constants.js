@@ -11,6 +11,9 @@ export const TWENTY_FOUR_WORDS_MNEMONIC = 256;
 export const BTC = 'btc';
 export const MBTC = 'mbtc';
 export const SAT = 'sat';
+
+export const AVAILABLE_CRYPTO_UNITS = [BTC, MBTC, SAT];
+
 export const USD = 'usd';
 export const EUR = 'eur';
 
