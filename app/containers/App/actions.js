@@ -5,6 +5,9 @@
  */
 
 import {
+  FETCH_NETWORK,
+  FETCH_NETWORK_REJECTED,
+  FETCH_NETWORK_SUCCESSFUL,
   CHANGE_NETWORK,
   CHANGE_NETWORK_REJECTED,
   CHANGE_NETWORK_SUCCESSFUL,
@@ -30,6 +33,25 @@ import {
   FETCH_ADDRESS_TRANSACTIONS_REJECTED,
   FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL,
 } from './constants';
+
+export function fetchNetwork() {
+  return {
+    type: FETCH_NETWORK,
+  };
+}
+
+export function fetchNetworkRejected() {
+  return {
+    type: FETCH_NETWORK_REJECTED,
+  };
+}
+
+export function fetchNetworkSuccessful(payload) {
+  return {
+    type: FETCH_NETWORK_SUCCESSFUL,
+    payload,
+  };
+}
 
 export function changeNetwork(payload) {
   return {

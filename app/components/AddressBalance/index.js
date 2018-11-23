@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 import appMessages from 'containers/App/messages';
 
-import { USD, SAT } from 'utils/constants';
+import { USD, SAT, TESTNET } from 'utils/constants';
 import {
   transSatToUnit,
   convertCryptoFromUnitToUnit,
@@ -18,16 +18,17 @@ import {
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+import Loading from './Loading';
 
 import { Wrapper, Title, Balance, Delta, BalanceFiat } from './styles';
 
 function AddressBalance(props) {
   const { balance, btcToFiat, networkId } = props;
   if (!balance || !btcToFiat) {
-    return null;
+    return <Loading />;
   }
 
-  const { unit } = transSatToUnit(balance.total_received);
+  const { unit } = transSatToUnit(balance.total_received, 4);
 
   //  the value are in SAT, we need to convert them to the used unit with 4 decimals places
   const mempoolBalance = convertCryptoFromUnitToUnit(
@@ -43,7 +44,6 @@ function AddressBalance(props) {
     4,
   );
 
-  const fiatCur = USD;
   const fiatAmount = getFiatAmountFromCrypto(
     confirmedBalance,
     btcToFiat.rate_float,
@@ -71,17 +71,25 @@ function AddressBalance(props) {
       <Balance>
         {balanceHTML} <FormattedMessage {...appMessages[unit]} />
       </Balance>
-      <BalanceFiat>
-        {fiatAmount} <span>{fiatCur}</span>
-      </BalanceFiat>
+      {(() => {
+        if (networkId === TESTNET) {
+          return null;
+        }
+
+        return (
+          <BalanceFiat>
+            {fiatAmount} <FormattedMessage {...appMessages[USD]} />
+          </BalanceFiat>
+        );
+      })()}
     </Wrapper>
   );
 }
 
 AddressBalance.propTypes = {
+  networkId: PropTypes.string.isRequired,
   balance: PropTypes.object,
   btcToFiat: PropTypes.object,
-  networkId: PropTypes.string.isRequired,
 };
 
 export default AddressBalance;

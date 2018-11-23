@@ -7,22 +7,21 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
 import injectReducer from 'utils/injectReducer';
 
-import { TESTNET } from 'utils/constants';
+import { BTC, AVAILABLE_CRYPTO_UNITS } from 'utils/constants';
 import {
   getFiatAmountFromCrypto,
-  getBtcAmountFromFiat,
-  convertAmountUnitToBtc,
+  getCryptoAmountAndUnitFromFiat,
+  convertCryptoFromUnitToUnit,
 } from 'utils/conversion';
 
 import CloseButton from 'components/common/CloseButton';
 import QRCode from 'components/common/QRCode';
-import appMessages from 'containers/App/messages';
+import ReceiveForm from 'components/ReceiveForm';
 
 import {
   selectActiveAddressFetchState,
@@ -30,12 +29,7 @@ import {
   selectBtcToFiatFetchState,
 } from 'containers/App/selectors';
 
-import {
-  AMOUNT_CRYPTO,
-  UNIT_CRYPTO,
-  AMOUNT_FIAT,
-  UNIT_FIAT,
-} from './constants';
+import { AMOUNT_CRYPTO, UNIT_CRYPTO, AMOUNT_FIAT } from './constants';
 import { selectFormValues } from './selectors';
 import * as actions from './actions';
 import reducer from './reducer';
@@ -45,6 +39,8 @@ export class Receive extends React.Component {
   constructor(props) {
     super(props);
     this.handleLeavePage = this.handleLeavePage.bind(this);
+    this.handleChangeAmount = this.handleChangeAmount.bind(this);
+    this.handleChangeUnit = this.handleChangeUnit.bind(this);
   }
 
   componentWillMount() {
@@ -63,13 +59,27 @@ export class Receive extends React.Component {
    *       Changes the form amout values
    *       On TESTNET (bitcoin testnet) the amount in fiat is always zero
    */
+  // TODO: Test this!!
   handleChangeAmount(evt, target) {
     //  thw value needs to pass the regex
     if (evt.target.value && !evt.target.validity.valid) {
       return null;
     }
 
-    const value = evt.target.value || '0';
+    let value = evt.target.value || '0';
+
+    //  remove zeros at the left after the first
+    //  ex: 001. => 1.,
+    //  ex: 00.1 => 0.1
+    //  ex: 012 => 12
+    //  ex: . => 0.
+    if (value === '.') {
+      value = '0.';
+    }
+    const valSplit = value.split('.');
+    const addPoint = valSplit[1] !== undefined ? `.${valSplit[1]}` : '';
+    value = `${parseInt(valSplit[0] || '0', 10)}${addPoint}`;
+
     const {
       receiveFormValues,
       setFormValues,
@@ -77,33 +87,60 @@ export class Receive extends React.Component {
       networkId,
     } = this.props;
 
-    const formValues = receiveFormValues;
+    const formValues = { ...receiveFormValues };
+
+    const unitCrypto = receiveFormValues[UNIT_CRYPTO];
 
     // TODO: set this value to the future be either USD, Eur, GBP, etc.
     //  As for now it is only available in USD.
     const btcToFiat = btcToFiatFetchState.data
-      ? btcToFiatFetchState.data.bpi.USD
+      ? btcToFiatFetchState.data.bpi.USD.rate_float
       : null;
-
-    const unitCrypto = receiveFormValues[UNIT_CRYPTO];
 
     if (target === AMOUNT_CRYPTO) {
       formValues[AMOUNT_CRYPTO] = value;
       formValues[AMOUNT_FIAT] = getFiatAmountFromCrypto(
-        value,
+        parseFloat(value),
         btcToFiat,
         unitCrypto,
         networkId,
-      );
-    } else if (target === AMOUNT_FIAT && networkId !== TESTNET) {
+      ).toString();
+    } else if (target === AMOUNT_FIAT) {
       formValues[AMOUNT_FIAT] = value;
-      formValues[AMOUNT_CRYPTO] = getBtcAmountFromFiat(
-        value,
+      const { amount, unit } = getCryptoAmountAndUnitFromFiat(
+        parseFloat(value),
         btcToFiat,
-        unitCrypto,
         networkId,
+        4,
       );
+      formValues[AMOUNT_CRYPTO] = amount;
+      formValues[UNIT_CRYPTO] = unit;
     }
+
+    return setFormValues(formValues);
+  }
+
+  handleChangeUnit(evt, target) {
+    const { value } = evt.target;
+
+    if (!value || !AVAILABLE_CRYPTO_UNITS.includes(value)) {
+      return null;
+    }
+
+    const { receiveFormValues, setFormValues } = this.props;
+
+    const formValues = { ...receiveFormValues };
+
+    if (target === UNIT_CRYPTO) {
+      const amountCrypto = convertCryptoFromUnitToUnit(
+        receiveFormValues[AMOUNT_CRYPTO],
+        receiveFormValues[UNIT_CRYPTO],
+        value,
+      );
+      formValues[AMOUNT_CRYPTO] = amountCrypto;
+      formValues[UNIT_CRYPTO] = value;
+    }
+
     return setFormValues(formValues);
   }
 
@@ -112,37 +149,20 @@ export class Receive extends React.Component {
   }
 
   renderReceiveForm() {
-    const { receiveFormValues } = this.props;
+    const { receiveFormValues, networkId } = this.props;
 
     if (!receiveFormValues[UNIT_CRYPTO]) {
       return null;
     }
 
     return (
-      <div>
-        <label htmlFor={AMOUNT_CRYPTO}>
-          <input
-            type="text"
-            pattern="^\d*(\.\d*)?$"
-            id={AMOUNT_CRYPTO}
-            value={receiveFormValues[AMOUNT_CRYPTO]}
-            onChange={evt => this.handleChangeAmount(evt, AMOUNT_CRYPTO)}
-            onFocus={evt => evt.target.select()}
-          />
-          <FormattedMessage {...appMessages[receiveFormValues[UNIT_CRYPTO]]} />
-        </label>
-        <label htmlFor={AMOUNT_FIAT}>
-          <input
-            type="text"
-            pattern="^\d*(\.\d*)?$"
-            id={AMOUNT_FIAT}
-            value={receiveFormValues[AMOUNT_FIAT]}
-            onChange={evt => this.handleChangeAmount(evt, AMOUNT_FIAT)}
-            onFocus={evt => evt.target.select()}
-          />
-          <FormattedMessage {...appMessages[receiveFormValues[UNIT_FIAT]]} />
-        </label>
-      </div>
+      <ReceiveForm
+        networkId={networkId}
+        handleChangeAmount={this.handleChangeAmount}
+        formValue={receiveFormValues}
+        availableCryptoUnits={AVAILABLE_CRYPTO_UNITS}
+        handleChangeUnit={this.handleChangeUnit}
+      />
     );
   }
 
@@ -155,9 +175,10 @@ export class Receive extends React.Component {
     const amountCrypto = receiveFormValues[AMOUNT_CRYPTO];
     const unitCrypto = receiveFormValues[UNIT_CRYPTO];
 
-    const amountBtc = convertAmountUnitToBtc(
+    const amountBtc = convertCryptoFromUnitToUnit(
       parseFloat(amountCrypto),
       unitCrypto,
+      BTC,
     );
 
     return (

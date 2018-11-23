@@ -3,7 +3,10 @@ import { saveItem, getItem } from 'utils/storage';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 
-import { COINDESK_CURRENT_PRICE_URL } from 'utils/constants';
+import {
+  COINDESK_CURRENT_PRICE_URL,
+  DEFAULT_SELECTED_NETWORK,
+} from 'utils/constants';
 import { sha256, getAddressFromMnemonic } from 'utils/bitcoin';
 import {
   getAddressBalance,
@@ -11,10 +14,12 @@ import {
 } from 'utils/blockstreamAPI';
 
 import {
+  NETWORK,
   SESSION,
   USER,
   PASSWORD,
   MNEMONIC,
+  FETCH_NETWORK,
   ACTIVE_ADDRESS,
   USER_ADDRESSES,
   FETCH_USER_CREATED,
@@ -28,6 +33,7 @@ import {
 } from './constants';
 
 import {
+  fetchNetworkSuccessful,
   fetchUserCreatedRejected,
   fetchUserCreatedSuccessful,
   fetchSessionValidRejected,
@@ -76,6 +82,10 @@ export function* setSession(bool) {
   yield saveItem(SESSION, bool);
 }
 
+function* setNetwork(network) {
+  yield saveItem(NETWORK, network);
+}
+
 export function* saveUser(user) {
   //  encrypt the user data
   const encryptData = CryptoJS.AES.encrypt(
@@ -101,6 +111,10 @@ function* storeAddress(address) {
   const userAddresses = user[selectedNetwork][USER_ADDRESSES] || [];
   user[selectedNetwork][USER_ADDRESSES] = [...userAddresses, address];
   return yield saveUser(user);
+}
+
+export function* getNetwork() {
+  return yield getItem(NETWORK);
 }
 
 export function* getUser() {
@@ -151,6 +165,18 @@ export function* getSession() {
   } catch (e) {
     //  If there is no session, return false
     return false;
+  }
+}
+
+function* callGetNetwork() {
+  try {
+    const network = yield call(getNetwork);
+    yield put(fetchNetworkSuccessful(network));
+  } catch (e) {
+    //  Network is essencial for the project, if ti fail to fetch
+    //  set a new one
+    yield call(setNetwork, DEFAULT_SELECTED_NETWORK);
+    yield put(fetchNetworkSuccessful(DEFAULT_SELECTED_NETWORK));
   }
 }
 
@@ -242,6 +268,7 @@ function* callChangeNetwork(action) {
     const newNetwork = action.payload;
     const selectedNetwork = yield select(selectNetworkId());
     if (newNetwork !== selectedNetwork) {
+      yield call(setNetwork, newNetwork);
       yield put(changeNetworkSuccessful(newNetwork));
       //  After changing the network, creating the new Address and fetch the active address values
       const mnemonic = yield getMnemonic();
@@ -252,6 +279,10 @@ function* callChangeNetwork(action) {
   } catch (e) {
     yield put(changeNetworkRejected());
   }
+}
+
+function* fetchNetworkSaga() {
+  yield takeLatest(FETCH_NETWORK, callGetNetwork);
 }
 
 function* fetchUserCreatedSaga() {
@@ -289,6 +320,7 @@ function* changeNetworkSaga() {
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
+    fetchNetworkSaga(),
     fetchUserCreatedSaga(),
     fetchSessionValidSaga(),
     fetchActiveAddressSaga(),
