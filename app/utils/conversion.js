@@ -33,8 +33,31 @@ export const transSatToUnit = (amountInSat = 0) => {
 /**
  *  @dev convert satoshi to a unit from BTC or MBTC.
  */
-//  TODO needs testing
-export const convertMbtcToUnit = (amountInMbtc = 0, unit) => {
+const convertBtcToUnit = (amountInBtc = 0, unit) => {
+  if (!amountInBtc || !unit) {
+    return 0;
+  }
+
+  let val = amountInBtc;
+  switch (unit) {
+    case MBTC:
+      val *= 10 ** 3;
+      break;
+    case SAT:
+      val *= 10 ** 8;
+      break;
+    case BTC:
+    default:
+      break;
+  }
+
+  return val;
+};
+
+/**
+ *  @dev convert mBtc to a unit from BTC or MBTC.
+ */
+const convertMbtcToUnit = (amountInMbtc = 0, unit) => {
   if (!amountInMbtc || !unit) {
     return 0;
   }
@@ -52,15 +75,13 @@ export const convertMbtcToUnit = (amountInMbtc = 0, unit) => {
       break;
   }
 
-  val = toFixed(val, 4);
-
   return val;
 };
 
 /**
  *  @dev convert satoshi to a unit from BTC or MBTC.
  */
-export const convertSatsToUnit = (amountInSat = 0, unit) => {
+const convertSatsToUnit = (amountInSat = 0, unit) => {
   if (!amountInSat || !unit) {
     return 0;
   }
@@ -78,7 +99,48 @@ export const convertSatsToUnit = (amountInSat = 0, unit) => {
       break;
   }
 
-  val = toFixed(val, 4);
+  return val;
+};
+
+/**
+ *  @dev converts a Crypto amount from a unit to another unit.
+ *  @params - amount {float} - the amount to be converted
+ *  @params - from {string} - the from unit
+ *  @params - to {string} - the unit to
+ *  @params - decimals {int | null} - convert to decimals
+ *  @returns - amountConverted {float} - the amount converted to the unit
+ */
+export const convertCryptoFromUnitToUnit = (
+  amount,
+  from,
+  to,
+  decimals = null,
+) => {
+  let val = amount;
+  switch (from) {
+    // if from equal to, nothing changes
+    case to:
+      break;
+
+    case BTC:
+      val = convertBtcToUnit(amount, to);
+      break;
+
+    case MBTC:
+      val = convertMbtcToUnit(amount, to);
+      break;
+
+    case SAT:
+      val = convertSatsToUnit(amount, to);
+      break;
+
+    default:
+      break;
+  }
+
+  if (decimals !== null) {
+    val = toFixed(val, decimals);
+  }
 
   return val;
 };
@@ -86,7 +148,6 @@ export const convertSatsToUnit = (amountInSat = 0, unit) => {
 /**
  *  @dev - converts any crepto amount and unit to BTC
  */
-//  TODO needs testing
 export const convertAmountUnitToBtc = (amount = 0, unit) => {
   let val = amount;
   switch (unit) {

@@ -8,6 +8,7 @@ import {
   fetchUserCreated,
   fetchSessionValid,
   fetchActiveAddress,
+  changeNetwork,
 } from 'containers/App/actions';
 import { DEFAULT_ACTION } from './constants';
 
@@ -17,4 +18,9 @@ export function defaultAction() {
   };
 }
 
-export { fetchSessionValid, fetchUserCreated, fetchActiveAddress };
+export {
+  fetchSessionValid,
+  fetchUserCreated,
+  fetchActiveAddress,
+  changeNetwork,
+};

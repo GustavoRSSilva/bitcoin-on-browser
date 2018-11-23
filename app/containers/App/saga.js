@@ -1,10 +1,10 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, select } from 'redux-saga/effects';
 import { saveItem, getItem } from 'utils/storage';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 
 import { COINDESK_CURRENT_PRICE_URL } from 'utils/constants';
-import { sha256 } from 'utils/bitcoin';
+import { sha256, getAddressFromMnemonic } from 'utils/bitcoin';
 import {
   getAddressBalance,
   getAddressTransactions,
@@ -24,6 +24,7 @@ import {
   FETCH_ADDRESS_BALANCE,
   FETCH_BTC_TO_FIAT_VALUE,
   FETCH_ADDRESS_TRANSACTIONS,
+  CHANGE_NETWORK,
 } from './constants';
 
 import {
@@ -31,6 +32,7 @@ import {
   fetchUserCreatedSuccessful,
   fetchSessionValidRejected,
   fetchSessionValidSuccessful,
+  fetchActiveAddress,
   fetchActiveAddressRejected,
   fetchActiveAddressSuccessful,
   saveAddressRejected,
@@ -44,7 +46,11 @@ import {
   fetchAddressTransactions,
   fetchAddressTransactionsRejected,
   fetchAddressTransactionsSuccessful,
+  changeNetworkRejected,
+  changeNetworkSuccessful,
 } from './actions';
+
+import { selectNetworkId } from './selectors';
 
 const { Buffer } = require('buffer/');
 
@@ -86,12 +92,14 @@ export function* saveMnemonic(mnemonic) {
   return yield saveUser(user);
 }
 
-function* saveAddress(address) {
+function* storeAddress(address) {
   const user = yield getUser();
+  const selectedNetwork = yield select(selectNetworkId());
   //    add teh address as the active address
   user[ACTIVE_ADDRESS] = address;
-  const userAddresses = user[USER_ADDRESSES] || [];
-  user[USER_ADDRESSES] = [...userAddresses, address];
+  user[selectedNetwork] = user[selectedNetwork] || [];
+  const userAddresses = user[selectedNetwork][USER_ADDRESSES] || [];
+  user[selectedNetwork][USER_ADDRESSES] = [...userAddresses, address];
   return yield saveUser(user);
 }
 
@@ -184,7 +192,7 @@ function* callGetActiveAddress() {
 
 function* callSaveAddress(action) {
   try {
-    const result = yield call(saveAddress, action.payload);
+    const result = yield call(storeAddress, action.payload);
     yield put(saveAddressSuccessful(result));
   } catch (e) {
     yield put(saveAddressRejected());
@@ -193,7 +201,12 @@ function* callSaveAddress(action) {
 
 function* callGetAddressBalance(action) {
   try {
-    const result = yield call(getAddressBalance, action.payload);
+    const selectedNetwork = yield select(selectNetworkId());
+    const result = yield call(
+      getAddressBalance,
+      action.payload,
+      selectedNetwork,
+    );
     yield put(fetchBtcToFiatValue());
     yield put(fetchAddressBalanceSuccessful(result.data));
   } catch (e) {
@@ -212,10 +225,32 @@ function* callGetBtcToFiatValue() {
 
 function* callGetaddressTransactions(action) {
   try {
-    const result = yield call(getAddressTransactions, action.payload);
+    const selectedNetwork = yield select(selectNetworkId());
+    const result = yield call(
+      getAddressTransactions,
+      action.payload,
+      selectedNetwork,
+    );
     yield put(fetchAddressTransactionsSuccessful(result.data));
   } catch (e) {
     yield put(fetchAddressTransactionsRejected());
+  }
+}
+
+function* callChangeNetwork(action) {
+  try {
+    const newNetwork = action.payload;
+    const selectedNetwork = yield select(selectNetworkId());
+    if (newNetwork !== selectedNetwork) {
+      yield put(changeNetworkSuccessful(newNetwork));
+      //  After changing the network, creating the new Address and fetch the active address values
+      const mnemonic = yield getMnemonic();
+      const address = getAddressFromMnemonic(mnemonic, 0, newNetwork);
+      yield call(storeAddress, address);
+      yield put(fetchActiveAddress());
+    }
+  } catch (e) {
+    yield put(changeNetworkRejected());
   }
 }
 
@@ -247,6 +282,10 @@ function* fetchAddressTransactionsSaga() {
   yield takeLatest(FETCH_ADDRESS_TRANSACTIONS, callGetaddressTransactions);
 }
 
+function* changeNetworkSaga() {
+  yield takeLatest(CHANGE_NETWORK, callChangeNetwork);
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
@@ -257,5 +296,6 @@ export default function* defaultSaga() {
     fetchAddressBalanceSaga(),
     fetchBtcToFiatValueSaga(),
     fetchAddressTransactionsSaga(),
+    changeNetworkSaga(),
   ];
 }
