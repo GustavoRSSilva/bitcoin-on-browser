@@ -35,7 +35,6 @@ import {
   fetchActiveAddress,
   fetchActiveAddressRejected,
   fetchActiveAddressSuccessful,
-  saveAddress,
   saveAddressRejected,
   saveAddressSuccessful,
   fetchAddressBalance,
@@ -243,13 +242,12 @@ function* callChangeNetwork(action) {
     const newNetwork = action.payload;
     const selectedNetwork = yield select(selectNetworkId());
     if (newNetwork !== selectedNetwork) {
+      yield put(changeNetworkSuccessful(newNetwork));
+      //  After changing the network, creating the new Address and fetch the active address values
       const mnemonic = yield getMnemonic();
       const address = getAddressFromMnemonic(mnemonic, 0, newNetwork);
-
-      //  save address need
-      yield put(saveAddress(address));
+      yield call(storeAddress, address);
       yield put(fetchActiveAddress());
-      yield put(changeNetworkSuccessful(newNetwork));
     }
   } catch (e) {
     yield put(changeNetworkRejected());

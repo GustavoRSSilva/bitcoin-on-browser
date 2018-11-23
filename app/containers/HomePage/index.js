@@ -26,6 +26,7 @@ import {
 import AddressTitle from 'components/AddressTitle';
 import AddressBalance from 'components/AddressBalance';
 import AddressTransactions from 'components/AddressTransactions';
+import ReceiveAndPayLinks from 'components/ReceiveAndPayLinks';
 
 import * as actions from './actions';
 import reducer from './reducer';
@@ -48,6 +49,18 @@ export class HomePage extends React.Component {
     fetchUserCreated();
     fetchSessionValid();
     fetchActiveAddress();
+  }
+
+  componentDidUpdate() {
+    const { history } = this.props;
+
+    if (this.isUserNotCreated()) {
+      history.push('/signUp');
+    } else if (this.isSessionNotValid()) {
+      history.push('/logIn');
+    } else if (this.isActiveAddressNotCreated()) {
+      history.push('/mnemonic');
+    }
   }
 
   isRequesting() {
@@ -87,29 +100,6 @@ export class HomePage extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
-
-    if (this.isRequesting()) {
-      return <div>requesting</div>;
-    }
-
-    // check if there is not a user
-    if (this.isUserNotCreated()) {
-      history.push('/signUp');
-      return null;
-    }
-
-    //  check if the user is valid, if not redirect to the login page
-    if (this.isSessionNotValid()) {
-      history.push('/logIn');
-      return null;
-    }
-
-    if (this.isActiveAddressNotCreated()) {
-      history.push('/mnemonic');
-      return null;
-    }
-
     const {
       activeAddressFetchState,
       addressBalanceFetchState,
@@ -121,7 +111,7 @@ export class HomePage extends React.Component {
     const activeAddress = activeAddressFetchState.data;
     const balance = addressBalanceFetchState.data;
 
-    // TODO: set this value to the future be either USD, Eur, GBP, etc.
+    // TODO: set this value to the future be either USD, EUR, GBP, etc.
     //  As for now it is only available in USD.
     const btcToFiat = btcToFiatFetchState.data
       ? btcToFiatFetchState.data.bpi.USD
@@ -141,6 +131,7 @@ export class HomePage extends React.Component {
           btcToFiat={btcToFiat}
           networkId={networkId}
         />
+        <ReceiveAndPayLinks />
         <AddressTransactions
           transactions={transactions}
           btcToFiat={btcToFiat}

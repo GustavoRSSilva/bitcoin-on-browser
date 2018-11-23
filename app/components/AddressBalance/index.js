@@ -7,11 +7,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { USD } from 'utils/constants';
+import appMessages from 'containers/App/messages';
+
+import { USD, SAT } from 'utils/constants';
 import {
   transSatToUnit,
-  convertSatsToUnit,
-  getFiatAmount,
+  convertCryptoFromUnitToUnit,
+  getFiatAmountFromCrypto,
 } from 'utils/conversion';
 
 import { FormattedMessage } from 'react-intl';
@@ -26,11 +28,23 @@ function AddressBalance(props) {
   }
 
   const { unit } = transSatToUnit(balance.total_received);
-  const mempoolBalance = convertSatsToUnit(balance.mempool_balance, unit);
-  const confirmedBalance = convertSatsToUnit(balance.confirmed_balance, unit);
+
+  //  the value are in SAT, we need to convert them to the used unit with 4 decimals places
+  const mempoolBalance = convertCryptoFromUnitToUnit(
+    balance.mempool_balance,
+    SAT,
+    unit,
+    4,
+  );
+  const confirmedBalance = convertCryptoFromUnitToUnit(
+    balance.confirmed_balance,
+    SAT,
+    unit,
+    4,
+  );
 
   const fiatCur = USD;
-  const fiatAmount = getFiatAmount(
+  const fiatAmount = getFiatAmountFromCrypto(
     confirmedBalance,
     btcToFiat.rate_float,
     unit,
@@ -55,7 +69,7 @@ function AddressBalance(props) {
         <FormattedMessage {...messages.balance} />
       </Title>
       <Balance>
-        {balanceHTML} <FormattedMessage {...messages[unit]} />
+        {balanceHTML} <FormattedMessage {...appMessages[unit]} />
       </Balance>
       <BalanceFiat>
         {fiatAmount} <span>{fiatCur}</span>

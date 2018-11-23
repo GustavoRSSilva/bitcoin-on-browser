@@ -6,14 +6,13 @@ export const Wrapper = styled.div`
   width: 100%;
   border-bottom: 1px solid ${btcOrange};
   font-size: ${extraSmall};
-  float: left;
 `;
 
 export const AddressFragment = styled.div`
   float: left;
   width: 240px;
   height: 40px;
-  margin: 20px calc(50% - 120px);
+  margin: 10px calc(50% - 120px);
   border-radius: 5px;
   padding: 0 10px;
 

@@ -13,6 +13,8 @@ import HomePage from 'containers/HomePage/Loadable';
 import SignUp from 'containers/SignUp/Loadable';
 import LogIn from 'containers/LogIn/Loadable';
 import Mnemonic from 'containers/Mnemonic/Loadable';
+import Receive from 'containers/Receive/Loadable';
+import Send from 'containers/Send/Loadable';
 import NotSupportedPage from 'containers/NotSupportedPage/Loadable';
 import Layout from 'components/common/Layout';
 
@@ -32,6 +34,8 @@ export class App extends React.Component {
           <Route path="/signUp" exact component={SignUp} />
           <Route path="/logIn" exact component={LogIn} />
           <Route path="/mnemonic" exact component={Mnemonic} />
+          <Route path="/receive" exact component={Receive} />
+          <Route path="/send" exact component={Send} />
           <Route component={NotSupportedPage} />
         </Switch>
       </Layout>
