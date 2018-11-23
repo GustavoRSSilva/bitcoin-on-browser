@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import appMessages from 'containers/App/messages';
 
@@ -30,7 +30,13 @@ import {
 const onFocus = evt => evt.target.select();
 
 function ReceiveForm(props) {
-  const { handleChangeAmount, formValue } = props;
+  const {
+    handleChangeAmount,
+    formValue,
+    availableCryptoUnits,
+    handleChangeUnit,
+  } = props;
+  const { formatMessage } = props.intl;
 
   const amountCrypto = formValue[AMOUNT_CRYPTO];
   const unitCrypto = formValue[UNIT_CRYPTO];
@@ -49,7 +55,16 @@ function ReceiveForm(props) {
           onFocus={onFocus}
         />
         <PrimaryUnit>
-          <FormattedMessage {...appMessages[unitCrypto]} />
+          <select
+            value={unitCrypto}
+            onChange={evt => handleChangeUnit(evt, UNIT_CRYPTO)}
+          >
+            {availableCryptoUnits.map(cryptoUnit => (
+              <option key={cryptoUnit} value={cryptoUnit}>
+                {formatMessage(appMessages[cryptoUnit])}
+              </option>
+            ))}
+          </select>
         </PrimaryUnit>
       </PrimaryInputContainer>
       <SecondaryInputContainer>
@@ -69,8 +84,11 @@ function ReceiveForm(props) {
 }
 
 ReceiveForm.propTypes = {
+  intl: intlShape.isRequired,
   handleChangeAmount: PropTypes.func.isRequired,
   formValue: PropTypes.object.isRequired,
+  availableCryptoUnits: PropTypes.array.isRequired,
+  handleChangeUnit: PropTypes.func.isRequired,
 };
 
-export default ReceiveForm;
+export default injectIntl(ReceiveForm);

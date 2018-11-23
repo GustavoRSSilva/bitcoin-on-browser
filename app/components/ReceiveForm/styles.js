@@ -34,9 +34,12 @@ export const PrimaryUnit = styled.div`
   width: 30%;
   text-align: left;
   position: relative;
-  > span {
+  > select {
     position: absolute;
     bottom: 0;
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
 
