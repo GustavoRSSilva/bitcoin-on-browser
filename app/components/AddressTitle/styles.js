@@ -58,7 +58,7 @@ export const SelectFragment = styled.div`
     border: 1px solid ${grey};
     text-indent: 10px;
 
-    > input {
+    > option {
       color: black;
     }
   }

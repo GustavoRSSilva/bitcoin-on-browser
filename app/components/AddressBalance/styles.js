@@ -4,7 +4,7 @@ import { extraSmall, extraLarge } from 'styles/fontSize';
 
 export const Wrapper = styled.div`
   width: 100%;
-  text-align: 100%;
+  height: 120px;
   color: ${grey};
   padding: 20px 0;
   display: flex;

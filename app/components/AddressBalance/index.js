@@ -18,13 +18,14 @@ import {
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+import Loading from './Loading';
 
 import { Wrapper, Title, Balance, Delta, BalanceFiat } from './styles';
 
 function AddressBalance(props) {
   const { balance, btcToFiat, networkId } = props;
   if (!balance || !btcToFiat) {
-    return null;
+    return <Loading />;
   }
 
   const { unit } = transSatToUnit(balance.total_received);
