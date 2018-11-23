@@ -10,7 +10,10 @@ import { DEFAULT_SELECTED_NETWORK } from 'utils/constants';
 
 import {
   NETWORK_ID,
-  CHANGE_NETWORK_ID,
+  CHANGE_NETWORK_STATE,
+  CHANGE_NETWORK,
+  CHANGE_NETWORK_REJECTED,
+  CHANGE_NETWORK_SUCCESSFUL,
   USER_CREATED_STATE,
   FETCH_USER_CREATED,
   FETCH_USER_CREATED_REJECTED,
@@ -55,13 +58,24 @@ export const initialState = fromJS({
   [ADDRESS_BALANCE_FETCH_STATE]: setState(),
   [BTC_TO_FIAT_FETCH_STATE]: setState(),
   [ADDRESS_TRANSACTIONS_FETCH_STATE]: setState(),
+  [CHANGE_NETWORK_STATE]: setState(),
   [NETWORK_ID]: DEFAULT_SELECTED_NETWORK,
 });
 
 function appReducer(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_NETWORK_ID:
-      return state.set(NETWORK_ID, action.payload);
+    //  the change network has the probability of failure
+    //  that is why we have CHANGE_NETWORK_STATE and NETWORK_ID
+    case CHANGE_NETWORK:
+      return state.set(CHANGE_NETWORK_STATE, setState(true));
+
+    case CHANGE_NETWORK_REJECTED:
+      return state.set(CHANGE_NETWORK_STATE, setState(false, action.payload));
+
+    case CHANGE_NETWORK_SUCCESSFUL:
+      return state
+        .set(CHANGE_NETWORK_STATE, setState(false, null, action.payload))
+        .set(NETWORK_ID, action.payload);
 
     case FETCH_USER_CREATED:
       return state.set(USER_CREATED_STATE, setState(true));

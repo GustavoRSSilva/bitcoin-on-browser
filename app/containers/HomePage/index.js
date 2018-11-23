@@ -34,6 +34,12 @@ import saga from './saga';
 
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleChangeNetwork = this.handleChangeNetwork.bind(this);
+  }
+
   componentWillMount() {
     const {
       fetchSessionValid,
@@ -87,6 +93,12 @@ export class HomePage extends React.Component {
     );
   }
 
+  handleChangeNetwork(evt) {
+    const { changeNetwork } = this.props;
+    const { value } = evt.target;
+    changeNetwork(value);
+  }
+
   render() {
     const {
       activeAddressFetchState,
@@ -109,7 +121,11 @@ export class HomePage extends React.Component {
 
     return (
       <Fragment>
-        <AddressTitle address={activeAddress} networkId={networkId} />
+        <AddressTitle
+          address={activeAddress}
+          networkId={networkId}
+          handleChangeNetwork={this.handleChangeNetwork}
+        />
         <AddressBalance
           balance={balance}
           btcToFiat={btcToFiat}
@@ -139,6 +155,7 @@ HomePage.propTypes = {
   addressBalanceFetchState: PropTypes.object.isRequired,
   btcToFiatFetchState: PropTypes.object.isRequired,
   addressTransactionsFetchState: PropTypes.object.isRequired,
+  changeNetwork: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
