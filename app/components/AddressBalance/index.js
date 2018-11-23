@@ -28,7 +28,7 @@ function AddressBalance(props) {
     return <Loading />;
   }
 
-  const { unit } = transSatToUnit(balance.total_received);
+  const { unit } = transSatToUnit(balance.total_received, 4);
 
   //  the value are in SAT, we need to convert them to the used unit with 4 decimals places
   const mempoolBalance = convertCryptoFromUnitToUnit(

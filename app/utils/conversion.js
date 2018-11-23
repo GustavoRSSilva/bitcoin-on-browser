@@ -8,7 +8,7 @@ export const toFixed = (amount = 0, places) =>
  *  @returns - amount {string} - the amount
  *  @returns - unit {string} - the right unit
  * */
-export const transSatToUnit = (amountInSat = 0) => {
+export const transSatToUnit = (amountInSat = 0, decimals = null) => {
   let amount = parseFloat(amountInSat);
 
   // Convert the amount to absolute to avoid negative numbers
@@ -25,7 +25,9 @@ export const transSatToUnit = (amountInSat = 0) => {
     unit = BTC;
   }
 
-  amount = toFixed(amount, 4);
+  if (decimals !== null) {
+    amount = toFixed(amount, decimals);
+  }
 
   return { amount, unit };
 };
@@ -187,25 +189,37 @@ export const convertFiatBtcToFiatUnit = (value, unit) => {
 
 //  TODO: change fiatToBtc to btcToFiat
 //  TODO needs testing
-export const getFiatAmountFromCrypto = (amount, fiatToBtc, unit, networkId) => {
+export const getFiatAmountFromCrypto = (
+  amount,
+  fiatToBtc,
+  cryptoUnit,
+  networkId,
+) => {
   //  Testnet BTC has no value
   if (networkId === TESTNET) {
     return 0;
   }
 
-  const valueInFiat = amount * convertFiatBtcToFiatUnit(fiatToBtc, unit);
+  const valueInFiat = amount * convertFiatBtcToFiatUnit(fiatToBtc, cryptoUnit);
   return toFixed(valueInFiat, 2);
 };
 
 /**
- *  @dev convert any amount (fiat) into the Crypto unit (Btc, mBtc or Sat)
+ *  @dev convert any amount (fiat) into the Crypto amount and unit (Btc, mBtc or Sat)
  */
 //  TODO needs testing
-export const getBtcAmountFromFiat = (amount, btcToFiat, unit, networkId) => {
+export const getCryptoAmountAndUnitFromFiat = (
+  amount,
+  btcToFiat,
+  networkId,
+  decimals = null,
+) => {
   if (networkId === TESTNET) {
     return 0;
   }
 
-  const unitToFiat = convertFiatBtcToFiatUnit(btcToFiat, unit);
-  return toFixed(unitToFiat * amount, 4);
+  const satToFiat = convertFiatBtcToFiatUnit(btcToFiat, SAT);
+  const amountInSat = amount / satToFiat;
+
+  return transSatToUnit(amountInSat, decimals);
 };

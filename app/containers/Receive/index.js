@@ -15,7 +15,7 @@ import injectReducer from 'utils/injectReducer';
 import { TESTNET } from 'utils/constants';
 import {
   getFiatAmountFromCrypto,
-  getBtcAmountFromFiat,
+  getCryptoAmountAndUnitFromFiat,
   convertAmountUnitToBtc,
 } from 'utils/conversion';
 
@@ -64,7 +64,7 @@ export class Receive extends React.Component {
       return null;
     }
 
-    const value = evt.target.value || '0';
+    const value = parseFloat(evt.target.value || '0').toString();
     const {
       receiveFormValues,
       setFormValues,
@@ -77,7 +77,7 @@ export class Receive extends React.Component {
     // TODO: set this value to the future be either USD, Eur, GBP, etc.
     //  As for now it is only available in USD.
     const btcToFiat = btcToFiatFetchState.data
-      ? btcToFiatFetchState.data.bpi.USD
+      ? btcToFiatFetchState.data.bpi.USD.rate_float
       : null;
 
     const unitCrypto = receiveFormValues[UNIT_CRYPTO];
@@ -92,12 +92,14 @@ export class Receive extends React.Component {
       ).toString();
     } else if (target === AMOUNT_FIAT && networkId !== TESTNET) {
       formValues[AMOUNT_FIAT] = value;
-      formValues[AMOUNT_CRYPTO] = getBtcAmountFromFiat(
+      const { amount, unit } = getCryptoAmountAndUnitFromFiat(
         value,
         btcToFiat,
-        unitCrypto,
         networkId,
-      ).toString();
+        4,
+      );
+      formValues[AMOUNT_CRYPTO] = amount;
+      formValues[UNIT_CRYPTO] = unit;
     }
 
     return setFormValues(formValues);

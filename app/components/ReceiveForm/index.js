@@ -57,7 +57,7 @@ function ReceiveForm(props) {
           type="text"
           pattern="^\d*(\.\d*)?$"
           value={amountFiat}
-          onChange={evt => this.handleChangeAmount(evt, AMOUNT_FIAT)}
+          onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
           onFocus={onFocus}
         />
         <SecondaryUnit>
