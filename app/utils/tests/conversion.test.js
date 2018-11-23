@@ -51,6 +51,13 @@ describe('conversion', () => {
     );
   });
 
+  it('should correctly transform 0 satoshis into amount and unit', () => {
+    const valueInSat = 0;
+    const expectedValue = { amount: 0, unit: BTC };
+    const result = transSatToUnit(valueInSat);
+    expect(result).toMatchObject(expectedValue);
+  });
+
   it('should correctly transform 10 satoshis into amount and unit', () => {
     const valueInSat = 10;
     const expectedValue = { amount: 10, unit: SAT };
@@ -60,21 +67,21 @@ describe('conversion', () => {
 
   it('should correctly transform 989872 satoshis into amount and unit', () => {
     const valueInSat = 989872;
-    const expectedValue = { amount: 9.8987, unit: MBTC };
+    const expectedValue = { amount: 9.89872, unit: MBTC };
     const result = transSatToUnit(valueInSat);
     expect(result).toMatchObject(expectedValue);
   });
 
-  it('should correctly transform -1119872 satoshis into amount and unit', () => {
+  it('should correctly transform -1119872 satoshis into amount and unit with 4 decimals', () => {
     const valueInSat = -1119872;
     const expectedValue = { amount: -11.1987, unit: MBTC };
-    const result = transSatToUnit(valueInSat);
+    const result = transSatToUnit(valueInSat, 4);
     expect(result).toMatchObject(expectedValue);
   });
 
   it('should correctly transform 265342553 satoshis into amount and unit', () => {
     const valueInSat = 265342553;
-    const expectedValue = { amount: 2.6534, unit: BTC };
+    const expectedValue = { amount: 2.65342553, unit: BTC };
     const result = transSatToUnit(valueInSat);
     expect(result).toMatchObject(expectedValue);
   });
