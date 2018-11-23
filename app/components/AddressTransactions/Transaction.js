@@ -43,7 +43,7 @@ function Transaction(props) {
   return (
     <Wrapper title={txId}>
       <a href={getExplorerUrl(txId, networkId)} target="_blank">
-        <Fragment width="60%">
+        <Fragment width="65%">
           <TransId>{minTxId}</TransId>
           <Confirmed confirmed={confirmed}>
             {confirmed ? (
@@ -53,7 +53,7 @@ function Transaction(props) {
             )}
           </Confirmed>
         </Fragment>
-        <Fragment width="40%">
+        <Fragment width="35%">
           <Amount>
             {amount} {unit}
           </Amount>

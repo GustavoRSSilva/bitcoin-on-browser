@@ -1,18 +1,18 @@
 import styled from 'styled-components';
-import { btcOrange } from 'styles/colors';
+import { btcOrange, grey } from 'styles/colors';
 import { extraSmall } from 'styles/fontSize';
 
 export const Wrapper = styled.div`
   width: 100%;
-  height: 100px;
   border-bottom: 1px solid ${btcOrange};
   font-size: ${extraSmall};
 `;
 
 export const AddressFragment = styled.div`
-  height: 36px;
-  max-width: 240px;
-  margin: 7px auto;
+  float: left;
+  width: 240px;
+  height: 40px;
+  margin: 10px calc(50% - 120px);
   border-radius: 5px;
   padding: 0 10px;
 
@@ -31,9 +31,10 @@ export const AddressFragment = styled.div`
 `;
 
 export const NetworkFragment = styled.div`
-  height: 36px;
+  float: left;
   width: 100%;
-  margin: 7px auto;
+  height: 40px;
+  margin: 10px auto;
   border-radius: 5px;
   padding: 0 10px;
 
@@ -43,5 +44,18 @@ export const NetworkFragment = styled.div`
     float: left;
     text-align: center;
     margin-top: 3px;
+  }
+`;
+
+export const SelectFragment = styled.div`
+  float: left;
+  width: 100%;
+  padding: 0 calc(50% - 100px);
+
+  > select {
+    width: 100%;
+    height: 20px;
+    border: 1px solid ${grey};
+    text-indent: 10px;
   }
 `;

@@ -34,6 +34,12 @@ import saga from './saga';
 
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleChangeNetwork = this.handleChangeNetwork.bind(this);
+  }
+
   componentWillMount() {
     const {
       fetchSessionValid,
@@ -43,6 +49,18 @@ export class HomePage extends React.Component {
     fetchUserCreated();
     fetchSessionValid();
     fetchActiveAddress();
+  }
+
+  componentDidUpdate() {
+    const { history } = this.props;
+
+    if (this.isUserNotCreated()) {
+      history.push('/signUp');
+    } else if (this.isSessionNotValid()) {
+      history.push('/logIn');
+    } else if (this.isActiveAddressNotCreated()) {
+      history.push('/mnemonic');
+    }
   }
 
   isRequesting() {
@@ -75,30 +93,13 @@ export class HomePage extends React.Component {
     );
   }
 
+  handleChangeNetwork(evt) {
+    const { changeNetwork } = this.props;
+    const { value } = evt.target;
+    changeNetwork(value);
+  }
+
   render() {
-    const { history } = this.props;
-
-    if (this.isRequesting()) {
-      return <div>requesting</div>;
-    }
-
-    // check if there is not a user
-    if (this.isUserNotCreated()) {
-      history.push('/signUp');
-      return null;
-    }
-
-    //  check if the user is valid, if not redirect to the login page
-    if (this.isSessionNotValid()) {
-      history.push('/logIn');
-      return null;
-    }
-
-    if (this.isActiveAddressNotCreated()) {
-      history.push('/mnemonic');
-      return null;
-    }
-
     const {
       activeAddressFetchState,
       addressBalanceFetchState,
@@ -110,7 +111,7 @@ export class HomePage extends React.Component {
     const activeAddress = activeAddressFetchState.data;
     const balance = addressBalanceFetchState.data;
 
-    // TODO: set this value to the future be either USD, Eur, GBP, etc.
+    // TODO: set this value to the future be either USD, EUR, GBP, etc.
     //  As for now it is only available in USD.
     const btcToFiat = btcToFiatFetchState.data
       ? btcToFiatFetchState.data.bpi.USD
@@ -120,7 +121,11 @@ export class HomePage extends React.Component {
 
     return (
       <Fragment>
-        <AddressTitle address={activeAddress} networkId={networkId} />
+        <AddressTitle
+          address={activeAddress}
+          networkId={networkId}
+          handleChangeNetwork={this.handleChangeNetwork}
+        />
         <AddressBalance
           balance={balance}
           btcToFiat={btcToFiat}
@@ -150,6 +155,7 @@ HomePage.propTypes = {
   addressBalanceFetchState: PropTypes.object.isRequired,
   btcToFiatFetchState: PropTypes.object.isRequired,
   addressTransactionsFetchState: PropTypes.object.isRequired,
+  changeNetwork: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
