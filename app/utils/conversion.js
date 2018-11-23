@@ -9,6 +9,10 @@ export const toFixed = (amount = 0, places) =>
  *  @returns - unit {string} - the right unit
  * */
 export const transSatToUnit = (amountInSat = 0, decimals = null) => {
+  if (amountInSat === 0) {
+    return { amount: amountInSat, unit: BTC };
+  }
+
   let amount = parseFloat(amountInSat);
 
   // Convert the amount to absolute to avoid negative numbers
@@ -214,8 +218,8 @@ export const getCryptoAmountAndUnitFromFiat = (
   networkId,
   decimals = null,
 ) => {
-  if (networkId === TESTNET) {
-    return 0;
+  if (networkId === TESTNET || !amount) {
+    return transSatToUnit(0);
   }
 
   const satToFiat = convertFiatBtcToFiatUnit(btcToFiat, SAT);

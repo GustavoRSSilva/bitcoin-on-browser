@@ -48,7 +48,7 @@ function ReceiveForm(props) {
       <PrimaryInputContainer>
         <PrimaryInput
           type="text"
-          pattern="^\d*(\.\d*)?$"
+          pattern="^\d+(\.\d*)?$"
           id={AMOUNT_CRYPTO}
           value={amountCrypto}
           onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}

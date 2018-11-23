@@ -59,13 +59,27 @@ export class Receive extends React.Component {
    *       Changes the form amout values
    *       On TESTNET (bitcoin testnet) the amount in fiat is always zero
    */
+  // TODO: Test this!!
   handleChangeAmount(evt, target) {
     //  thw value needs to pass the regex
     if (evt.target.value && !evt.target.validity.valid) {
       return null;
     }
 
-    const value = parseFloat(evt.target.value || '0').toString();
+    let value = evt.target.value || '0';
+
+    //  remove zeros at the left after the first
+    //  ex: 001. => 1.,
+    //  ex: 00.1 => 0.1
+    //  ex: 012 => 12
+    //  ex: . => 0.
+    if (value === '.') {
+      value = '0.';
+    }
+    const valSplit = value.split('.');
+    const addPoint = valSplit[1] !== undefined ? `.${valSplit[1]}` : '';
+    value = `${parseInt(valSplit[0] || '0', 10)}${addPoint}`;
+
     const {
       receiveFormValues,
       setFormValues,
@@ -86,7 +100,7 @@ export class Receive extends React.Component {
     if (target === AMOUNT_CRYPTO) {
       formValues[AMOUNT_CRYPTO] = value;
       formValues[AMOUNT_FIAT] = getFiatAmountFromCrypto(
-        value,
+        parseFloat(value),
         btcToFiat,
         unitCrypto,
         networkId,
@@ -94,7 +108,7 @@ export class Receive extends React.Component {
     } else if (target === AMOUNT_FIAT && networkId !== TESTNET) {
       formValues[AMOUNT_FIAT] = value;
       const { amount, unit } = getCryptoAmountAndUnitFromFiat(
-        value,
+        parseFloat(value),
         btcToFiat,
         networkId,
         4,
