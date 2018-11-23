@@ -1,10 +1,11 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import Layout from '../index';
+import Layout from '../index';
 
 describe('<Layout />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('renders 1 <Layout /> component', () => {
+    const component = shallow(<Layout />);
+    expect(component).toHaveLength(1);
   });
 });
