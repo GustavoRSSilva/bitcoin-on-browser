@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import ReceiveAndPayLinks from '../index';
+// import ReceiveAndSendLinks from '../index';
 
-describe('<ReceiveAndPayLinks />', () => {
+describe('<ReceiveAndSendLinks />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

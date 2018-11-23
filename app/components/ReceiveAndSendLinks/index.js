@@ -1,6 +1,6 @@
 /**
  *
- * ReceiveAndPayLinks
+ * ReceiveAndSendLinks
  *
  */
 
@@ -12,7 +12,7 @@ import messages from './messages';
 
 import { Wrapper, LinkContainer } from './styles';
 
-function ReceiveAndPayLinks() {
+function ReceiveAndSendLinks() {
   return (
     <Wrapper>
       <LinkContainer>
@@ -29,4 +29,4 @@ function ReceiveAndPayLinks() {
   );
 }
 
-export default ReceiveAndPayLinks;
+export default ReceiveAndSendLinks;

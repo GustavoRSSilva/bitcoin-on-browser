@@ -7,7 +7,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
@@ -22,7 +21,7 @@ import {
 
 import CloseButton from 'components/common/CloseButton';
 import QRCode from 'components/common/QRCode';
-import appMessages from 'containers/App/messages';
+import ReceiveForm from 'components/ReceiveForm';
 
 import {
   selectActiveAddressFetchState,
@@ -30,12 +29,7 @@ import {
   selectBtcToFiatFetchState,
 } from 'containers/App/selectors';
 
-import {
-  AMOUNT_CRYPTO,
-  UNIT_CRYPTO,
-  AMOUNT_FIAT,
-  UNIT_FIAT,
-} from './constants';
+import { AMOUNT_CRYPTO, UNIT_CRYPTO, AMOUNT_FIAT } from './constants';
 import { selectFormValues } from './selectors';
 import * as actions from './actions';
 import reducer from './reducer';
@@ -45,6 +39,7 @@ export class Receive extends React.Component {
   constructor(props) {
     super(props);
     this.handleLeavePage = this.handleLeavePage.bind(this);
+    this.handleChangeAmount = this.handleChangeAmount.bind(this);
   }
 
   componentWillMount() {
@@ -77,7 +72,7 @@ export class Receive extends React.Component {
       networkId,
     } = this.props;
 
-    const formValues = receiveFormValues;
+    const formValues = { ...receiveFormValues };
 
     // TODO: set this value to the future be either USD, Eur, GBP, etc.
     //  As for now it is only available in USD.
@@ -94,7 +89,7 @@ export class Receive extends React.Component {
         btcToFiat,
         unitCrypto,
         networkId,
-      );
+      ).toString();
     } else if (target === AMOUNT_FIAT && networkId !== TESTNET) {
       formValues[AMOUNT_FIAT] = value;
       formValues[AMOUNT_CRYPTO] = getBtcAmountFromFiat(
@@ -102,8 +97,9 @@ export class Receive extends React.Component {
         btcToFiat,
         unitCrypto,
         networkId,
-      );
+      ).toString();
     }
+
     return setFormValues(formValues);
   }
 
@@ -119,30 +115,10 @@ export class Receive extends React.Component {
     }
 
     return (
-      <div>
-        <label htmlFor={AMOUNT_CRYPTO}>
-          <input
-            type="text"
-            pattern="^\d*(\.\d*)?$"
-            id={AMOUNT_CRYPTO}
-            value={receiveFormValues[AMOUNT_CRYPTO]}
-            onChange={evt => this.handleChangeAmount(evt, AMOUNT_CRYPTO)}
-            onFocus={evt => evt.target.select()}
-          />
-          <FormattedMessage {...appMessages[receiveFormValues[UNIT_CRYPTO]]} />
-        </label>
-        <label htmlFor={AMOUNT_FIAT}>
-          <input
-            type="text"
-            pattern="^\d*(\.\d*)?$"
-            id={AMOUNT_FIAT}
-            value={receiveFormValues[AMOUNT_FIAT]}
-            onChange={evt => this.handleChangeAmount(evt, AMOUNT_FIAT)}
-            onFocus={evt => evt.target.select()}
-          />
-          <FormattedMessage {...appMessages[receiveFormValues[UNIT_FIAT]]} />
-        </label>
-      </div>
+      <ReceiveForm
+        handleChangeAmount={this.handleChangeAmount}
+        formValue={receiveFormValues}
+      />
     );
   }
 

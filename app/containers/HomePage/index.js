@@ -26,7 +26,7 @@ import {
 import AddressTitle from 'components/AddressTitle';
 import AddressBalance from 'components/AddressBalance';
 import AddressTransactions from 'components/AddressTransactions';
-import ReceiveAndPayLinks from 'components/ReceiveAndPayLinks';
+import ReceiveAndSendLinks from 'components/ReceiveAndSendLinks';
 
 import * as actions from './actions';
 import reducer from './reducer';
@@ -131,7 +131,7 @@ export class HomePage extends React.Component {
           btcToFiat={btcToFiat}
           networkId={networkId}
         />
-        <ReceiveAndPayLinks />
+        <ReceiveAndSendLinks />
         <AddressTransactions
           transactions={transactions}
           btcToFiat={btcToFiat}
