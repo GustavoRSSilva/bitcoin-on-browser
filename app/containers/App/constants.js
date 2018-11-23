@@ -15,8 +15,13 @@ export const PASSWORD = 's';
 export const MNEMONIC = 'p';
 export const ACTIVE_ADDRESS = 'ad';
 export const USER_ADDRESSES = 'uer';
+export const NETWORK = 'vs';
 
 export const NETWORK_ID = 'network_id';
+export const FETCH_NETWORK_STATE = `${path}FETCH_NETWORK_STATE`;
+export const FETCH_NETWORK = `${path}FETCH_NETWORK`;
+export const FETCH_NETWORK_REJECTED = `${path}FETCH_NETWORK_REJECTED`;
+export const FETCH_NETWORK_SUCCESSFUL = `${path}FETCH_NETWORK_SUCCESSFUL`;
 export const CHANGE_NETWORK_STATE = 'change_network_state';
 export const CHANGE_NETWORK = `${path}CHANGE_NETWORK`;
 export const CHANGE_NETWORK_REJECTED = `${path}CHANGE_NETWORK_REJECTED`;

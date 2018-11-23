@@ -26,7 +26,7 @@ import {
 import AddressTitle from 'components/AddressTitle';
 import AddressBalance from 'components/AddressBalance';
 import AddressTransactions from 'components/AddressTransactions';
-import ReceiveAndPayLinks from 'components/ReceiveAndPayLinks';
+import ReceiveAndSendLinks from 'components/ReceiveAndSendLinks';
 
 import * as actions from './actions';
 import reducer from './reducer';
@@ -42,10 +42,13 @@ export class HomePage extends React.Component {
 
   componentWillMount() {
     const {
+      fetchNetwork,
       fetchSessionValid,
       fetchUserCreated,
       fetchActiveAddress,
     } = this.props;
+
+    fetchNetwork();
     fetchUserCreated();
     fetchSessionValid();
     fetchActiveAddress();
@@ -127,11 +130,11 @@ export class HomePage extends React.Component {
           handleChangeNetwork={this.handleChangeNetwork}
         />
         <AddressBalance
+          networkId={networkId}
           balance={balance}
           btcToFiat={btcToFiat}
-          networkId={networkId}
         />
-        <ReceiveAndPayLinks />
+        <ReceiveAndSendLinks />
         <AddressTransactions
           transactions={transactions}
           btcToFiat={btcToFiat}
@@ -145,6 +148,7 @@ export class HomePage extends React.Component {
 
 HomePage.propTypes = {
   networkId: PropTypes.string.isRequired,
+  fetchNetwork: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   fetchUserCreated: PropTypes.func.isRequired,
   userCreatedState: PropTypes.object.isRequired,

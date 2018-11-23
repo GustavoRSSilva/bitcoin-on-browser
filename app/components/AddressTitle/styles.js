@@ -57,5 +57,9 @@ export const SelectFragment = styled.div`
     height: 20px;
     border: 1px solid ${grey};
     text-indent: 10px;
+
+    > option {
+      color: black;
+    }
   }
 `;

@@ -5,6 +5,7 @@
  */
 
 import {
+  fetchNetwork,
   fetchUserCreated,
   fetchSessionValid,
   fetchActiveAddress,
@@ -19,6 +20,7 @@ export function defaultAction() {
 }
 
 export {
+  fetchNetwork,
   fetchSessionValid,
   fetchUserCreated,
   fetchActiveAddress,
