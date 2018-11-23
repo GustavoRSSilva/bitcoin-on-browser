@@ -12,7 +12,7 @@ import { bindActionCreators, compose } from 'redux';
 
 import injectReducer from 'utils/injectReducer';
 
-import { TESTNET, BTC, AVAILABLE_CRYPTO_UNITS } from 'utils/constants';
+import { BTC, AVAILABLE_CRYPTO_UNITS } from 'utils/constants';
 import {
   getFiatAmountFromCrypto,
   getCryptoAmountAndUnitFromFiat,
@@ -89,13 +89,13 @@ export class Receive extends React.Component {
 
     const formValues = { ...receiveFormValues };
 
+    const unitCrypto = receiveFormValues[UNIT_CRYPTO];
+
     // TODO: set this value to the future be either USD, Eur, GBP, etc.
     //  As for now it is only available in USD.
     const btcToFiat = btcToFiatFetchState.data
       ? btcToFiatFetchState.data.bpi.USD.rate_float
       : null;
-
-    const unitCrypto = receiveFormValues[UNIT_CRYPTO];
 
     if (target === AMOUNT_CRYPTO) {
       formValues[AMOUNT_CRYPTO] = value;
@@ -105,7 +105,7 @@ export class Receive extends React.Component {
         unitCrypto,
         networkId,
       ).toString();
-    } else if (target === AMOUNT_FIAT && networkId !== TESTNET) {
+    } else if (target === AMOUNT_FIAT) {
       formValues[AMOUNT_FIAT] = value;
       const { amount, unit } = getCryptoAmountAndUnitFromFiat(
         parseFloat(value),
@@ -149,7 +149,7 @@ export class Receive extends React.Component {
   }
 
   renderReceiveForm() {
-    const { receiveFormValues } = this.props;
+    const { receiveFormValues, networkId } = this.props;
 
     if (!receiveFormValues[UNIT_CRYPTO]) {
       return null;
@@ -157,6 +157,7 @@ export class Receive extends React.Component {
 
     return (
       <ReceiveForm
+        networkId={networkId}
         handleChangeAmount={this.handleChangeAmount}
         formValue={receiveFormValues}
         availableCryptoUnits={AVAILABLE_CRYPTO_UNITS}

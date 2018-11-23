@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 import appMessages from 'containers/App/messages';
 
-import { USD, SAT } from 'utils/constants';
+import { USD, SAT, TESTNET } from 'utils/constants';
 import {
   transSatToUnit,
   convertCryptoFromUnitToUnit,
@@ -44,7 +44,6 @@ function AddressBalance(props) {
     4,
   );
 
-  const fiatCur = USD;
   const fiatAmount = getFiatAmountFromCrypto(
     confirmedBalance,
     btcToFiat.rate_float,
@@ -72,17 +71,25 @@ function AddressBalance(props) {
       <Balance>
         {balanceHTML} <FormattedMessage {...appMessages[unit]} />
       </Balance>
-      <BalanceFiat>
-        {fiatAmount} <span>{fiatCur}</span>
-      </BalanceFiat>
+      {(() => {
+        if (networkId === TESTNET) {
+          return null;
+        }
+
+        return (
+          <BalanceFiat>
+            {fiatAmount} <FormattedMessage {...appMessages[USD]} />
+          </BalanceFiat>
+        );
+      })()}
     </Wrapper>
   );
 }
 
 AddressBalance.propTypes = {
+  networkId: PropTypes.string.isRequired,
   balance: PropTypes.object,
   btcToFiat: PropTypes.object,
-  networkId: PropTypes.string.isRequired,
 };
 
 export default AddressBalance;

@@ -130,9 +130,9 @@ export class HomePage extends React.Component {
           handleChangeNetwork={this.handleChangeNetwork}
         />
         <AddressBalance
+          networkId={networkId}
           balance={balance}
           btcToFiat={btcToFiat}
-          networkId={networkId}
         />
         <ReceiveAndSendLinks />
         <AddressTransactions

@@ -4,6 +4,7 @@ import { extraLarge } from 'styles/fontSize';
 export const Wrapper = styled.div`
   width: 100%;
   margin-top: 20px;
+  height: 127px;
   display: flex;
   flex-direction: column;
 

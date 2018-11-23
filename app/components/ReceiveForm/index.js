@@ -10,6 +10,8 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import appMessages from 'containers/App/messages';
 
+import { TESTNET } from 'utils/constants';
+
 import {
   AMOUNT_CRYPTO,
   UNIT_CRYPTO,
@@ -31,6 +33,7 @@ const onFocus = evt => evt.target.select();
 
 function ReceiveForm(props) {
   const {
+    networkId,
     handleChangeAmount,
     formValue,
     availableCryptoUnits,
@@ -67,24 +70,33 @@ function ReceiveForm(props) {
           </select>
         </PrimaryUnit>
       </PrimaryInputContainer>
-      <SecondaryInputContainer>
-        <SecondaryInput
-          type="text"
-          pattern="^\d*(\.\d*)?$"
-          value={amountFiat}
-          onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
-          onFocus={onFocus}
-        />
-        <SecondaryUnit>
-          <FormattedMessage {...appMessages[unitFiat]} />
-        </SecondaryUnit>
-      </SecondaryInputContainer>
+      {(() => {
+        if (networkId === TESTNET) {
+          return null;
+        }
+
+        return (
+          <SecondaryInputContainer>
+            <SecondaryInput
+              type="text"
+              pattern="^\d*(\.\d*)?$"
+              value={amountFiat}
+              onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
+              onFocus={onFocus}
+            />
+            <SecondaryUnit>
+              <FormattedMessage {...appMessages[unitFiat]} />
+            </SecondaryUnit>
+          </SecondaryInputContainer>
+        );
+      })()}
     </Wrapper>
   );
 }
 
 ReceiveForm.propTypes = {
   intl: intlShape.isRequired,
+  networkId: PropTypes.string.isRequired,
   handleChangeAmount: PropTypes.func.isRequired,
   formValue: PropTypes.object.isRequired,
   availableCryptoUnits: PropTypes.array.isRequired,
