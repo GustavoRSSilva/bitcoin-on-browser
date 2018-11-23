@@ -42,10 +42,13 @@ export class HomePage extends React.Component {
 
   componentWillMount() {
     const {
+      fetchNetwork,
       fetchSessionValid,
       fetchUserCreated,
       fetchActiveAddress,
     } = this.props;
+
+    fetchNetwork();
     fetchUserCreated();
     fetchSessionValid();
     fetchActiveAddress();
@@ -145,6 +148,7 @@ export class HomePage extends React.Component {
 
 HomePage.propTypes = {
   networkId: PropTypes.string.isRequired,
+  fetchNetwork: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   fetchUserCreated: PropTypes.func.isRequired,
   userCreatedState: PropTypes.object.isRequired,
