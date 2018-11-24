@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { Input as InputHTML } from './styles';
 
 function Input(props) {
-  return <InputHTML {...props} />;
+  return <InputHTML {...props} onFocus={evt => evt.target.select()} />;
 }
 
 Input.propTypes = {
