@@ -91,7 +91,7 @@ export class Receive extends React.Component {
 
     const unitCrypto = receiveFormValues[UNIT_CRYPTO];
 
-    // TODO: set this value to the future be either USD, Eur, GBP, etc.
+    // TODO: set this value to the future be either USD, EUR, GBP, etc.
     //  As for now it is only available in USD.
     const btcToFiat = btcToFiatFetchState.data
       ? btcToFiatFetchState.data.bpi.USD.rate_float
