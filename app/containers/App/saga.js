@@ -1,7 +1,8 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
-import { saveItem, getItem } from 'utils/storage';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
+import { saveItem, getItem } from 'utils/storage';
+import { getTransactionsUtxos } from 'utils/transactions';
 
 import {
   COINDESK_CURRENT_PRICE_URL,
@@ -19,6 +20,7 @@ import {
   USER,
   PASSWORD,
   MNEMONIC,
+  CHANGE_NETWORK,
   FETCH_NETWORK,
   ACTIVE_ADDRESS,
   USER_ADDRESSES,
@@ -29,7 +31,6 @@ import {
   FETCH_ADDRESS_BALANCE,
   FETCH_BTC_TO_FIAT_VALUE,
   FETCH_ADDRESS_TRANSACTIONS,
-  CHANGE_NETWORK,
 } from './constants';
 
 import {
@@ -54,6 +55,7 @@ import {
   fetchAddressTransactionsSuccessful,
   changeNetworkRejected,
   changeNetworkSuccessful,
+  setAddressUxtos,
 } from './actions';
 
 import { selectNetworkId } from './selectors';
@@ -251,13 +253,13 @@ function* callGetBtcToFiatValue() {
 
 function* callGetaddressTransactions(action) {
   try {
+    const address = action.payload;
     const selectedNetwork = yield select(selectNetworkId());
-    const result = yield call(
-      getAddressTransactions,
-      action.payload,
-      selectedNetwork,
-    );
-    yield put(fetchAddressTransactionsSuccessful(result.data));
+    const result = yield call(getAddressTransactions, address, selectedNetwork);
+    const transactions = result.data;
+    yield put(fetchAddressTransactionsSuccessful(transactions));
+    const utxos = getTransactionsUtxos(transactions, address);
+    yield put(setAddressUxtos(utxos));
   } catch (e) {
     yield put(fetchAddressTransactionsRejected());
   }
