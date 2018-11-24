@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CloseButton /> correctly match the snapshot 1`] = `
+<styles__Wrapper>
+  <button
+    onClick={[Function]}
+    onKeyDown={[Function]}
+  >
+    <img
+      alt="close_button"
+      src="IMAGE_MOCK"
+    />
+  </button>
+</styles__Wrapper>
+`;

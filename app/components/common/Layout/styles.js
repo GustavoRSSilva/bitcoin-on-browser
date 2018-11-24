@@ -8,7 +8,8 @@ export const Layout = styled.div`
   height: 600px;
   margin: 0 auto;
   background-color: ${dark};
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   color: white;
   display: flex;
   flex-direction: column;
