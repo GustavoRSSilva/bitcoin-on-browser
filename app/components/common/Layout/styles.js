@@ -11,8 +11,7 @@ export const Layout = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   color: white;
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
 
   @media screen and (min-width: 768px) {
     margin: 20px calc((100% - ${extensionWidth}) / 2);

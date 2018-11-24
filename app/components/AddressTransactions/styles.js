@@ -1,28 +1,24 @@
 import styled from 'styled-components';
-import {
-  grey,
-  steelGrey,
-  lightGreen,
-  yellow,
-  ivory,
-  lightBlue,
-} from 'styles/colors';
-import { extraSmall, large } from 'styles/fontSize';
+import { grey, steelGrey, lightGreen, yellow, ivory } from 'styles/colors';
+import { extraSmall, small } from 'styles/fontSize';
+
+export const Wrapper = styled.div`
+  margin: 60px 0 20px 0;
+`;
 
 export const Title = styled.div`
-  margin-top: 40px;
-  color: ${lightBlue};
+  color: ${grey};
   width: 100%;
-  padding: 0 20px;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
+  letter-spacing: 1px;
 `;
 
 export const NoTransactions = styled.div`
   width: 100%;
   text-align: center;
-  font-size: ${large};
+  font-size: ${small};
   color: ${grey};
   font-weight: bold;
   margin-top: 10px;
@@ -31,11 +27,9 @@ export const NoTransactions = styled.div`
 export const Transaction = styled.div`
   width: calc(100% - 6px);
   height: 80px;
-  background-color: ${steelGrey};
   border: 1px solid ${grey};
   border-radius: 5px;
   margin: 5px 3px;
-
   margin-top: 10px;
   color: ${grey};
   > a {
@@ -49,8 +43,7 @@ export const Transaction = styled.div`
 
   &:hover {
     cursor: pointer;
-    border: 1px solid ${lightBlue};
-    color: ${lightBlue};
+    background-color: ${steelGrey};
   }
 `;
 
