@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
-import Input from 'components/common/Input';
+import TextField from 'components/common/TextField';
 import Button from 'components/common/Button';
 import { Error } from 'components/common/Messages';
 
@@ -27,12 +27,12 @@ function SignUpForm(props) {
 
   return (
     <form onSubmit={handleSubmitForm}>
-      <Input
+      <TextField
         value={password || ''}
         onChange={handleSetPassword}
         placeholder={formatMessage(messages.new_password)}
       />
-      <Input
+      <TextField
         value={confirmPassword || ''}
         onChange={handleSetConfirmPassword}
         placeholder={formatMessage(messages.confirm_password)}

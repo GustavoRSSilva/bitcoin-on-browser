@@ -12,7 +12,11 @@ export default defineMessages({
     defaultMessage: 'This is the SignUpForm component !',
   },
   new_password: {
-    id: 'app.containers.SignUpForm.password',
+    id: 'app.containers.SignUpForm.new_password',
+    defaultMessage: 'New Password',
+  },
+  new_password_rules: {
+    id: 'app.containers.SignUpForm.new_password_rules',
     defaultMessage: 'New Password (min 8 chars)',
   },
   confirm_password: {
