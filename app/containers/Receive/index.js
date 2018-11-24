@@ -185,7 +185,7 @@ export class Receive extends React.Component {
       <QRCode
         key={`${activeAddress}-${amountBtc}`}
         alt="qr-code"
-        src={`https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=bitcoin:${activeAddress}?&amount=${amountBtc}`}
+        src={`https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${activeAddress}&amount=${amountBtc}`}
         address={activeAddress}
         displayAddress
       />
