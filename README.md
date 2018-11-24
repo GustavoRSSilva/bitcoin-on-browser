@@ -48,7 +48,7 @@ The extension will works as a small RPC that will comunicate with a public node.
 - New address
 - List address balance (done)
 - Send funds
-- Receive funds
+- Receive funds (done)
 - List address transactions (done)
 - List address utxos
 - WYLTCAC (Would you like to create a channel)
