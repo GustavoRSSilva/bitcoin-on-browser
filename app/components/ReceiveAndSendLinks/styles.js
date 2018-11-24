@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
 import { primaryButton, primaryButtonHover } from 'styles/colors';
 
 export const Wrapper = styled.div`
@@ -8,19 +10,16 @@ export const Wrapper = styled.div`
   margin-top: 20px;
 `;
 
-export const LinkContainer = styled.div`
+export const LinkContainer = styled(Link)`
   border-radius: 5px;
-  color: ${primaryButton};
-  border: 1px solid ${primaryButton};
+  width: 120px;
+  background-color: ${primaryButton};
   text-transform: uppercase;
   font-weight: bold;
+  padding: 10px 20px;
+  text-align: center;
 
   &:hover {
-    color: ${primaryButtonHover};
-    border: 1px solid ${primaryButtonHover};
-  }
-
-  span {
-    padding: 10px 20px;
+    background-color: ${primaryButtonHover};
   }
 `;
