@@ -9,6 +9,8 @@ export const Header = styled.header`
   font-size: ${large};
   text-transform: uppercase;
   font-weight: bold;
+  line-height: 50px;
+  display: flex;
 
   > img {
     width: 30px;

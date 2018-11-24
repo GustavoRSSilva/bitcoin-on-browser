@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 
 import messages from './messages';
 import Transaction from './Transaction';
-import { Title, NoTransactions } from './styles';
+import { Wrapper, Title, NoTransactions } from './styles';
 
 const renderTransactions = (
   transactions = [],
@@ -42,12 +42,12 @@ function AddressTransactions(props) {
   const { transactions, btcToFiat, address, networkId } = props;
 
   return (
-    <div>
+    <Wrapper>
       <Title>
         <FormattedMessage {...messages.header} />
       </Title>
       {renderTransactions(transactions, btcToFiat, address, networkId)}
-    </div>
+    </Wrapper>
   );
 }
 

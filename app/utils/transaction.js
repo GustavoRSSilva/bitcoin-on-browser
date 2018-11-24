@@ -3,7 +3,7 @@
  *  @dev - calculate the amount that an address spend or recieved in a transaction
  *  @params - Object {transaction} - the transaction that the address will map.
  *  @params - string {address} - the user address
- *  @returns {int} the address difference spend and recieved in the transaction
+ *  @returns {int - satoshis} the address difference spend and recieved in the transaction
  */
 export const calculateTransactionAddressRecieved = (
   transaction = null,

@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 
 import messages from './messages';
@@ -15,15 +14,11 @@ import { Wrapper, LinkContainer } from './styles';
 function ReceiveAndSendLinks() {
   return (
     <Wrapper>
-      <LinkContainer>
-        <Link to="/receive">
-          <FormattedMessage {...messages.receive} />
-        </Link>
+      <LinkContainer to="/receive">
+        <FormattedMessage {...messages.receive} />
       </LinkContainer>
-      <LinkContainer>
-        <Link to="/send">
-          <FormattedMessage {...messages.send} />
-        </Link>
+      <LinkContainer to="/send">
+        <FormattedMessage {...messages.send} />
       </LinkContainer>
     </Wrapper>
   );
