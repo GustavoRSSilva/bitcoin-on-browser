@@ -1,23 +1,10 @@
 import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
 
-import { white, primaryButton, primaryButtonHover } from 'styles/colors';
-import { large } from 'styles/fontSize';
-
-export const Button = styled.button`
-  width: 60%;
-  margin: 0 20%;
-  text-transform: uppercase;
-  color: ${white};
-  font-weight: bold;
-  padding: 10px 0;
-  border-radius: 5px;
-  margin-top: 30px;
-  background-color: ${primaryButton};
-  letter-spacing: 1px;
-  font-size: ${large};
-
-  &:hover {
-    cursor: pointer;
-    background-color: ${primaryButtonHover};
-  }
+export const Wrapper = styled.div`
+  width: 100%;
+  padding: 0 calc(50% - 60px);
+  margin: 30px 0;
 `;
+
+export const ButtonStyled = styled(Button)``;

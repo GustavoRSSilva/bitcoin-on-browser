@@ -50,7 +50,7 @@ function SignUpForm(props) {
 SignUpForm.propTypes = {
   intl: intlShape.isRequired,
   password: PropTypes.string.isRequired,
-  confirmPassword: PropTypes.func.isRequired,
+  confirmPassword: PropTypes.string.isRequired,
   handleSubmitForm: PropTypes.func.isRequired,
   handleSetPassword: PropTypes.func.isRequired,
   handleSetConfirmPassword: PropTypes.func.isRequired,
