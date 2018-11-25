@@ -10,7 +10,8 @@ export const Wrapper = styled.div`
 `;
 
 export const PrimaryInputContainer = styled.div`
-  width: 100%;
+  width: 90%;
+  margin: 0 5%;
   position: relative;
   height: 55px;
   input {
