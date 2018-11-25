@@ -14,7 +14,7 @@ import { bindActionCreators, compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import Input from 'components/common/Input';
+import TextField from 'components/common/TextField';
 import Button from 'components/common/Button';
 import { Error } from 'components/common/Messages';
 import PageTitle from 'components/common/PageTitle';
@@ -118,10 +118,11 @@ export class LogIn extends React.Component {
           <FormattedMessage {...messages.header} />
         </PageTitle>
         <form onSubmit={this.handleSubmitForm}>
-          <Input
+          <TextField
             value={password || ''}
             onChange={this.handleSetPassword}
             placeholder={formatMessage(messages.password)}
+            type="password"
           />
 
           {this.renderErrorMessage()}

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { btcOrange, grey } from 'styles/colors';
+import { btcOrange } from 'styles/colors';
 import { extraSmall } from 'styles/fontSize';
 
 export const Wrapper = styled.div`
   width: 100%;
-  height: 120px;
+  height: 140px;
   border-bottom: 1px solid ${btcOrange};
   font-size: ${extraSmall};
 `;
@@ -34,10 +34,13 @@ export const AddressFragment = styled.div`
 export const NetworkFragment = styled.div`
   float: left;
   width: 100%;
-  height: 40px;
+  height: 60px;
   margin: 10px auto;
   border-radius: 5px;
   padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   > span {
     width: 100%;
@@ -49,18 +52,6 @@ export const NetworkFragment = styled.div`
 `;
 
 export const SelectFragment = styled.div`
-  float: left;
   width: 100%;
-  padding: 0 calc(50% - 100px);
-
-  > select {
-    width: 100%;
-    height: 20px;
-    border: 1px solid ${grey};
-    text-indent: 10px;
-
-    > option {
-      color: black;
-    }
-  }
+  text-align: center;
 `;

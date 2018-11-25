@@ -9,14 +9,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
+import { bindActionCreators, compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
 import CloseButton from 'components/common/CloseButton';
+import SendAdvancedCard from 'components/SendAdvancedCard';
 
-import makeSelectSend from './selectors';
+import { selectAddressUtxos } from 'containers/App/selectors';
+
+import * as actions from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -37,11 +40,17 @@ export class Send extends React.Component {
     return <CloseButton onClick={this.handleLeavePage} />;
   }
 
+  renderAdvanced(addressUtxos) {
+    return <SendAdvancedCard utxos={addressUtxos} />;
+  }
+
   render() {
+    const { addressUtxos } = this.props;
     return (
       <div>
         {this.renderCloseButton()}
         <FormattedMessage {...messages.header} />
+        {this.renderAdvanced(addressUtxos)}
       </div>
     );
   }
@@ -49,18 +58,14 @@ export class Send extends React.Component {
 
 Send.propTypes = {
   history: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  addressUtxos: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  send: makeSelectSend(),
+  addressUtxos: selectAddressUtxos(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const withConnect = connect(
   mapStateToProps,

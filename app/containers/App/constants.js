@@ -18,7 +18,7 @@ export const USER_ADDRESSES = 'uer';
 export const NETWORK = 'vs';
 
 export const NETWORK_ID = 'network_id';
-export const FETCH_NETWORK_STATE = `${path}FETCH_NETWORK_STATE`;
+export const FETCH_NETWORK_STATE = `fetch_network_state`;
 export const FETCH_NETWORK = `${path}FETCH_NETWORK`;
 export const FETCH_NETWORK_REJECTED = `${path}FETCH_NETWORK_REJECTED`;
 export const FETCH_NETWORK_SUCCESSFUL = `${path}FETCH_NETWORK_SUCCESSFUL`;
@@ -65,3 +65,6 @@ export const ADDRESS_TRANSACTIONS_FETCH_STATE =
 export const FETCH_ADDRESS_TRANSACTIONS = `${path}FETCH_ADDRESS_TRANSACTIONS`;
 export const FETCH_ADDRESS_TRANSACTIONS_REJECTED = `${path}FETCH_ADDRESS_TRANSACTIONS_REJECTED`;
 export const FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL = `${path}FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL`;
+
+export const ADDRESS_UXTOS = 'address_utxos';
+export const SET_ADDRESS_UXTOS = `${path}SET_ADDRESS_UXTOS`;

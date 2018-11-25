@@ -32,6 +32,7 @@ import {
   FETCH_ADDRESS_TRANSACTIONS,
   FETCH_ADDRESS_TRANSACTIONS_REJECTED,
   FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL,
+  SET_ADDRESS_UXTOS,
 } from './constants';
 
 export function fetchNetwork() {
@@ -213,6 +214,13 @@ export function fetchAddressTransactionsRejected(payload) {
 export function fetchAddressTransactionsSuccessful(payload) {
   return {
     type: FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL,
+    payload,
+  };
+}
+
+export function setAddressUxtos(payload) {
+  return {
+    type: SET_ADDRESS_UXTOS,
     payload,
   };
 }

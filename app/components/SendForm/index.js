@@ -1,15 +1,12 @@
 /**
  *
- * ReceiveForm
+ * SendForm
  *
  */
 
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-
-import Select from 'components/common/Select';
-import TextField from 'components/common/TextField';
 
 import appMessages from 'containers/App/messages';
 
@@ -25,16 +22,16 @@ import {
 import {
   Wrapper,
   PrimaryInputContainer,
+  PrimaryInput,
   PrimaryUnit,
   SecondaryInputContainer,
+  SecondaryInput,
   SecondaryUnit,
 } from './styles';
 
 const onFocus = evt => evt.target.select();
 
-const toString = val => val.toString().substring(0, 16);
-
-function ReceiveForm(props) {
+function SendForm(props) {
   const {
     networkId,
     handleChangeAmount,
@@ -52,28 +49,25 @@ function ReceiveForm(props) {
   return (
     <Wrapper>
       <PrimaryInputContainer>
-        <TextField
+        <PrimaryInput
           type="text"
           pattern="^\d+(\.\d*)?$"
           id={AMOUNT_CRYPTO}
-          value={toString(amountCrypto)}
+          value={amountCrypto}
           onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
           onFocus={onFocus}
-          variant="standard"
         />
         <PrimaryUnit>
-          <Select
+          <select
             value={unitCrypto}
             onChange={evt => handleChangeUnit(evt, UNIT_CRYPTO)}
-            border="none"
-            margin="0"
           >
             {availableCryptoUnits.map(cryptoUnit => (
               <option key={cryptoUnit} value={cryptoUnit}>
                 {formatMessage(appMessages[cryptoUnit])}
               </option>
             ))}
-          </Select>
+          </select>
         </PrimaryUnit>
       </PrimaryInputContainer>
       {(() => {
@@ -83,13 +77,12 @@ function ReceiveForm(props) {
 
         return (
           <SecondaryInputContainer>
-            <TextField
+            <SecondaryInput
               type="text"
               pattern="^\d*(\.\d*)?$"
-              value={toString(amountFiat)}
+              value={amountFiat}
               onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
               onFocus={onFocus}
-              variant="standard"
             />
             <SecondaryUnit>
               <FormattedMessage {...appMessages[unitFiat]} />
@@ -101,7 +94,7 @@ function ReceiveForm(props) {
   );
 }
 
-ReceiveForm.propTypes = {
+SendForm.propTypes = {
   intl: intlShape.isRequired,
   networkId: PropTypes.string.isRequired,
   handleChangeAmount: PropTypes.func.isRequired,
@@ -110,4 +103,4 @@ ReceiveForm.propTypes = {
   handleChangeUnit: PropTypes.func.isRequired,
 };
 
-export default injectIntl(ReceiveForm);
+export default injectIntl(SendForm);

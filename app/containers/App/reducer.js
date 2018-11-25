@@ -46,6 +46,8 @@ import {
   FETCH_ADDRESS_TRANSACTIONS,
   FETCH_ADDRESS_TRANSACTIONS_REJECTED,
   FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL,
+  ADDRESS_UXTOS,
+  SET_ADDRESS_UXTOS,
 } from './constants';
 
 const setState = (requesting = false, error = null, data = null) => ({
@@ -65,6 +67,7 @@ export const initialState = fromJS({
   [NETWORK_ID]: DEFAULT_SELECTED_NETWORK,
   [FETCH_NETWORK_STATE]: setState(),
   [CHANGE_NETWORK_STATE]: setState(),
+  [ADDRESS_UXTOS]: [],
 });
 
 function appReducer(state = initialState, action) {
@@ -179,6 +182,9 @@ function appReducer(state = initialState, action) {
         ADDRESS_TRANSACTIONS_FETCH_STATE,
         setState(false, null, action.payload),
       );
+
+    case SET_ADDRESS_UXTOS:
+      return state.set(ADDRESS_UXTOS, [...action.payload]);
 
     default:
       return state;

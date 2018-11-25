@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { BLOCKSTREAM_URL, MAINNET } from 'utils/constants';
 import { transSatToUnit, getFiatAmountFromCrypto } from 'utils/conversion';
 
-import { calculateTransactionAddressRecieved } from 'utils/transaction';
+import { calculateTransactionAddressRecieved } from 'utils/transactions';
 
 import {
   Transaction as Wrapper,
