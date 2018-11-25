@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
+import Select from 'components/common/Select';
 import TextField from 'components/common/TextField';
 
 import appMessages from 'containers/App/messages';
@@ -61,16 +62,18 @@ function ReceiveForm(props) {
           variant="standard"
         />
         <PrimaryUnit>
-          <select
+          <Select
             value={unitCrypto}
             onChange={evt => handleChangeUnit(evt, UNIT_CRYPTO)}
+            border="none"
+            margin="0"
           >
             {availableCryptoUnits.map(cryptoUnit => (
               <option key={cryptoUnit} value={cryptoUnit}>
                 {formatMessage(appMessages[cryptoUnit])}
               </option>
             ))}
-          </select>
+          </Select>
         </PrimaryUnit>
       </PrimaryInputContainer>
       {(() => {

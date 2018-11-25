@@ -20,7 +20,7 @@ export const PrimaryInputContainer = styled.div`
 
 export const PrimaryUnit = styled.div`
   position: absolute;
-  right: 0;
+  right: 5%;
   top: 50%;
   transform: translateY(-60%);
   font-size: ${small};
@@ -37,7 +37,7 @@ export const SecondaryInputContainer = styled.div`
 
 export const SecondaryUnit = styled.div`
   position: absolute;
-  right: 0;
+  right: 10%;
   top: 50%;
   transform: translateY(-60%);
   font-size: ${small};
