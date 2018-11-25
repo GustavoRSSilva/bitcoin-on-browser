@@ -11,7 +11,7 @@ const testnetNetwork = bitcoin.networks.testnet;
 const getAddress = (node, network) =>
   bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address;
 
-const validateAddress = (address, networkId) => {
+export const validateAddress = (address, networkId) => {
   try {
     bitcoin.address.toOutputScript(address, getNetwork(networkId));
     return true;

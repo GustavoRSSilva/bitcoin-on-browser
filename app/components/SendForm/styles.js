@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { grey } from 'styles/colors';
+import { small, normal } from 'styles/fontSize';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -12,6 +13,10 @@ export const InputContainer = styled.div`
   width: 90%;
   margin: 15px 5%;
   position: relative;
+
+  input {
+    font-size: ${props => (props.type === 'address' ? small : normal)};
+  }
 `;
 
 export const Unit = styled.div`
