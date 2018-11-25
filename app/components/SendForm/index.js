@@ -4,9 +4,12 @@
  *
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+
+import Select from 'components/common/Select';
+import TextField from 'components/common/TextField';
 
 import appMessages from 'containers/App/messages';
 
@@ -19,17 +22,69 @@ import {
   UNIT_FIAT,
 } from 'containers/Receive/constants';
 
-import {
-  Wrapper,
-  PrimaryInputContainer,
-  PrimaryInput,
-  PrimaryUnit,
-  SecondaryInputContainer,
-  SecondaryInput,
-  SecondaryUnit,
-} from './styles';
+import { Wrapper, InputContainer, Unit } from './styles';
 
 const onFocus = evt => evt.target.select();
+
+const toString = val => val.toString().substring(0, 16);
+
+const renderCurrencyInputs = (
+  networkId,
+  handleChangeAmount,
+  handleChangeUnit,
+  amountCrypto,
+  unitCrypto,
+  amountFiat,
+  unitFiat,
+  availableCryptoUnits,
+  formatMessage,
+) => (
+  <Fragment>
+    <InputContainer>
+      <TextField
+        type="text"
+        pattern="^\d+(\.\d*)?$"
+        value={toString(amountCrypto)}
+        onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
+        onFocus={onFocus}
+      />
+      <Unit>
+        <Select
+          value={unitCrypto}
+          onChange={evt => handleChangeUnit(evt, UNIT_CRYPTO)}
+          border="none"
+          margin="0"
+        >
+          {availableCryptoUnits.map(cryptoUnit => (
+            <option key={cryptoUnit} value={cryptoUnit}>
+              {formatMessage(appMessages[cryptoUnit])}
+            </option>
+          ))}
+        </Select>
+      </Unit>
+    </InputContainer>
+    {(() => {
+      if (networkId === TESTNET) {
+        return null;
+      }
+
+      return (
+        <InputContainer>
+          <TextField
+            type="text"
+            pattern="^\d+(\.\d*)?$"
+            value={toString(amountCrypto)}
+            onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
+            onFocus={onFocus}
+          />
+          <Unit>
+            <FormattedMessage {...appMessages[unitFiat]} />
+          </Unit>
+        </InputContainer>
+      );
+    })()}
+  </Fragment>
+);
 
 function SendForm(props) {
   const {
@@ -39,8 +94,8 @@ function SendForm(props) {
     availableCryptoUnits,
     handleChangeUnit,
   } = props;
-  const { formatMessage } = props.intl;
 
+  const { formatMessage } = props.intl;
   const amountCrypto = formValue[AMOUNT_CRYPTO];
   const unitCrypto = formValue[UNIT_CRYPTO];
   const amountFiat = formValue[AMOUNT_FIAT];
@@ -48,48 +103,17 @@ function SendForm(props) {
 
   return (
     <Wrapper>
-      <PrimaryInputContainer>
-        <PrimaryInput
-          type="text"
-          pattern="^\d+(\.\d*)?$"
-          id={AMOUNT_CRYPTO}
-          value={amountCrypto}
-          onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
-          onFocus={onFocus}
-        />
-        <PrimaryUnit>
-          <select
-            value={unitCrypto}
-            onChange={evt => handleChangeUnit(evt, UNIT_CRYPTO)}
-          >
-            {availableCryptoUnits.map(cryptoUnit => (
-              <option key={cryptoUnit} value={cryptoUnit}>
-                {formatMessage(appMessages[cryptoUnit])}
-              </option>
-            ))}
-          </select>
-        </PrimaryUnit>
-      </PrimaryInputContainer>
-      {(() => {
-        if (networkId === TESTNET) {
-          return null;
-        }
-
-        return (
-          <SecondaryInputContainer>
-            <SecondaryInput
-              type="text"
-              pattern="^\d*(\.\d*)?$"
-              value={amountFiat}
-              onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
-              onFocus={onFocus}
-            />
-            <SecondaryUnit>
-              <FormattedMessage {...appMessages[unitFiat]} />
-            </SecondaryUnit>
-          </SecondaryInputContainer>
-        );
-      })()}
+      {renderCurrencyInputs(
+        networkId,
+        handleChangeAmount,
+        handleChangeUnit,
+        amountCrypto,
+        unitCrypto,
+        amountFiat,
+        unitFiat,
+        availableCryptoUnits,
+        formatMessage,
+      )}
     </Wrapper>
   );
 }
