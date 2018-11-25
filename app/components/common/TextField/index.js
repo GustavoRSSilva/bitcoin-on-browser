@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Wrapper, TextFieldStyled } from './styles';
 
-function TextField({ value, onChange, placeholder, label, margin }) {
+function TextField({ value, onChange, placeholder, label, margin, type }) {
   return (
     <Wrapper margin={margin}>
       <TextFieldStyled
@@ -18,6 +18,7 @@ function TextField({ value, onChange, placeholder, label, margin }) {
         placeholder={placeholder}
         fullWidth
         variant="outlined"
+        type={type}
       />
     </Wrapper>
   );
@@ -29,6 +30,7 @@ TextField.propTypes = {
   placeholder: PropTypes.string,
   label: PropTypes.string,
   margin: PropTypes.string,
+  type: PropTypes.string,
 };
 
 export default TextField;

@@ -7,10 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import Tooltip from '@material-ui/core/Tooltip';
+
 import { AVAILABLE_NETWORKS } from 'utils/constants';
+
 import {
   Wrapper,
   AddressFragment,
@@ -43,12 +45,14 @@ function AddressTitle(props) {
           </select>
         </SelectFragment>
       </NetworkFragment>
-      <CopyToClipboard text={address}>
-        <AddressFragment title={formatMessage(messages.copy_to_clipboard)}>
-          <FormattedMessage {...messages.active_address} />
-          <span>{address}</span>
-        </AddressFragment>
-      </CopyToClipboard>
+      <Tooltip title={formatMessage(messages.copy_to_clipboard)}>
+        <CopyToClipboard text={address}>
+          <AddressFragment>
+            <FormattedMessage {...messages.active_address} />
+            <span>{address}</span>
+          </AddressFragment>
+        </CopyToClipboard>
+      </Tooltip>
     </Wrapper>
   );
 }
