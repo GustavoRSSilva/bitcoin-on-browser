@@ -4,10 +4,20 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { fetchActiveAddress } from 'containers/App/actions';
+import { SET_FORM_VALUES, RESET_FORM_VALUES } from './constants';
 
-export function defaultAction() {
+function resetFormValues() {
   return {
-    type: DEFAULT_ACTION,
+    type: RESET_FORM_VALUES,
   };
 }
+
+function setFormValues(payload) {
+  return {
+    type: SET_FORM_VALUES,
+    payload,
+  };
+}
+
+export { setFormValues, resetFormValues, fetchActiveAddress };
