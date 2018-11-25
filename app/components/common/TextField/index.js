@@ -17,7 +17,7 @@ function TextField({
   margin,
   type,
   pattern,
-  textAlign,
+  onFocus,
 }) {
   return (
     <Wrapper margin={margin}>
@@ -30,7 +30,8 @@ function TextField({
         fullWidth
         type={type}
         pattern={pattern}
-        textAlign={textAlign}
+        centered={variant === 'standard' ? 'true' : null}
+        onFocus={onFocus}
       />
     </Wrapper>
   );
@@ -45,7 +46,7 @@ TextField.propTypes = {
   margin: PropTypes.string,
   type: PropTypes.string,
   pattern: PropTypes.string,
-  textAlign: PropTypes.string,
+  onFocus: PropTypes.func,
 };
 
 export default TextField;

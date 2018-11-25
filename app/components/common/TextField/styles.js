@@ -19,6 +19,6 @@ export const TextFieldStyled = styled(TextField)`
   }
 
   input {
-    text-align: ${props => props.textAlign || 'inherit'};
+    text-align: ${props => (props.centered ? 'center' : 'inherit')};
   }
 `;

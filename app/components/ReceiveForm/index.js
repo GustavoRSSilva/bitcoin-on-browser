@@ -31,6 +31,8 @@ import {
 
 const onFocus = evt => evt.target.select();
 
+const toString = val => val.toString().substring(0, 16);
+
 function ReceiveForm(props) {
   const {
     networkId,
@@ -53,11 +55,10 @@ function ReceiveForm(props) {
           type="text"
           pattern="^\d+(\.\d*)?$"
           id={AMOUNT_CRYPTO}
-          value={amountCrypto.toString()}
+          value={toString(amountCrypto)}
           onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
           onFocus={onFocus}
           variant="standard"
-          textAlign="center"
         />
         <PrimaryUnit>
           <select
@@ -82,11 +83,10 @@ function ReceiveForm(props) {
             <TextField
               type="text"
               pattern="^\d*(\.\d*)?$"
-              value={amountFiat.toString()}
+              value={toString(amountFiat)}
               onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
               onFocus={onFocus}
               variant="standard"
-              textAlign="center"
             />
             <SecondaryUnit>
               <FormattedMessage {...appMessages[unitFiat]} />
