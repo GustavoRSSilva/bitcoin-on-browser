@@ -8,6 +8,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
+import TextField from 'components/common/TextField';
+
 import appMessages from 'containers/App/messages';
 
 import { TESTNET } from 'utils/constants';
@@ -22,10 +24,8 @@ import {
 import {
   Wrapper,
   PrimaryInputContainer,
-  PrimaryInput,
   PrimaryUnit,
   SecondaryInputContainer,
-  SecondaryInput,
   SecondaryUnit,
 } from './styles';
 
@@ -49,13 +49,15 @@ function ReceiveForm(props) {
   return (
     <Wrapper>
       <PrimaryInputContainer>
-        <PrimaryInput
+        <TextField
           type="text"
           pattern="^\d+(\.\d*)?$"
           id={AMOUNT_CRYPTO}
-          value={amountCrypto}
+          value={amountCrypto.toString()}
           onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
           onFocus={onFocus}
+          variant="standard"
+          textAlign="center"
         />
         <PrimaryUnit>
           <select
@@ -77,12 +79,14 @@ function ReceiveForm(props) {
 
         return (
           <SecondaryInputContainer>
-            <SecondaryInput
+            <TextField
               type="text"
               pattern="^\d*(\.\d*)?$"
-              value={amountFiat}
+              value={amountFiat.toString()}
               onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
               onFocus={onFocus}
+              variant="standard"
+              textAlign="center"
             />
             <SecondaryUnit>
               <FormattedMessage {...appMessages[unitFiat]} />

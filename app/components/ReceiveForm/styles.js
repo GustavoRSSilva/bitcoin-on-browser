@@ -7,13 +7,7 @@ export const Wrapper = styled.div`
   height: 127px;
   display: flex;
   flex-direction: column;
-
-  input:focus,
-  select:focus,
-  textarea:focus,
-  button:focus {
-    outline: none;
-  }
+  padding: 0 15px;
 `;
 
 export const PrimaryInputContainer = styled.div`
