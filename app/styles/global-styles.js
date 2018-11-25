@@ -32,4 +32,11 @@ injectGlobal`
       text-decoration: none;
       color: inherit;
   }
+
+  input:focus,
+  select:focus,
+  textarea:focus,
+  button:focus {
+    outline: none;
+  }
 `;

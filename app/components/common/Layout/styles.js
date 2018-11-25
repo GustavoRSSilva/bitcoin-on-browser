@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { dark } from 'styles/colors';
+import { dark, white } from 'styles/colors';
 
 const extensionWidth = '330px';
 
@@ -10,7 +10,7 @@ export const Layout = styled.div`
   background-color: ${dark};
   overflow-x: hidden;
   overflow-y: auto;
-  color: white;
+  color: ${white};
   display: inline-block;
 
   @media screen and (min-width: 768px) {

@@ -14,9 +14,7 @@ import { bindActionCreators, compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import Input from 'components/common/Input';
-import Button from 'components/common/Button';
-import { Error } from 'components/common/Messages';
+import SignUpForm from 'components/SignUpForm';
 import PageTitle from 'components/common/PageTitle';
 
 import * as actions from './actions';
@@ -97,43 +95,21 @@ export class SignUp extends React.Component {
     }
   }
 
-  renderErrorMessage() {
-    const { errorMessage } = this.props;
-
-    if (!errorMessage) {
-      return null;
-    }
-
-    return <Error>{errorMessage}</Error>;
-  }
-
   render() {
-    const { password, confirmPassword } = this.props;
-
-    const { formatMessage } = this.props.intl;
+    const { password, confirmPassword, errorMessage } = this.props;
     return (
       <Wrapper>
         <PageTitle>
           <FormattedMessage {...messages.header} />
         </PageTitle>
-        <form onSubmit={this.handleSubmitForm}>
-          <Input
-            value={password || ''}
-            onChange={this.handleSetPassword}
-            placeholder={formatMessage(messages.new_password)}
-          />
-          <Input
-            value={confirmPassword || ''}
-            onChange={this.handleSetConfirmPassword}
-            placeholder={formatMessage(messages.confirm_password)}
-          />
-
-          {this.renderErrorMessage()}
-
-          <Button type="submit">
-            <FormattedMessage {...messages.submit} />
-          </Button>
-        </form>
+        <SignUpForm
+          password={password}
+          confirmPassword={confirmPassword}
+          handleSubmitForm={this.handleSubmitForm}
+          handleSetPassword={this.handleSetPassword}
+          handleSetConfirmPassword={this.handleSetConfirmPassword}
+          errorMessage={errorMessage}
+        />
       </Wrapper>
     );
   }

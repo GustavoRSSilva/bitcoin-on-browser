@@ -57,7 +57,7 @@ export class Mnemonic extends React.Component {
           <TextArea rows="4" readOnly value={mnemonic} />
         </MnemonicFragment>
 
-        <Button onClick={() => generateNewMnemonic()}>
+        <Button onClick={() => generateNewMnemonic()} color="default">
           <FormattedMessage {...messages.generate_new_mnemonic} />
         </Button>
         <Button onClick={() => saveMnemonic(mnemonic)}>
