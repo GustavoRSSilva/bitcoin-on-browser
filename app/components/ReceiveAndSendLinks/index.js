@@ -6,20 +6,26 @@
 
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
+
+import Button from 'components/common/Button';
 
 import messages from './messages';
-
-import { Wrapper, LinkContainer } from './styles';
+import { Wrapper } from './styles';
 
 function ReceiveAndSendLinks() {
   return (
     <Wrapper>
-      <LinkContainer to="/receive">
-        <FormattedMessage {...messages.receive} />
-      </LinkContainer>
-      <LinkContainer to="/send">
-        <FormattedMessage {...messages.send} />
-      </LinkContainer>
+      <Link to="/receive">
+        <Button>
+          <FormattedMessage {...messages.receive} />
+        </Button>
+      </Link>
+      <Link to="/send">
+        <Button>
+          <FormattedMessage {...messages.send} />
+        </Button>
+      </Link>
     </Wrapper>
   );
 }
