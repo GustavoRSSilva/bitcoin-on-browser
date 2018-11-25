@@ -1,18 +1,11 @@
 import styled from 'styled-components';
+import { grey } from 'styles/colors';
 
 export const Wrapper = styled.div`
   width: 100%;
   margin-top: 20px;
   height: 127px;
-  display: flex;
-  flex-direction: column;
-
-  input:focus,
-  select:focus,
-  textarea:focus,
-  button:focus {
-    outline: none;
-  }
+  display: inline-block;
 `;
 
 export const InputContainer = styled.div`
@@ -27,4 +20,10 @@ export const Unit = styled.div`
   transform: translateY(-50%);
   right: 8%;
   text-align: left;
+  color: ${grey};
+  > span {
+    width: 55px;
+    padding: 5px;
+    float: left;
+  }
 `;

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { extraLarge, small } from 'styles/fontSize';
+import { grey } from 'styles/colors';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -42,4 +43,5 @@ export const SecondaryUnit = styled.div`
   top: 50%;
   transform: translateY(-60%);
   font-size: ${small};
+  color: ${grey};
 `;

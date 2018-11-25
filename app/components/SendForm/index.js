@@ -47,6 +47,7 @@ const renderCurrencyInputs = (
         value={toString(amountCrypto)}
         onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
         onFocus={onFocus}
+        margin="0"
       />
       <Unit>
         <Select
@@ -76,6 +77,7 @@ const renderCurrencyInputs = (
             value={toString(amountCrypto)}
             onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
             onFocus={onFocus}
+            margin="0"
           />
           <Unit>
             <FormattedMessage {...appMessages[unitFiat]} />

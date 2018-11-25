@@ -18,10 +18,10 @@ export default defineMessages({
   },
   sat: {
     id: 'app.components.AddressBalance.sat',
-    defaultMessage: 'Sat',
+    defaultMessage: 'SAT',
   },
   usd: {
     id: 'app.containers.Receive.usd',
-    defaultMessage: 'usd',
+    defaultMessage: 'USD',
   },
 });
