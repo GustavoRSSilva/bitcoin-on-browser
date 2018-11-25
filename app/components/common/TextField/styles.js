@@ -10,9 +10,15 @@ export const TextFieldStyled = styled(TextField)`
   fieldset,
   legend,
   input,
+  div:before,
   div,
+  div:after,
   label {
     color: ${grey} !important;
     border-color: ${grey} !important;
+  }
+
+  input {
+    text-align: ${props => (props.centered ? 'center' : 'inherit')};
   }
 `;

@@ -122,6 +122,7 @@ export class LogIn extends React.Component {
             value={password || ''}
             onChange={this.handleSetPassword}
             placeholder={formatMessage(messages.password)}
+            type="password"
           />
 
           {this.renderErrorMessage()}

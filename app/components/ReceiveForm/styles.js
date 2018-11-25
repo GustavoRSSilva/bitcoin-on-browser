@@ -1,70 +1,45 @@
 import styled from 'styled-components';
-import { extraLarge } from 'styles/fontSize';
+import { extraLarge, small } from 'styles/fontSize';
 
 export const Wrapper = styled.div`
   width: 100%;
-  margin-top: 20px;
   height: 127px;
-  display: flex;
-  flex-direction: column;
-
-  input:focus,
-  select:focus,
-  textarea:focus,
-  button:focus {
-    outline: none;
-  }
+  padding: 0 15px;
+  margin-top: 30px;
+  position: relative;
 `;
 
 export const PrimaryInputContainer = styled.div`
-  width: 100%;
-  margin: 15px 0;
-  display: flex;
-  flex-direction: columns;
-`;
-
-export const PrimaryInput = styled.input`
-  width: 60%;
+  width: 90%;
   margin: 0 5%;
-  font-size: ${extraLarge};
-  text-align: center;
-  border-bottom: 1px solid white;
+  position: relative;
+  height: 55px;
+  input {
+    font-size: ${extraLarge};
+  }
 `;
 
 export const PrimaryUnit = styled.div`
-  width: 30%;
-  text-align: left;
-  position: relative;
-  > select {
-    position: absolute;
-    bottom: 0;
-    &:hover {
-      cursor: pointer;
-    }
-  }
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-60%);
+  font-size: ${small};
 `;
 
 export const SecondaryInputContainer = styled.div`
-  width: 100%;
-  margin: 15px 0;
-  padding: 0 20%;
-  display: flex;
-  flex-direction: columns;
-`;
-
-export const SecondaryInput = styled.input`
   width: 60%;
-  margin: 0 5%;
-  text-align: center;
-  border-bottom: 1px solid white;
+  margin: 0 20%;
+  position: relative;
+  > input {
+    font-size: ${extraLarge};
+  }
 `;
 
 export const SecondaryUnit = styled.div`
-  width: 30%;
-  text-align: left;
-  position: relative;
-  > span {
-    position: absolute;
-    bottom: 0;
-  }
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-60%);
+  font-size: ${small};
 `;

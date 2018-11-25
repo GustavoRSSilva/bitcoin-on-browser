@@ -31,11 +31,13 @@ function SignUpForm(props) {
         value={password || ''}
         onChange={handleSetPassword}
         placeholder={formatMessage(messages.new_password)}
+        type="password"
       />
       <TextField
         value={confirmPassword || ''}
         onChange={handleSetConfirmPassword}
         placeholder={formatMessage(messages.confirm_password)}
+        type="password"
       />
 
       <Error>{errorMessage}</Error>

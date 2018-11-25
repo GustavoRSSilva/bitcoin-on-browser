@@ -4,7 +4,7 @@ import { small } from 'styles/fontSize';
 export const Wrapper = styled.div`
   width: 100%;
   float: left;
-  margin: 40px 0;
+  margin: 40px 0 20px 0;
 `;
 
 export const Img = styled.img`

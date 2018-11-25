@@ -8,6 +8,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
+import Select from 'components/common/Select';
+import TextField from 'components/common/TextField';
+
 import appMessages from 'containers/App/messages';
 
 import { TESTNET } from 'utils/constants';
@@ -22,14 +25,14 @@ import {
 import {
   Wrapper,
   PrimaryInputContainer,
-  PrimaryInput,
   PrimaryUnit,
   SecondaryInputContainer,
-  SecondaryInput,
   SecondaryUnit,
 } from './styles';
 
 const onFocus = evt => evt.target.select();
+
+const toString = val => val.toString().substring(0, 16);
 
 function ReceiveForm(props) {
   const {
@@ -49,25 +52,28 @@ function ReceiveForm(props) {
   return (
     <Wrapper>
       <PrimaryInputContainer>
-        <PrimaryInput
+        <TextField
           type="text"
           pattern="^\d+(\.\d*)?$"
           id={AMOUNT_CRYPTO}
-          value={amountCrypto}
+          value={toString(amountCrypto)}
           onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
           onFocus={onFocus}
+          variant="standard"
         />
         <PrimaryUnit>
-          <select
+          <Select
             value={unitCrypto}
             onChange={evt => handleChangeUnit(evt, UNIT_CRYPTO)}
+            border="none"
+            margin="0"
           >
             {availableCryptoUnits.map(cryptoUnit => (
               <option key={cryptoUnit} value={cryptoUnit}>
                 {formatMessage(appMessages[cryptoUnit])}
               </option>
             ))}
-          </select>
+          </Select>
         </PrimaryUnit>
       </PrimaryInputContainer>
       {(() => {
@@ -77,12 +83,13 @@ function ReceiveForm(props) {
 
         return (
           <SecondaryInputContainer>
-            <SecondaryInput
+            <TextField
               type="text"
               pattern="^\d*(\.\d*)?$"
-              value={amountFiat}
+              value={toString(amountFiat)}
               onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
               onFocus={onFocus}
+              variant="standard"
             />
             <SecondaryUnit>
               <FormattedMessage {...appMessages[unitFiat]} />
