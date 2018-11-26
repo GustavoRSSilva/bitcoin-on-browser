@@ -31,7 +31,7 @@ import SendForm from 'components/SendForm';
 import {
   selectNetworkId,
   selectBtcToFiatFetchState,
-  selectAddressUtxos,
+  selectAddressUtxosFetchState,
 } from 'containers/App/selectors';
 
 import {
@@ -39,6 +39,7 @@ import {
   UNIT_CRYPTO,
   AMOUNT_FIAT,
   ADDRESS_TO,
+  ADDRESS_FROM,
 } from './constants';
 
 import * as actions from './actions';
@@ -189,8 +190,6 @@ export class Send extends React.Component {
 
     const { sendFormValues, submitForm } = this.props;
 
-    console.log('tou1');
-
     //    valdiate form
     //    validate the user has enought funds for the request
 
@@ -221,17 +220,19 @@ export class Send extends React.Component {
     );
   }
 
-  renderAdvanced(addressUtxos) {
-    return <SendAdvancedCard utxos={addressUtxos} />;
+  renderAdvanced() {
+    const { utxosFetchState, sendFormValues } = this.props;
+    const addressUtxos = utxosFetchState.data || [];
+    const address = sendFormValues[ADDRESS_FROM] || '';
+    return <SendAdvancedCard utxos={addressUtxos} address={address} />;
   }
 
   render() {
-    const { addressUtxos } = this.props;
     return (
       <Fragment>
         {this.renderCloseButton()}
         {this.renderSendForm()}
-        {this.renderAdvanced(addressUtxos)}
+        {this.renderAdvanced()}
       </Fragment>
     );
   }
@@ -244,15 +245,15 @@ Send.propTypes = {
   sendFormValues: PropTypes.object.isRequired,
   setFormValues: PropTypes.func.isRequired,
   resetFormValues: PropTypes.func.isRequired,
-  addressUtxos: PropTypes.array.isRequired,
   submitForm: PropTypes.func.isRequired,
+  utxosFetchState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   networkId: selectNetworkId(),
   btcToFiatFetchState: selectBtcToFiatFetchState(),
   sendFormValues: selectFormValues(),
-  addressUtxos: selectAddressUtxos(),
+  utxosFetchState: selectAddressUtxosFetchState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

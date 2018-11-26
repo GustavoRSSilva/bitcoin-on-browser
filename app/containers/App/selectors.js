@@ -9,7 +9,7 @@ import {
   ADDRESS_BALANCE_FETCH_STATE,
   BTC_TO_FIAT_FETCH_STATE,
   ADDRESS_TRANSACTIONS_FETCH_STATE,
-  ADDRESS_UXTOS,
+  ADDRESS_UTXOS_FETCH_STATE,
 } from './constants';
 
 /**
@@ -56,8 +56,10 @@ const selectAddressTransactionsFetchState = () =>
     subState.get(ADDRESS_TRANSACTIONS_FETCH_STATE),
   );
 
-const selectAddressUtxos = () =>
-  createSelector(selectAppDomain, subState => subState.get(ADDRESS_UXTOS));
+const selectAddressUtxosFetchState = () =>
+  createSelector(selectAppDomain, subState =>
+    subState.get(ADDRESS_UTXOS_FETCH_STATE),
+  );
 /**
  * Default selector used by App
  */
@@ -76,5 +78,5 @@ export {
   selectAddressBalanceFetchState,
   selectBtcToFiatFetchState,
   selectAddressTransactionsFetchState,
-  selectAddressUtxos,
+  selectAddressUtxosFetchState,
 };

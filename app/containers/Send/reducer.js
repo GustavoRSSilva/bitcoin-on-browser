@@ -51,6 +51,4 @@ function sendReducer(state = initialState, action) {
   }
 }
 
-console.log('yoo');
-
 export default sendReducer;

@@ -18,3 +18,8 @@ export const getAddressTransactions = (
   address,
   networkId = DEFAULT_SELECTED_NETWORK,
 ) => axios.get(`${getBlockstreamApiUrl(networkId)}address/${address}/txs`);
+
+export const getAddressUtxos = (
+  address,
+  networkId = DEFAULT_SELECTED_NETWORK,
+) => axios.get(`${getBlockstreamApiUrl(networkId)}address/${address}/utxo`);
