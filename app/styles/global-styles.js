@@ -1,4 +1,5 @@
 import { injectGlobal } from 'styled-components';
+import { appWidth, appHeight } from './app';
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
@@ -20,6 +21,9 @@ injectGlobal`
     background-color: #ffffff;
     min-height: 100%;
     min-width: 100%;
+    width: ${appWidth};
+    height: ${appHeight};
+    overflow: hidden;
   }
 
   p,
@@ -40,3 +44,5 @@ injectGlobal`
     outline: none;
   }
 `;
+
+export default { appWidth, appHeight };

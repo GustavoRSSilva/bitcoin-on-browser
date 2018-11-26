@@ -2,7 +2,6 @@ import { takeLatest, call, put, select } from 'redux-saga/effects';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import { saveItem, getItem } from 'utils/storage';
-import { getTransactionsUtxos } from 'utils/transactions';
 
 import {
   COINDESK_CURRENT_PRICE_URL,
@@ -12,6 +11,7 @@ import { sha256, getAddressFromMnemonic } from 'utils/bitcoin';
 import {
   getAddressBalance,
   getAddressTransactions,
+  getAddressUtxos,
 } from 'utils/blockstreamAPI';
 
 import {
@@ -31,10 +31,13 @@ import {
   FETCH_ADDRESS_BALANCE,
   FETCH_BTC_TO_FIAT_VALUE,
   FETCH_ADDRESS_TRANSACTIONS,
+  FETCH_ADDRESS_UTXOS,
 } from './constants';
 
 import {
   fetchNetworkSuccessful,
+  changeNetworkRejected,
+  changeNetworkSuccessful,
   fetchUserCreatedRejected,
   fetchUserCreatedSuccessful,
   fetchSessionValidRejected,
@@ -53,9 +56,9 @@ import {
   fetchAddressTransactions,
   fetchAddressTransactionsRejected,
   fetchAddressTransactionsSuccessful,
-  changeNetworkRejected,
-  changeNetworkSuccessful,
-  setAddressUxtos,
+  fetchAddressUtxos,
+  fetchAddressUtxosRejected,
+  fetchAddressUtxosSuccessful,
 } from './actions';
 
 import { selectNetworkId } from './selectors';
@@ -182,6 +185,24 @@ function* callGetNetwork() {
   }
 }
 
+function* callChangeNetwork(action) {
+  try {
+    const newNetwork = action.payload;
+    const selectedNetwork = yield select(selectNetworkId());
+    if (newNetwork !== selectedNetwork) {
+      yield call(setNetwork, newNetwork);
+      yield put(changeNetworkSuccessful(newNetwork));
+      //  After changing the network, creating the new Address and fetch the active address values
+      const mnemonic = yield getMnemonic();
+      const address = getAddressFromMnemonic(mnemonic, 0, newNetwork);
+      yield call(storeAddress, address);
+      yield put(fetchActiveAddress());
+    }
+  } catch (e) {
+    yield put(changeNetworkRejected());
+  }
+}
+
 function* callGetUserCreated() {
   try {
     const user = yield call(getUser);
@@ -209,6 +230,7 @@ function* callGetActiveAddress() {
     if (address) {
       yield put(fetchAddressBalance(address));
       yield put(fetchAddressTransactions(address));
+      yield put(fetchAddressUtxos(address));
       yield put(fetchActiveAddressSuccessful(address));
     } else {
       yield put(fetchActiveAddressRejected());
@@ -258,33 +280,29 @@ function* callGetaddressTransactions(action) {
     const result = yield call(getAddressTransactions, address, selectedNetwork);
     const transactions = result.data;
     yield put(fetchAddressTransactionsSuccessful(transactions));
-    const utxos = getTransactionsUtxos(transactions, address);
-    yield put(setAddressUxtos(utxos));
   } catch (e) {
     yield put(fetchAddressTransactionsRejected());
   }
 }
 
-function* callChangeNetwork(action) {
+function* callGetaddressUtxos(action) {
   try {
-    const newNetwork = action.payload;
+    const address = action.payload;
     const selectedNetwork = yield select(selectNetworkId());
-    if (newNetwork !== selectedNetwork) {
-      yield call(setNetwork, newNetwork);
-      yield put(changeNetworkSuccessful(newNetwork));
-      //  After changing the network, creating the new Address and fetch the active address values
-      const mnemonic = yield getMnemonic();
-      const address = getAddressFromMnemonic(mnemonic, 0, newNetwork);
-      yield call(storeAddress, address);
-      yield put(fetchActiveAddress());
-    }
+    const result = yield call(getAddressUtxos, address, selectedNetwork);
+    const utxos = result.data;
+    yield put(fetchAddressUtxosSuccessful(utxos));
   } catch (e) {
-    yield put(changeNetworkRejected());
+    yield put(fetchAddressUtxosRejected());
   }
 }
 
 function* fetchNetworkSaga() {
   yield takeLatest(FETCH_NETWORK, callGetNetwork);
+}
+
+function* changeNetworkSaga() {
+  yield takeLatest(CHANGE_NETWORK, callChangeNetwork);
 }
 
 function* fetchUserCreatedSaga() {
@@ -315,14 +333,15 @@ function* fetchAddressTransactionsSaga() {
   yield takeLatest(FETCH_ADDRESS_TRANSACTIONS, callGetaddressTransactions);
 }
 
-function* changeNetworkSaga() {
-  yield takeLatest(CHANGE_NETWORK, callChangeNetwork);
+function* fetchAddressUtxosSaga() {
+  yield takeLatest(FETCH_ADDRESS_UTXOS, callGetaddressUtxos);
 }
 
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
     fetchNetworkSaga(),
+    changeNetworkSaga(),
     fetchUserCreatedSaga(),
     fetchSessionValidSaga(),
     fetchActiveAddressSaga(),
@@ -330,6 +349,6 @@ export default function* defaultSaga() {
     fetchAddressBalanceSaga(),
     fetchBtcToFiatValueSaga(),
     fetchAddressTransactionsSaga(),
-    changeNetworkSaga(),
+    fetchAddressUtxosSaga(),
   ];
 }

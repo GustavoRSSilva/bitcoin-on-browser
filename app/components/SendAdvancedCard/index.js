@@ -32,17 +32,16 @@ class SendAdvancedCard extends React.PureComponent {
   }
 
   renderUtxos() {
-    const { utxos } = this.props;
+    const { utxos, address } = this.props;
     return [
       <UtxosListTitle key="utxo-title">
         <FormattedMessage {...messages.utxos} />
       </UtxosListTitle>,
       utxos.map(utxo => {
-        const utxoTitle = `${utxo.txId.slice(0, 17)}...${utxo.txId.slice(
+        const utxoTitle = `${utxo.txid.slice(0, 17)}...${utxo.txid.slice(
           -14,
-        )}:${utxo.index}`;
-        const { amount, unit } = transSatToUnit(utxo.vout.value, 4);
-        const address = utxo.vout.scriptpubkey_address;
+        )}:${utxo.vout}`;
+        const { amount, unit } = transSatToUnit(utxo.value, 4);
         return (
           <Utxo key={utxoTitle}>
             <span>{utxoTitle}</span>
@@ -61,6 +60,7 @@ class SendAdvancedCard extends React.PureComponent {
 
   render() {
     const { show } = this.state;
+
     return (
       <Wrapper>
         <ShowButtonContainer>
@@ -79,6 +79,7 @@ class SendAdvancedCard extends React.PureComponent {
 
 SendAdvancedCard.propTypes = {
   utxos: PropTypes.array.isRequired,
+  address: PropTypes.string.isRequired,
 };
 
 export default SendAdvancedCard;
