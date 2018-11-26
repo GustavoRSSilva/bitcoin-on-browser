@@ -6,22 +6,27 @@
  */
 
 import { defineMessages } from 'react-intl';
+import { BTC, MBTC, SAT, USD, EUR } from 'utils/constants';
 
 export default defineMessages({
-  btc: {
+  [BTC]: {
     id: 'app.components.AddressBalance.btc',
     defaultMessage: 'BTC',
   },
-  mbtc: {
+  [MBTC]: {
     id: 'app.components.AddressBalance.mbtc',
     defaultMessage: 'mBTC',
   },
-  sat: {
+  [SAT]: {
     id: 'app.components.AddressBalance.sat',
     defaultMessage: 'SAT',
   },
-  usd: {
+  [USD]: {
     id: 'app.containers.Receive.usd',
     defaultMessage: 'USD',
+  },
+  [EUR]: {
+    id: 'app.containers.Receive.usd',
+    defaultMessage: 'EUR',
   },
 });

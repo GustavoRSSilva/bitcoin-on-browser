@@ -10,6 +10,7 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import Select from 'components/common/Select';
 import TextField from 'components/common/TextField';
+import Button from 'components/common/Button';
 
 import appMessages from 'containers/App/messages';
 
@@ -20,9 +21,12 @@ import {
   UNIT_CRYPTO,
   AMOUNT_FIAT,
   UNIT_FIAT,
-} from 'containers/Receive/constants';
+  ADDRESS_TO,
+  ADDRESS_FROM,
+} from 'containers/Send/constants';
 
-import { Wrapper, InputContainer, Unit } from './styles';
+import { Form, InputContainer, Unit } from './styles';
+import messages from './messages';
 
 const onFocus = evt => evt.target.select();
 
@@ -47,6 +51,7 @@ const renderCurrencyInputs = (
         value={toString(amountCrypto)}
         onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
         onFocus={onFocus}
+        placeholder={formatMessage(appMessages[unitCrypto])}
         margin="0"
       />
       <Unit>
@@ -74,10 +79,11 @@ const renderCurrencyInputs = (
           <TextField
             type="text"
             pattern="^\d+(\.\d*)?$"
-            value={toString(amountCrypto)}
-            onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
+            value={toString(amountFiat)}
+            onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
             onFocus={onFocus}
             margin="0"
+            placeholder={formatMessage(appMessages[unitFiat])}
           />
           <Unit>
             <FormattedMessage {...appMessages[unitFiat]} />
@@ -91,10 +97,12 @@ const renderCurrencyInputs = (
 function SendForm(props) {
   const {
     networkId,
+    handleChangeAddress,
     handleChangeAmount,
     formValue,
     availableCryptoUnits,
     handleChangeUnit,
+    handleSubmitForm,
   } = props;
 
   const { formatMessage } = props.intl;
@@ -103,8 +111,33 @@ function SendForm(props) {
   const amountFiat = formValue[AMOUNT_FIAT];
   const unitFiat = formValue[UNIT_FIAT];
 
+  const addressTo = formValue[ADDRESS_TO];
+  const addressFrom = formValue[ADDRESS_FROM];
+
   return (
-    <Wrapper>
+    <Form onSubmit={handleSubmitForm}>
+      {/* Address inputs */}
+      <InputContainer type="address">
+        <TextField
+          type="text"
+          value={addressTo}
+          onChange={evt => handleChangeAddress(evt, ADDRESS_TO)}
+          placeholder={formatMessage(messages[ADDRESS_TO])}
+          margin="0"
+        />
+      </InputContainer>
+      <InputContainer type="address">
+        <TextField
+          type="text"
+          value={addressFrom}
+          onChange={() => null}
+          placeholder={formatMessage(messages[ADDRESS_FROM])}
+          margin="0"
+          disable
+        />
+      </InputContainer>
+
+      {/* Currency inputs */}
       {renderCurrencyInputs(
         networkId,
         handleChangeAmount,
@@ -116,17 +149,23 @@ function SendForm(props) {
         availableCryptoUnits,
         formatMessage,
       )}
-    </Wrapper>
+
+      <Button type="submit">
+        <FormattedMessage {...messages.next} />
+      </Button>
+    </Form>
   );
 }
 
 SendForm.propTypes = {
   intl: intlShape.isRequired,
   networkId: PropTypes.string.isRequired,
+  handleChangeAddress: PropTypes.func.isRequired,
   handleChangeAmount: PropTypes.func.isRequired,
   formValue: PropTypes.object.isRequired,
   availableCryptoUnits: PropTypes.array.isRequired,
   handleChangeUnit: PropTypes.func.isRequired,
+  handleSubmitForm: PropTypes.func.isRequired,
 };
 
 export default injectIntl(SendForm);

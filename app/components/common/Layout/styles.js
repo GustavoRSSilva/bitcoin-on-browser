@@ -1,19 +1,17 @@
 import styled from 'styled-components';
 import { dark, white } from 'styles/colors';
-
-const extensionWidth = '330px';
+import { appWidth, appHeight } from 'styles/app';
 
 export const Layout = styled.div`
-  width: ${extensionWidth};
-  height: 600px;
+  width: ${appWidth};
+  height: ${appHeight};
   margin: 0 auto;
   background-color: ${dark};
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
   color: ${white};
   display: inline-block;
 
   @media screen and (min-width: 768px) {
-    margin: 20px calc((100% - ${extensionWidth}) / 2);
+    margin: 20px calc((100% - ${appWidth}) / 2);
   }
 `;

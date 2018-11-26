@@ -14,10 +14,10 @@ import { bindActionCreators, compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import {
-  // BTC,
-  AVAILABLE_CRYPTO_UNITS,
-} from 'utils/constants';
+import { AVAILABLE_CRYPTO_UNITS } from 'utils/constants';
+
+// import { validateAddress } from 'utils/bitcoin';
+
 import {
   getFiatAmountFromCrypto,
   getCryptoAmountAndUnitFromFiat,
@@ -29,12 +29,18 @@ import SendAdvancedCard from 'components/SendAdvancedCard';
 import SendForm from 'components/SendForm';
 
 import {
-  // selectActiveAddressFetchState,
   selectNetworkId,
   selectBtcToFiatFetchState,
-  selectAddressUtxos,
+  selectAddressUtxosFetchState,
 } from 'containers/App/selectors';
-import { AMOUNT_CRYPTO, UNIT_CRYPTO, AMOUNT_FIAT } from './constants';
+
+import {
+  AMOUNT_CRYPTO,
+  UNIT_CRYPTO,
+  AMOUNT_FIAT,
+  ADDRESS_TO,
+  ADDRESS_FROM,
+} from './constants';
 
 import * as actions from './actions';
 import { selectFormValues } from './selectors';
@@ -49,17 +55,40 @@ export class Send extends React.Component {
     this.handleLeavePage = this.handleLeavePage.bind(this);
     this.handleChangeAmount = this.handleChangeAmount.bind(this);
     this.handleChangeUnit = this.handleChangeUnit.bind(this);
+    this.handleChangeAddress = this.handleChangeAddress.bind(this);
+    this.handleSubmitForm = this.handleSubmitForm.bind(this);
   }
 
   componentWillMount() {
-    const { fetchActiveAddress, resetFormValues } = this.props;
+    const { resetFormValues } = this.props;
     resetFormValues();
-    fetchActiveAddress();
   }
 
   handleLeavePage() {
     const { history } = this.props;
     history.goBack();
+  }
+
+  handleChangeAddress(evt, target) {
+    const address = evt.target.value;
+
+    const {
+      sendFormValues,
+      setFormValues,
+      // networkId,
+    } = this.props;
+
+    const formValues = { ...sendFormValues };
+
+    // const isValid = validateAddress(address, networkId);
+
+    if (target === ADDRESS_TO) {
+      // if (!isValid) {
+      // }
+      formValues[ADDRESS_TO] = address;
+    }
+
+    return setFormValues(formValues);
   }
 
   /**
@@ -156,6 +185,17 @@ export class Send extends React.Component {
     return setFormValues(formValues);
   }
 
+  handleSubmitForm(evt) {
+    evt.preventDefault();
+
+    const { sendFormValues, submitForm } = this.props;
+
+    //    valdiate form
+    //    validate the user has enought funds for the request
+
+    submitForm(sendFormValues);
+  }
+
   renderCloseButton() {
     return <CloseButton onClick={this.handleLeavePage} />;
   }
@@ -170,25 +210,29 @@ export class Send extends React.Component {
     return (
       <SendForm
         networkId={networkId}
+        handleChangeAddress={this.handleChangeAddress}
         handleChangeAmount={this.handleChangeAmount}
         formValue={sendFormValues}
         availableCryptoUnits={AVAILABLE_CRYPTO_UNITS}
         handleChangeUnit={this.handleChangeUnit}
+        handleSubmitForm={this.handleSubmitForm}
       />
     );
   }
 
-  renderAdvanced(addressUtxos) {
-    return <SendAdvancedCard utxos={addressUtxos} />;
+  renderAdvanced() {
+    const { utxosFetchState, sendFormValues } = this.props;
+    const addressUtxos = utxosFetchState.data || [];
+    const address = sendFormValues[ADDRESS_FROM] || '';
+    return <SendAdvancedCard utxos={addressUtxos} address={address} />;
   }
 
   render() {
-    const { addressUtxos } = this.props;
     return (
       <Fragment>
         {this.renderCloseButton()}
         {this.renderSendForm()}
-        {this.renderAdvanced(addressUtxos)}
+        {this.renderAdvanced()}
       </Fragment>
     );
   }
@@ -197,21 +241,19 @@ export class Send extends React.Component {
 Send.propTypes = {
   history: PropTypes.object.isRequired,
   networkId: PropTypes.string.isRequired,
-  // activeAddressFetchState: PropTypes.object.isRequired,
   btcToFiatFetchState: PropTypes.object.isRequired,
   sendFormValues: PropTypes.object.isRequired,
   setFormValues: PropTypes.func.isRequired,
-  fetchActiveAddress: PropTypes.func.isRequired,
   resetFormValues: PropTypes.func.isRequired,
-  addressUtxos: PropTypes.array.isRequired,
+  submitForm: PropTypes.func.isRequired,
+  utxosFetchState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   networkId: selectNetworkId(),
-  // activeAddressFetchState: selectActiveAddressFetchState(),
   btcToFiatFetchState: selectBtcToFiatFetchState(),
   sendFormValues: selectFormValues(),
-  addressUtxos: selectAddressUtxos(),
+  utxosFetchState: selectAddressUtxosFetchState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
