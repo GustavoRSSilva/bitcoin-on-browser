@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { grey } from 'styles/colors';
 import { small, normal } from 'styles/fontSize';
 
-export const Wrapper = styled.div`
+export const Form = styled.form`
   width: 100%;
   margin-top: 20px;
   height: 127px;

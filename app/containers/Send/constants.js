@@ -15,3 +15,8 @@ export const ADDRESS_TO = 'address_to';
 const path = 'app/Send/';
 export const SET_FORM_VALUES = `${path}SET_FORM_VALUES`;
 export const RESET_FORM_VALUES = `${path}RESET_FORM_VALUES`;
+
+export const SUBMIT_FORM_STATE = 'submit_form_state';
+export const SUBMIT_FORM = `${path}SUBMIT_FORM`;
+export const SUBMIT_FORM_REJECTED = `${path}SUBMIT_FORM_REJECTED`;
+export const SUBMIT_FORM_SUCCESSFUL = `${path}SUBMIT_FORM_SUCCESSFUL`;

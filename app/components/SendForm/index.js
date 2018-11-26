@@ -10,6 +10,7 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import Select from 'components/common/Select';
 import TextField from 'components/common/TextField';
+import Button from 'components/common/Button';
 
 import appMessages from 'containers/App/messages';
 
@@ -24,7 +25,7 @@ import {
   ADDRESS_FROM,
 } from 'containers/Send/constants';
 
-import { Wrapper, InputContainer, Unit } from './styles';
+import { Form, InputContainer, Unit } from './styles';
 import messages from './messages';
 
 const onFocus = evt => evt.target.select();
@@ -101,6 +102,7 @@ function SendForm(props) {
     formValue,
     availableCryptoUnits,
     handleChangeUnit,
+    handleSubmitForm,
   } = props;
 
   const { formatMessage } = props.intl;
@@ -113,7 +115,7 @@ function SendForm(props) {
   const addressFrom = formValue[ADDRESS_FROM];
 
   return (
-    <Wrapper>
+    <Form onSubmit={handleSubmitForm}>
       {/* Address inputs */}
       <InputContainer type="address">
         <TextField
@@ -147,7 +149,11 @@ function SendForm(props) {
         availableCryptoUnits,
         formatMessage,
       )}
-    </Wrapper>
+
+      <Button type="submit">
+        <FormattedMessage {...messages.next} />
+      </Button>
+    </Form>
   );
 }
 
@@ -159,6 +165,7 @@ SendForm.propTypes = {
   formValue: PropTypes.object.isRequired,
   availableCryptoUnits: PropTypes.array.isRequired,
   handleChangeUnit: PropTypes.func.isRequired,
+  handleSubmitForm: PropTypes.func.isRequired,
 };
 
 export default injectIntl(SendForm);

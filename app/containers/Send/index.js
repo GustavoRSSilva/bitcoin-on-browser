@@ -55,6 +55,7 @@ export class Send extends React.Component {
     this.handleChangeAmount = this.handleChangeAmount.bind(this);
     this.handleChangeUnit = this.handleChangeUnit.bind(this);
     this.handleChangeAddress = this.handleChangeAddress.bind(this);
+    this.handleSubmitForm = this.handleSubmitForm.bind(this);
   }
 
   componentWillMount() {
@@ -183,6 +184,19 @@ export class Send extends React.Component {
     return setFormValues(formValues);
   }
 
+  handleSubmitForm(evt) {
+    evt.preventDefault();
+
+    const { sendFormValues, submitForm } = this.props;
+
+    console.log('tou1');
+
+    //    valdiate form
+    //    validate the user has enought funds for the request
+
+    submitForm(sendFormValues);
+  }
+
   renderCloseButton() {
     return <CloseButton onClick={this.handleLeavePage} />;
   }
@@ -202,6 +216,7 @@ export class Send extends React.Component {
         formValue={sendFormValues}
         availableCryptoUnits={AVAILABLE_CRYPTO_UNITS}
         handleChangeUnit={this.handleChangeUnit}
+        handleSubmitForm={this.handleSubmitForm}
       />
     );
   }
@@ -230,6 +245,7 @@ Send.propTypes = {
   setFormValues: PropTypes.func.isRequired,
   resetFormValues: PropTypes.func.isRequired,
   addressUtxos: PropTypes.array.isRequired,
+  submitForm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

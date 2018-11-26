@@ -20,4 +20,8 @@ export default defineMessages({
     id: 'app.components.SendForm.address_to',
     defaultMessage: 'To',
   },
+  next: {
+    id: 'app.components.SendForm.next',
+    defaultMessage: 'Next',
+  },
 });
