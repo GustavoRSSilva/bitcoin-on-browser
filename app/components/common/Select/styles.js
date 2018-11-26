@@ -19,4 +19,8 @@ export const SelectStyled = styled.select`
   &:hover {
     cursor: pointer;
   }
+
+  > option {
+    color: black;
+  }
 `;
