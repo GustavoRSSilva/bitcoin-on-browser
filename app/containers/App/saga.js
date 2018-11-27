@@ -3,6 +3,7 @@ import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import { saveItem, getItem } from 'utils/storage';
 
+import { mapUtxosToAddress } from 'utils/transactions';
 import {
   COINDESK_CURRENT_PRICE_URL,
   DEFAULT_SELECTED_NETWORK,
@@ -291,7 +292,7 @@ function* callGetaddressUtxos(action) {
     const selectedNetwork = yield select(selectNetworkId());
     const result = yield call(getAddressUtxos, address, selectedNetwork);
     const utxos = result.data;
-    yield put(fetchAddressUtxosSuccessful(utxos));
+    yield put(fetchAddressUtxosSuccessful(mapUtxosToAddress(utxos, address)));
   } catch (e) {
     yield put(fetchAddressUtxosRejected());
   }

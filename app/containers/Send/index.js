@@ -31,7 +31,6 @@ import SendForm from 'components/SendForm';
 import {
   selectNetworkId,
   selectBtcToFiatFetchState,
-  selectAddressUtxosFetchState,
 } from 'containers/App/selectors';
 
 import {
@@ -39,7 +38,7 @@ import {
   UNIT_CRYPTO,
   AMOUNT_FIAT,
   ADDRESS_TO,
-  ADDRESS_FROM,
+  ADDRESS_FROM_UTXOS,
 } from './constants';
 
 import * as actions from './actions';
@@ -221,10 +220,9 @@ export class Send extends React.Component {
   }
 
   renderAdvanced() {
-    const { utxosFetchState, sendFormValues } = this.props;
-    const addressUtxos = utxosFetchState.data || [];
-    const address = sendFormValues[ADDRESS_FROM] || '';
-    return <SendAdvancedCard utxos={addressUtxos} address={address} />;
+    const { sendFormValues } = this.props;
+    const addressUtxos = sendFormValues[ADDRESS_FROM_UTXOS] || [];
+    return <SendAdvancedCard utxos={addressUtxos} />;
   }
 
   render() {
@@ -246,14 +244,12 @@ Send.propTypes = {
   setFormValues: PropTypes.func.isRequired,
   resetFormValues: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
-  utxosFetchState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   networkId: selectNetworkId(),
   btcToFiatFetchState: selectBtcToFiatFetchState(),
   sendFormValues: selectFormValues(),
-  utxosFetchState: selectAddressUtxosFetchState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
