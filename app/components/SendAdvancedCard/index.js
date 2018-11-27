@@ -31,7 +31,7 @@ class SendAdvancedCard extends React.PureComponent {
     };
   }
 
-  renderUtxos() {
+  renderUtxosTable() {
     const { utxos } = this.props;
     return [
       <UtxosListTitle key="utxo-title">
@@ -72,7 +72,7 @@ class SendAdvancedCard extends React.PureComponent {
             <FormattedMessage {...messages.advanced} />
           </button>
         </ShowButtonContainer>
-        <ShowContainer show={show}>{this.renderUtxos(show)}</ShowContainer>
+        <ShowContainer show={show}>{this.renderUtxosTable(show)}</ShowContainer>
       </Wrapper>
     );
   }

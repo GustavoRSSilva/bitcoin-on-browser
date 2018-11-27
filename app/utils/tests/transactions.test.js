@@ -118,7 +118,7 @@ describe('transactions', () => {
     const address = 'mx4LJCCgj6hznYDvFi3zmitMrLXodJVpP4';
 
     const result = mapUtxosToAddress([utxo], address);
-    const expected = { ...utxo, address };
+    const expected = { ...utxo, address, enabled: true };
     expect(result[0]).toMatchObject(expected);
   });
 });

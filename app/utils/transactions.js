@@ -54,8 +54,10 @@ export const calculateTransactionAddressRecieved = (
  *    "txid": "037cc5b291da18b7d4e910a2a32300d148e4907e9481485125627c69d0beb85f",
  *    "value": 357400,
  *    "vout": 0,
+ *    "address": "mx4LJCCgj6hznYDvFi3zmitMrLXodJVpP4",
+ *    "enabled": true
  *  }
  *
  */
 export const mapUtxosToAddress = (utxos = [], address) =>
-  utxos.map(utxo => ({ ...utxo, address }));
+  utxos.map(utxo => ({ ...utxo, address, enabled: true }));
