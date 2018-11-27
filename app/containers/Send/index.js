@@ -39,7 +39,6 @@ import {
   UNIT_CRYPTO,
   AMOUNT_FIAT,
   ADDRESS_TO,
-  ADDRESS_FROM,
 } from './constants';
 
 import * as actions from './actions';
@@ -221,10 +220,9 @@ export class Send extends React.Component {
   }
 
   renderAdvanced() {
-    const { utxosFetchState, sendFormValues } = this.props;
+    const { utxosFetchState } = this.props;
     const addressUtxos = utxosFetchState.data || [];
-    const address = sendFormValues[ADDRESS_FROM] || '';
-    return <SendAdvancedCard utxos={addressUtxos} address={address} />;
+    return <SendAdvancedCard utxos={addressUtxos} />;
   }
 
   render() {

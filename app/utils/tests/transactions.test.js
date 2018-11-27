@@ -2,7 +2,10 @@
  * Test transactions
  */
 
-import { calculateTransactionAddressRecieved } from '../transactions';
+import {
+  calculateTransactionAddressRecieved,
+  mapUtxosToAddress,
+} from '../transactions';
 
 const transaction = {
   txid: '6504fc733e5d12e567c73b7ba9c5eb860cf27ce7f77256b8407e182b0cb28bec',
@@ -56,6 +59,18 @@ const transaction = {
   status: null,
 };
 
+const utxo = {
+  txid: '037cc5b291da18b7d4e910a2a32300d148e4907e9481485125627c69d0beb85f',
+  vout: 0,
+  value: 357400,
+  status: {
+    confirmed: true,
+    block_height: 1444857,
+    block_hash:
+      '000000000000008101e62372cc282c43861f428cfd683ed38312a83c7130852d',
+  },
+};
+
 describe('transactions', () => {
   it('should correctly get the address amount of the sender', () => {
     const address = '17kb7c9ndg7ioSuzMWEHWECdEVUegNkcGc';
@@ -97,5 +112,13 @@ describe('transactions', () => {
     const expectedSum = 0;
 
     expect(sum).toBe(expectedSum);
+  });
+
+  it('should correctly add address to utxo', () => {
+    const address = 'mx4LJCCgj6hznYDvFi3zmitMrLXodJVpP4';
+
+    const result = mapUtxosToAddress([utxo], address);
+    const expected = { ...utxo, address };
+    expect(result[0]).toMatchObject(expected);
   });
 });

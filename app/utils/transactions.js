@@ -37,3 +37,25 @@ export const calculateTransactionAddressRecieved = (
 
   return parseInt(txOutTotal - txInTotal, 10);
 };
+
+/**
+ *  @dev
+ *      Add address to utxo,
+ *  @params utxos (array) - arry of utxos
+ *  @params address (string) - address to be save
+ *  @returns mappedUtxosAdress (array) - utxo final object
+ *
+ *  ex:
+ *    "status": {
+ *       "block_hash": "000000000000008101e62372cc282c43861f428cfd683ed38312a83c7130852d",
+ *       "block_height": 1444857,
+ *       "confirmed": true,
+ *       },
+ *    "txid": "037cc5b291da18b7d4e910a2a32300d148e4907e9481485125627c69d0beb85f",
+ *    "value": 357400,
+ *    "vout": 0,
+ *  }
+ *
+ */
+export const mapUtxosToAddress = (utxos = [], address) =>
+  utxos.map(utxo => ({ ...utxo, address }));
