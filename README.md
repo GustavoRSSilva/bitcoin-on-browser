@@ -52,6 +52,7 @@ The extension will works as a small RPC that will comunicate with a public node.
 - List address utxos
 - Create 1 - 1 transactions
 - Create 2 - 2 transactions
+- Fully integration with [arduino-bitcoin](https://github.com/arduino-bitcoin/arduino-bitcoin)
 - WYLTCAC (Would you like to create a channel)
 - Create Channels
 - List Channels
