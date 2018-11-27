@@ -61,3 +61,26 @@ export const calculateTransactionAddressRecieved = (
  */
 export const mapUtxosToAddress = (utxos = [], address) =>
   utxos.map(utxo => ({ ...utxo, address, enabled: true }));
+
+export const selectUtxosForTransaction = (availableUtxos = [], total) => {
+  let aux = 0;
+  const resultUtxos = [];
+
+  //  sort by value (bigger first)
+  availableUtxos.sort((a, b) => a.value > b.value);
+
+  availableUtxos.map(utxo => {
+    if (aux < total) {
+      resultUtxos.push(utxo);
+      aux += utxo.value;
+    }
+
+    return null;
+  });
+
+  if (aux < total) {
+    throw new Error('not enough funds');
+  }
+
+  return resultUtxos;
+};

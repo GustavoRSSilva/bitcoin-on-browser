@@ -1,8 +1,10 @@
-import { takeLatest, put, select } from 'redux-saga/effects';
+import { takeLatest, put, call, select } from 'redux-saga/effects';
 
 import { createTransactionFromMnemonic } from 'utils/bitcoin';
+import { pushRawTransaction } from 'utils/insightAPI';
 import { BTC, USD, SAT } from 'utils/constants';
 import { convertCryptoFromUnitToUnit } from 'utils/conversion';
+import { selectUtxosForTransaction } from 'utils/transactions';
 
 import { getMnemonic } from 'containers/App/saga';
 import {
@@ -22,7 +24,11 @@ import {
   RESET_FORM_VALUES,
   SUBMIT_FORM,
 } from './constants';
-import { setFormValues } from './actions';
+import {
+  setFormValues,
+  submitFormRejected,
+  submitFormSuccessful,
+} from './actions';
 
 export const getDefaultFormValues = (
   activeAddress = null,
@@ -47,41 +53,48 @@ function* callResetFormValues() {
 }
 
 function* callSubmitForm({ payload }) {
-  //  TODO remove mnemonic from the equation, work with root/node only
-  const mnemonic = yield getMnemonic();
+  try {
+    //  TODO remove mnemonic from the equation, work with root/node only
+    const mnemonic = yield getMnemonic();
 
-  const amountCrypto = payload[AMOUNT_CRYPTO];
-  const unitCrypto = payload[UNIT_CRYPTO];
-  const amountToReceiver = convertCryptoFromUnitToUnit(
-    amountCrypto,
-    unitCrypto,
-    SAT,
-  );
-  const addressTo = payload[ADDRESS_TO];
+    const amountCrypto = payload[AMOUNT_CRYPTO];
+    const unitCrypto = payload[UNIT_CRYPTO];
+    const fee = 2500;
+    const receiverAmount = parseFloat(
+      convertCryptoFromUnitToUnit(amountCrypto, unitCrypto, SAT),
+    );
+    const addressTo = payload[ADDRESS_TO];
+    const addressFrom = payload[ADDRESS_FROM];
 
-  const utxos = payload[ADDRESS_FROM_UTXOS];
-  const availableUtxos = utxos.filter(utxo => utxo.enabled);
+    const utxos = payload[ADDRESS_FROM_UTXOS];
+    const txTotal = receiverAmount + fee;
+    const txUtxos = selectUtxosForTransaction(utxos, txTotal);
 
-  const networkId = yield select(selectNetworkId());
+    const availableUtxos = txUtxos.filter(utxo => utxo.enabled);
 
-  //
-  // console.log(mnemonic);
-  // console.log(utxos);
-  // console.log(receiverAmount);
-  // console.log(receiverAddress);
-  // console.log(fee);
-  // console.log(networkId);
+    const networkId = yield select(selectNetworkId());
 
-  const tx = createTransactionFromMnemonic(
-    mnemonic,
-    availableUtxos,
-    amountToReceiver,
-    addressTo,
-    3000,
-    networkId,
-  );
+    const tx = createTransactionFromMnemonic(
+      mnemonic,
+      availableUtxos,
+      receiverAmount,
+      addressTo,
+      addressFrom,
+      fee,
+      networkId,
+    );
 
-  return tx;
+    const result = yield call(
+      pushRawTransaction,
+      networkId,
+      JSON.stringify({ rawtx: tx }),
+    );
+
+    //  Test resutl
+    yield put(submitFormSuccessful(result));
+  } catch (e) {
+    yield put(submitFormRejected(e));
+  }
 }
 
 function* resetFormValuesSaga() {

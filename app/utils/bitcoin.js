@@ -14,6 +14,8 @@ const getAddress = (node, network) =>
 const getNetwork = networkId =>
   networkId === TESTNET ? testnetNetwork : bitcoinNetwork;
 
+const clean = str => str.replace(/[^0-9a-z]/gi, '');
+
 export const getRootFromMnemonic = (mnemonic, network) => {
   const seed = bip39.mnemonicToSeed(mnemonic);
   const root = bitcoin.bip32.fromSeed(seed, network);
@@ -58,24 +60,39 @@ export const createTransactionFromMnemonic = (
   mnemonic,
   utxos = [],
   receiverAmount,
-  receiverAddress,
+  addressTo,
+  addressFrom,
   fee,
   networkId,
 ) => {
-  if (!validateAddress(receiverAddress, networkId)) {
+  if (!validateAddress(addressTo, networkId)) {
     throw new Error('invalid address');
   }
 
+  const receiverAddress = clean(addressTo);
+  const senderAddress = clean(addressFrom);
+
   const network = getNetwork(networkId);
-  const senderNode = getRootFromMnemonic(mnemonic, network);
+  const coinType = networkId === TESTNET ? 1 : 0;
+  const path = `m/44'/${coinType}'/0'/0/0`;
+
+  const root = getRootFromMnemonic(mnemonic, network);
+  const senderNode = root.derivePath(path);
 
   const txb = new bitcoin.TransactionBuilder(network);
 
-  txb.setVersion(1);
-  utxos.map(utxo => txb.addInput(utxo.previous_transaction_id, utxo.index));
+  let totalUtxosValue = 0;
+  utxos.map(utxo => {
+    totalUtxosValue += utxo.value;
+    return txb.addInput(utxo.txid, utxo.vout);
+  });
   txb.addOutput(receiverAddress, receiverAmount);
-  // (in)15000 - (out)12000 = (fee)3000, this is the miner fee
+  txb.addOutput(senderAddress, totalUtxosValue - receiverAmount - fee);
 
-  txb.sign(0, senderNode);
-  return txb;
+  // qsign the inputs
+  for (let i = 0; i < utxos.length; i += 1) {
+    txb.sign(i, senderNode);
+  }
+
+  return txb.build().toHex();
 };

@@ -122,6 +122,10 @@ export const convertCryptoFromUnitToUnit = (
   to,
   decimals = null,
 ) => {
+  if (!amount || amount === 0) {
+    return 0;
+  }
+
   let val = amount;
   switch (from) {
     // if from equal to, nothing changes
@@ -146,27 +150,6 @@ export const convertCryptoFromUnitToUnit = (
 
   if (decimals !== null) {
     val = toFixed(val, decimals);
-  }
-
-  return val;
-};
-
-/**
- *  @dev - converts any crepto amount and unit to BTC
- */
-export const convertAmountUnitToBtc = (amount = 0, unit) => {
-  let val = amount;
-  switch (unit) {
-    case MBTC:
-      val = convertMbtcToUnit(amount, BTC);
-      break;
-
-    case SAT:
-      val = convertSatsToUnit(amount, BTC);
-      break;
-    case BTC:
-    default:
-      break;
   }
 
   return val;
