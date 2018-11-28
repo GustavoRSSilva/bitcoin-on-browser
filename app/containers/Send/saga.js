@@ -11,6 +11,7 @@ import {
   selectActiveAddressFetchState,
   selectNetworkId,
   selectAddressUtxosFetchState,
+  selectEstimatedFeesFetchState,
 } from 'containers/App/selectors';
 
 import {
@@ -21,6 +22,7 @@ import {
   ADDRESS_TO,
   ADDRESS_FROM,
   ADDRESS_FROM_UTXOS,
+  FEE,
   RESET_FORM_VALUES,
   SUBMIT_FORM,
 } from './constants';
@@ -33,6 +35,7 @@ import {
 export const getDefaultFormValues = (
   activeAddress = null,
   addressUtxos = [],
+  fee = '0',
 ) => ({
   [AMOUNT_CRYPTO]: '0',
   [UNIT_CRYPTO]: BTC,
@@ -41,6 +44,7 @@ export const getDefaultFormValues = (
   [ADDRESS_TO]: '',
   [ADDRESS_FROM]: activeAddress || '',
   [ADDRESS_FROM_UTXOS]: addressUtxos || [],
+  [FEE]: fee,
 });
 
 // Watcher sagas
@@ -49,7 +53,14 @@ function* callResetFormValues() {
   const activeAddress = activeAddressFetchState.data;
   const addressUtxosFetchState = yield select(selectAddressUtxosFetchState());
   const addressUtxos = addressUtxosFetchState.data;
-  yield put(setFormValues(getDefaultFormValues(activeAddress, addressUtxos)));
+  const networkId = yield select(selectNetworkId());
+  const estimatedFeesFetchState = yield select(selectEstimatedFeesFetchState());
+  const estimatedFees = estimatedFeesFetchState.data[networkId];
+  yield put(
+    setFormValues(
+      getDefaultFormValues(activeAddress, addressUtxos, estimatedFees),
+    ),
+  );
 }
 
 function* callSubmitForm({ payload }) {
@@ -57,9 +68,9 @@ function* callSubmitForm({ payload }) {
     //  TODO remove mnemonic from the equation, work with root/node only
     const mnemonic = yield getMnemonic();
 
-    const amountCrypto = payload[AMOUNT_CRYPTO];
+    const amountCrypto = parseFloat(payload[AMOUNT_CRYPTO]);
     const unitCrypto = payload[UNIT_CRYPTO];
-    const fee = 2500;
+    const fee = parseFloat(payload[FEE]);
     const receiverAmount = parseFloat(
       convertCryptoFromUnitToUnit(amountCrypto, unitCrypto, SAT),
     );

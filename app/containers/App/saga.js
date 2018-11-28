@@ -1,12 +1,14 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
-import { saveItem, getItem } from 'utils/storage';
 
+import { saveItem, getItem } from 'utils/storage';
 import { mapUtxosToAddress } from 'utils/transactions';
 import {
   COINDESK_CURRENT_PRICE_URL,
   DEFAULT_SELECTED_NETWORK,
+  MAINNET,
+  TESTNET,
 } from 'utils/constants';
 import { sha256, getAddressFromMnemonic } from 'utils/bitcoin';
 import {
@@ -14,6 +16,7 @@ import {
   getAddressTransactions,
   getAddressUtxos,
 } from 'utils/blockstreamAPI';
+import { getEstimatedFees } from 'utils/insightAPI';
 
 import {
   NETWORK,
@@ -33,6 +36,7 @@ import {
   FETCH_BTC_TO_FIAT_VALUE,
   FETCH_ADDRESS_TRANSACTIONS,
   FETCH_ADDRESS_UTXOS,
+  FETCH_ESTIMATED_FEES,
 } from './constants';
 
 import {
@@ -60,6 +64,8 @@ import {
   fetchAddressUtxos,
   fetchAddressUtxosRejected,
   fetchAddressUtxosSuccessful,
+  fetchEstimatedFeesRejected,
+  fetchEstimatedFeesSuccessful,
 } from './actions';
 
 import { selectNetworkId } from './selectors';
@@ -298,6 +304,34 @@ function* callGetaddressUtxos(action) {
   }
 }
 
+function* callGetEstimatedFees() {
+  try {
+    const nBlocks = 2;
+    const avgTxSize = 250;
+    const toSat = 10000;
+    const estimatedFee = {};
+    const mainResponse = yield call(getEstimatedFees, nBlocks, MAINNET);
+    const estimatedFeeMainKvB = mainResponse.data[nBlocks];
+    // TODO: create a vervice to convert this
+    estimatedFee[MAINNET] = parseInt(
+      estimatedFeeMainKvB * toSat * avgTxSize,
+      10,
+    ).toString();
+
+    const testResponse = yield call(getEstimatedFees, nBlocks, TESTNET);
+    const estimatedFeeTestKvB = testResponse.data[nBlocks];
+    // TODO: create a vervice to convert this
+    estimatedFee[TESTNET] = parseInt(
+      estimatedFeeTestKvB * toSat * avgTxSize,
+      10,
+    ).toString();
+
+    yield put(fetchEstimatedFeesSuccessful(estimatedFee));
+  } catch (e) {
+    yield put(fetchEstimatedFeesRejected());
+  }
+}
+
 function* fetchNetworkSaga() {
   yield takeLatest(FETCH_NETWORK, callGetNetwork);
 }
@@ -338,6 +372,10 @@ function* fetchAddressUtxosSaga() {
   yield takeLatest(FETCH_ADDRESS_UTXOS, callGetaddressUtxos);
 }
 
+function* fetchEstimatedFeesSaga() {
+  yield takeLatest(FETCH_ESTIMATED_FEES, callGetEstimatedFees);
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
@@ -351,5 +389,6 @@ export default function* defaultSaga() {
     fetchBtcToFiatValueSaga(),
     fetchAddressTransactionsSaga(),
     fetchAddressUtxosSaga(),
+    fetchEstimatedFeesSaga(),
   ];
 }
