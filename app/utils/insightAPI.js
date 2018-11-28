@@ -20,3 +20,8 @@ export const pushRawTransaction = (
     redirect: 'follow',
     referrer: 'no-referrer',
   });
+
+export const getEstimatedFees = (nBlocks, networkId) =>
+  axios.get(
+    `${getInsightApiUrl(networkId)}utils/estimatefee?nbBlocks=${nBlocks}`,
+  );

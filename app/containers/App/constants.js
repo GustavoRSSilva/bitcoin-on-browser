@@ -71,3 +71,9 @@ export const ADDRESS_UTXOS_FETCH_STATE = 'address_utxos_fetch_state';
 export const FETCH_ADDRESS_UTXOS = `${path}FETCH_ADDRESS_UTXOS`;
 export const FETCH_ADDRESS_UTXOS_REJECTED = `${path}FETCH_ADDRESS_UTXOS_REJECTED`;
 export const FETCH_ADDRESS_UTXOS_SUCCESSFUL = `${path}FETCH_ADDRESS_UTXOS_SUCCESSFUL`;
+
+//  Fetch estimated fees
+export const ESTIMATED_FEES_FETCH_STATE = 'estimated_fees_fetch_state';
+export const FETCH_ESTIMATED_FEES = `${path}FETCH_ESTIMATED_FEES`;
+export const FETCH_ESTIMATED_FEES_REJECTED = `${path}FETCH_ESTIMATED_FEES_REJECTED`;
+export const FETCH_ESTIMATED_FEES_SUCCESSFUL = `${path}FETCH_ESTIMATED_FEES_SUCCESSFUL`;

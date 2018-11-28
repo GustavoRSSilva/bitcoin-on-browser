@@ -11,6 +11,7 @@ export const SelectStyled = styled.select`
   border: ${props => props.border || `1px solid ${grey}`};
   padding: 5px;
   color: ${grey};
+  border-radius: 5px;
 
   -webkit-appearance: none;
   -moz-appearance: none;
