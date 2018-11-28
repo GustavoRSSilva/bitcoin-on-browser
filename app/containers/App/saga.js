@@ -306,19 +306,25 @@ function* callGetaddressUtxos(action) {
 
 function* callGetEstimatedFees() {
   try {
-    const nBlocks = 6;
+    const nBlocks = 2;
     const avgTxSize = 250;
     const toSat = 10000;
     const estimatedFee = {};
     const mainResponse = yield call(getEstimatedFees, nBlocks, MAINNET);
     const estimatedFeeMainKvB = mainResponse.data[nBlocks];
     // TODO: create a vervice to convert this
-    estimatedFee[MAINNET] = estimatedFeeMainKvB * toSat * avgTxSize;
+    estimatedFee[MAINNET] = parseInt(
+      estimatedFeeMainKvB * toSat * avgTxSize,
+      10,
+    ).toString();
 
     const testResponse = yield call(getEstimatedFees, nBlocks, TESTNET);
     const estimatedFeeTestKvB = testResponse.data[nBlocks];
     // TODO: create a vervice to convert this
-    estimatedFee[TESTNET] = estimatedFeeTestKvB * toSat * avgTxSize;
+    estimatedFee[TESTNET] = parseInt(
+      estimatedFeeTestKvB * toSat * avgTxSize,
+      10,
+    ).toString();
 
     yield put(fetchEstimatedFeesSuccessful(estimatedFee));
   } catch (e) {

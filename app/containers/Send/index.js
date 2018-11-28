@@ -39,6 +39,7 @@ import {
   AMOUNT_FIAT,
   ADDRESS_TO,
   ADDRESS_FROM_UTXOS,
+  FEE,
 } from './constants';
 
 import * as actions from './actions';
@@ -153,6 +154,8 @@ export class Send extends React.Component {
       );
       formValues[AMOUNT_CRYPTO] = amount;
       formValues[UNIT_CRYPTO] = unit;
+    } else if (target === FEE) {
+      formValues[FEE] = value;
     }
 
     return setFormValues(formValues);

@@ -35,7 +35,7 @@ import {
 export const getDefaultFormValues = (
   activeAddress = null,
   addressUtxos = [],
-  fee,
+  fee = '0',
 ) => ({
   [AMOUNT_CRYPTO]: '0',
   [UNIT_CRYPTO]: BTC,
@@ -68,9 +68,9 @@ function* callSubmitForm({ payload }) {
     //  TODO remove mnemonic from the equation, work with root/node only
     const mnemonic = yield getMnemonic();
 
-    const amountCrypto = payload[AMOUNT_CRYPTO];
+    const amountCrypto = parseFloat(payload[AMOUNT_CRYPTO]);
     const unitCrypto = payload[UNIT_CRYPTO];
-    const fee = payload[FEE];
+    const fee = parseFloat(payload[FEE]);
     const receiverAmount = parseFloat(
       convertCryptoFromUnitToUnit(amountCrypto, unitCrypto, SAT),
     );
