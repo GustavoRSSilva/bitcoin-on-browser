@@ -23,6 +23,7 @@ import {
   UNIT_FIAT,
   ADDRESS_TO,
   ADDRESS_FROM,
+  FEE,
 } from 'containers/Send/constants';
 
 import { Form, InputContainer, Unit } from './styles';
@@ -110,6 +111,7 @@ function SendForm(props) {
   const unitCrypto = formValue[UNIT_CRYPTO];
   const amountFiat = formValue[AMOUNT_FIAT];
   const unitFiat = formValue[UNIT_FIAT];
+  const fee = formValue[FEE];
 
   const addressTo = formValue[ADDRESS_TO];
   const addressFrom = formValue[ADDRESS_FROM];
@@ -149,6 +151,18 @@ function SendForm(props) {
         availableCryptoUnits,
         formatMessage,
       )}
+
+      <InputContainer>
+        <TextField
+          type="text"
+          pattern="^\d+(\.\d*)?$"
+          value={toString(fee)}
+          onChange={evt => handleChangeAmount(evt, FEE)}
+          onFocus={onFocus}
+          margin="0"
+          placeholder={formatMessage(messages[FEE])}
+        />
+      </InputContainer>
 
       <Button type="submit">
         <FormattedMessage {...messages.next} />

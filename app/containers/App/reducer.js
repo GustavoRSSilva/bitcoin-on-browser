@@ -50,6 +50,10 @@ import {
   FETCH_ADDRESS_UTXOS,
   FETCH_ADDRESS_UTXOS_REJECTED,
   FETCH_ADDRESS_UTXOS_SUCCESSFUL,
+  ESTIMATED_FEES_FETCH_STATE,
+  FETCH_ESTIMATED_FEES,
+  FETCH_ESTIMATED_FEES_REJECTED,
+  FETCH_ESTIMATED_FEES_SUCCESSFUL,
 } from './constants';
 
 const setState = (requesting = false, error = null, data = null) => ({
@@ -70,6 +74,7 @@ export const initialState = fromJS({
   [FETCH_NETWORK_STATE]: setState(),
   [CHANGE_NETWORK_STATE]: setState(),
   [ADDRESS_UTXOS_FETCH_STATE]: setState(),
+  [ESTIMATED_FEES_FETCH_STATE]: setState(),
 });
 
 function appReducer(state = initialState, action) {
@@ -195,6 +200,19 @@ function appReducer(state = initialState, action) {
     case FETCH_ADDRESS_UTXOS_SUCCESSFUL:
       return state.set(
         ADDRESS_UTXOS_FETCH_STATE,
+        setState(false, null, action.payload),
+      );
+
+    //    Fetch estimated fees
+    case FETCH_ESTIMATED_FEES:
+      return state.set(ESTIMATED_FEES_FETCH_STATE, setState(true));
+
+    case FETCH_ESTIMATED_FEES_REJECTED:
+      return state.set(ESTIMATED_FEES_FETCH_STATE, setState(false, true));
+
+    case FETCH_ESTIMATED_FEES_SUCCESSFUL:
+      return state.set(
+        ESTIMATED_FEES_FETCH_STATE,
         setState(false, null, action.payload),
       );
 

@@ -10,6 +10,7 @@ import {
   BTC_TO_FIAT_FETCH_STATE,
   ADDRESS_TRANSACTIONS_FETCH_STATE,
   ADDRESS_UTXOS_FETCH_STATE,
+  ESTIMATED_FEES_FETCH_STATE,
 } from './constants';
 
 /**
@@ -60,6 +61,12 @@ const selectAddressUtxosFetchState = () =>
   createSelector(selectAppDomain, subState =>
     subState.get(ADDRESS_UTXOS_FETCH_STATE),
   );
+
+const selectEstimatedFeesFetchState = () =>
+  createSelector(selectAppDomain, subState =>
+    subState.get(ESTIMATED_FEES_FETCH_STATE),
+  );
+
 /**
  * Default selector used by App
  */
@@ -79,4 +86,5 @@ export {
   selectBtcToFiatFetchState,
   selectAddressTransactionsFetchState,
   selectAddressUtxosFetchState,
+  selectEstimatedFeesFetchState,
 };

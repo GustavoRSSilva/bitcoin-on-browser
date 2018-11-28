@@ -37,3 +37,50 @@ export const calculateTransactionAddressRecieved = (
 
   return parseInt(txOutTotal - txInTotal, 10);
 };
+
+/**
+ *  @dev
+ *      Add address to utxo,
+ *  @params utxos (array) - arry of utxos
+ *  @params address (string) - address to be save
+ *  @returns mappedUtxosAdress (array) - utxo final object
+ *
+ *  ex:
+ *    "status": {
+ *       "block_hash": "000000000000008101e62372cc282c43861f428cfd683ed38312a83c7130852d",
+ *       "block_height": 1444857,
+ *       "confirmed": true,
+ *       },
+ *    "txid": "037cc5b291da18b7d4e910a2a32300d148e4907e9481485125627c69d0beb85f",
+ *    "value": 357400,
+ *    "vout": 0,
+ *    "address": "mx4LJCCgj6hznYDvFi3zmitMrLXodJVpP4",
+ *    "enabled": true
+ *  }
+ *
+ */
+export const mapUtxosToAddress = (utxos = [], address) =>
+  utxos.map(utxo => ({ ...utxo, address, enabled: true }));
+
+export const selectUtxosForTransaction = (availableUtxos = [], total) => {
+  let aux = 0;
+  const resultUtxos = [];
+
+  //  sort by value (bigger first)
+  availableUtxos.sort((a, b) => a.value > b.value);
+
+  availableUtxos.map(utxo => {
+    if (aux < total) {
+      resultUtxos.push(utxo);
+      aux += utxo.value;
+    }
+
+    return null;
+  });
+
+  if (aux < total) {
+    throw new Error('not enough funds');
+  }
+
+  return resultUtxos;
+};
