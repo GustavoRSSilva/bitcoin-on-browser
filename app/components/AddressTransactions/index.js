@@ -13,42 +13,57 @@ import messages from './messages';
 import Transaction from './Transaction';
 import { Wrapper, Title, NoTransactions } from './styles';
 
-const renderTransactions = (
-  transactions = [],
-  btcToFiat,
-  address,
-  networkId,
-) => {
-  if (!transactions.length) {
-    return (
-      <NoTransactions>
-        <FormattedMessage {...messages.no_transactions_found} />
-      </NoTransactions>
-    );
+class AddressTransactions extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: null,
+    };
+
+    this.handleOpenPanel = this.handleOpenPanel.bind(this);
   }
 
-  return transactions.map(transaction => (
-    <Transaction
-      key={transaction.txid}
-      transaction={transaction}
-      btcToFiat={btcToFiat}
-      address={address}
-      networkId={networkId}
-    />
-  ));
-};
+  handleOpenPanel = panel => (event, expanded) => {
+    this.setState({
+      expanded: expanded ? panel : false,
+    });
+  };
 
-function AddressTransactions(props) {
-  const { transactions, btcToFiat, address, networkId } = props;
+  renderTransactions(transactions = [], btcToFiat, address, networkId) {
+    if (!transactions.length) {
+      return (
+        <NoTransactions>
+          <FormattedMessage {...messages.no_transactions_found} />
+        </NoTransactions>
+      );
+    }
+    const { expanded } = this.state;
 
-  return (
-    <Wrapper>
-      <Title>
-        <FormattedMessage {...messages.header} />
-      </Title>
-      {renderTransactions(transactions, btcToFiat, address, networkId)}
-    </Wrapper>
-  );
+    return transactions.map((transaction, index) => (
+      <Transaction
+        expanded={expanded === `panel${index}`}
+        onClick={this.handleOpenPanel(`panel${index}`)}
+        key={transaction.txid}
+        transaction={transaction}
+        btcToFiat={btcToFiat}
+        address={address}
+        networkId={networkId}
+      />
+    ));
+  }
+
+  render() {
+    const { transactions, btcToFiat, address, networkId } = this.props;
+
+    return (
+      <Wrapper>
+        <Title>
+          <FormattedMessage {...messages.header} />
+        </Title>
+        {this.renderTransactions(transactions, btcToFiat, address, networkId)}
+      </Wrapper>
+    );
+  }
 }
 
 AddressTransactions.propTypes = {
