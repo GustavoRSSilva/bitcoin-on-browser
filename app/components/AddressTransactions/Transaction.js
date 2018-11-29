@@ -11,12 +11,19 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 
-import { BLOCKSTREAM_URL, MAINNET } from 'utils/constants';
+import { BLOCKSTREAM_URL, MAINNET, USD } from 'utils/constants';
 import { transSatToUnit, getFiatAmountFromCrypto } from 'utils/conversion';
-
 import { calculateTransactionAddressRecieved } from 'utils/transactions';
 
-import { Transaction as Wrapper, TransId, Confirmed } from './styles';
+import appMessages from 'containers/App/messages';
+
+import {
+  Transaction as Wrapper,
+  SummaryContainer,
+  SummaryLine,
+  Confirmed,
+  TransactionDetails,
+} from './styles';
 
 import messages from './messages';
 
@@ -43,26 +50,41 @@ function Transaction(props) {
     calculateTransactionAddressRecieved(transaction, address),
   );
   const valueFiat = getFiatAmountFromCrypto(amount, rateFloat, unit, networkId);
+  const fiatUnit = USD;
+  const { fee } = transaction;
+
+  const confirmMsg = confirmed ? (
+    <FormattedMessage {...messages.confirmed} />
+  ) : (
+    <FormattedMessage {...messages.pending} />
+  );
 
   return (
     <Wrapper title={txId}>
       <ExpansionPanel expanded={expanded} onChange={onClick}>
         <ExpansionPanelSummary>
-          <TransId>{minTxId}</TransId>
-          <Confirmed confirmed={confirmed}>
-            {confirmed ? (
-              <FormattedMessage {...messages.confirmed} />
-            ) : (
-              <FormattedMessage {...messages.pending} />
-            )}
-          </Confirmed>
+          <SummaryContainer>
+            <SummaryLine>
+              <div>{minTxId}</div>
+              <div>
+                {amount} <FormattedMessage {...appMessages[unit]} />
+              </div>
+            </SummaryLine>
+            <SummaryLine>
+              <Confirmed confirmed={confirmed}>{confirmMsg}</Confirmed>
+              <div>
+                {valueFiat} <FormattedMessage {...appMessages[fiatUnit]} />
+              </div>
+            </SummaryLine>
+          </SummaryContainer>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <p>{amount}</p>
-          <p>{unit}</p>
-          <p>{address}</p>
-          <p>{valueFiat}</p>
-          <p>{getExplorerUrl(txId, networkId)}</p>
+          <TransactionDetails>
+            <p> from: {address}</p>
+            <p> fee {fee}</p>
+            <p>{valueFiat}</p>
+            <p>{getExplorerUrl(txId, networkId)}</p>
+          </TransactionDetails>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </Wrapper>
