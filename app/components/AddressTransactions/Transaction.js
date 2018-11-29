@@ -7,19 +7,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 
 import { BLOCKSTREAM_URL, MAINNET } from 'utils/constants';
 import { transSatToUnit, getFiatAmountFromCrypto } from 'utils/conversion';
 
 import { calculateTransactionAddressRecieved } from 'utils/transactions';
 
-import {
-  Transaction as Wrapper,
-  Fragment,
-  TransId,
-  Confirmed,
-  Amount,
-} from './styles';
+import { Transaction as Wrapper, TransId, Confirmed } from './styles';
 
 import messages from './messages';
 
@@ -29,7 +26,14 @@ const getExplorerUrl = (txId, networkId) =>
     : `${BLOCKSTREAM_URL}testnet/tx/${txId}`;
 
 function Transaction(props) {
-  const { transaction, btcToFiat, address, networkId } = props;
+  const {
+    expanded,
+    onClick,
+    transaction,
+    btcToFiat,
+    address,
+    networkId,
+  } = props;
   const { confirmed = false } = transaction.status;
   const txId = transaction.txid;
   const minTxId = `${txId.slice(0, 9)}...${txId.slice(-9)}`;
@@ -42,8 +46,8 @@ function Transaction(props) {
 
   return (
     <Wrapper title={txId}>
-      <a href={getExplorerUrl(txId, networkId)} target="_blank">
-        <Fragment width="65%">
+      <ExpansionPanel expanded={expanded} onChange={onClick}>
+        <ExpansionPanelSummary>
           <TransId>{minTxId}</TransId>
           <Confirmed confirmed={confirmed}>
             {confirmed ? (
@@ -52,19 +56,22 @@ function Transaction(props) {
               <FormattedMessage {...messages.pending} />
             )}
           </Confirmed>
-        </Fragment>
-        <Fragment width="35%">
-          <Amount>
-            {amount} {unit}
-          </Amount>
-          <Amount>{valueFiat} USD</Amount>
-        </Fragment>
-      </a>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <p>{amount}</p>
+          <p>{unit}</p>
+          <p>{address}</p>
+          <p>{valueFiat}</p>
+          <p>{getExplorerUrl(txId, networkId)}</p>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     </Wrapper>
   );
 }
 
 Transaction.propTypes = {
+  expanded: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
   transaction: PropTypes.object.isRequired,
   btcToFiat: PropTypes.object,
   address: PropTypes.string,
