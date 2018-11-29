@@ -22,7 +22,7 @@ export default defineMessages({
   },
   [FEE]: {
     id: 'app.components.SendForm.fee',
-    defaultMessage: 'Fee (Sat)',
+    defaultMessage: 'Fee (SAT)',
   },
   next: {
     id: 'app.components.SendForm.next',
