@@ -6,10 +6,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Tooltip from '@material-ui/core/Tooltip';
+
+import Launch from 'assets/img/launch.svg';
 
 import { BLOCKSTREAM_URL, MAINNET, USD } from 'utils/constants';
 import { transSatToUnit, getFiatAmountFromCrypto } from 'utils/conversion';
@@ -23,6 +26,8 @@ import {
   SummaryLine,
   Confirmed,
   TransactionDetails,
+  ViewOnExplorer,
+  DetailsLine,
 } from './styles';
 
 import messages from './messages';
@@ -34,6 +39,7 @@ const getExplorerUrl = (txId, networkId) =>
 
 function Transaction(props) {
   const {
+    intl,
     expanded,
     onClick,
     transaction,
@@ -41,6 +47,8 @@ function Transaction(props) {
     address,
     networkId,
   } = props;
+
+  const { formatMessage } = intl;
   const { confirmed = false } = transaction.status;
   const txId = transaction.txid;
   const minTxId = `${txId.slice(0, 9)}...${txId.slice(-9)}`;
@@ -51,13 +59,16 @@ function Transaction(props) {
   );
   const valueFiat = getFiatAmountFromCrypto(amount, rateFloat, unit, networkId);
   const fiatUnit = USD;
-  const { fee } = transaction;
+  const { fee, size, weight } = transaction;
+  console.log(transaction);
 
   const confirmMsg = confirmed ? (
     <FormattedMessage {...messages.confirmed} />
   ) : (
     <FormattedMessage {...messages.pending} />
   );
+  const blockHash = transaction.status.block_hash;
+  const blockHeight = transaction.status.block_height;
 
   return (
     <Wrapper>
@@ -80,10 +91,39 @@ function Transaction(props) {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <TransactionDetails>
-            <p>from: {address}</p>
-            <p>fee {fee}</p>
-            <p>{valueFiat}</p>
-            <p>{getExplorerUrl(txId, networkId)}</p>
+            <a href={getExplorerUrl(txId, networkId)} target="_blank">
+              <Tooltip
+                title={formatMessage(messages.view_on_blockstream)}
+                placement="left"
+              >
+                <ViewOnExplorer>
+                  <img src={Launch} alt="launch" />
+                </ViewOnExplorer>
+              </Tooltip>
+            </a>
+
+            <DetailsLine>
+              <FormattedMessage {...messages.transaction_id} />{' '}
+              <span>{txId}</span>
+            </DetailsLine>
+            <DetailsLine>
+              <FormattedMessage {...messages.transaction_weight} />{' '}
+              <span>{weight}</span>
+            </DetailsLine>
+            <DetailsLine>
+              <FormattedMessage {...messages.fee} /> <span>{fee}</span>
+            </DetailsLine>
+            <DetailsLine>
+              <FormattedMessage {...messages.size} /> <span>{size}</span>
+            </DetailsLine>
+            <DetailsLine>
+              <FormattedMessage {...messages.block_hash} />{' '}
+              <span>{blockHash}</span>
+            </DetailsLine>
+            <DetailsLine>
+              <FormattedMessage {...messages.block_height} />{' '}
+              <span>{blockHeight}</span>
+            </DetailsLine>
           </TransactionDetails>
         </ExpansionPanelDetails>
       </ExpansionPanel>
@@ -92,6 +132,7 @@ function Transaction(props) {
 }
 
 Transaction.propTypes = {
+  intl: intlShape.isRequired,
   expanded: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   transaction: PropTypes.object.isRequired,
@@ -100,4 +141,4 @@ Transaction.propTypes = {
   networkId: PropTypes.string.isRequired,
 };
 
-export default Transaction;
+export default injectIntl(Transaction);

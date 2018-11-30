@@ -7,8 +7,10 @@ import {
   lightRed,
   dark,
   darkGrey,
+  blue,
+  darkBlue,
 } from 'styles/colors';
-import { small, extraSmall } from 'styles/fontSize';
+import { small, extraSmall, extraExtraSmall } from 'styles/fontSize';
 
 export const Wrapper = styled.div`
   margin: 60px 0 20px 0;
@@ -78,5 +80,36 @@ export const Confirmed = styled.div`
 export const TransactionDetails = styled.div`
   background: ${darkGrey};
   overflow: hidden;
-  margin: -14px -24px -19px;
+  font-size: ${extraExtraSmall};
+  width: 100%;
+  padding: 44px 10px 10px;
+  margin-top: -10px;
+  position: relative;
+`;
+
+export const DetailsLine = styled(SummaryLine)`
+  margin 5px 0;
+`;
+
+export const ViewOnExplorer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background-color: ${blue};
+  border-radius: 5px;
+
+  &:hover {
+    background-color: ${darkBlue};
+  }
+
+  > img {
+    position: absolute;
+    width: 20px;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
