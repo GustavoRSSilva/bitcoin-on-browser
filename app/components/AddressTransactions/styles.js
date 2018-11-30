@@ -6,7 +6,7 @@ import {
   red,
   lightRed,
   dark,
-  ivory,
+  darkGrey,
 } from 'styles/colors';
 import { small, extraSmall } from 'styles/fontSize';
 
@@ -36,7 +36,7 @@ export const Transaction = styled.div`
   > div {
     background-color: ${dark};
   }
-  border: 1px solid ${grey};
+  border-top: 1px solid ${grey};
 `;
 
 export const SummaryContainer = styled.div`
@@ -76,8 +76,7 @@ export const Confirmed = styled.div`
 `;
 
 export const TransactionDetails = styled.div`
-  background: ${ivory};
-  color: ${dark};
+  background: ${darkGrey};
   overflow: hidden;
-  margin: -12px -14px;
+  margin: -14px -24px -19px;
 `;

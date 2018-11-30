@@ -60,7 +60,7 @@ function Transaction(props) {
   );
 
   return (
-    <Wrapper title={txId}>
+    <Wrapper>
       <ExpansionPanel expanded={expanded} onChange={onClick}>
         <ExpansionPanelSummary>
           <SummaryContainer>
@@ -80,8 +80,8 @@ function Transaction(props) {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <TransactionDetails>
-            <p> from: {address}</p>
-            <p> fee {fee}</p>
+            <p>from: {address}</p>
+            <p>fee {fee}</p>
             <p>{valueFiat}</p>
             <p>{getExplorerUrl(txId, networkId)}</p>
           </TransactionDetails>

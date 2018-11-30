@@ -13,5 +13,7 @@ export const primaryButtonHover = 'rgba(30, 144, 255, 0.65)';
 export const lightGrey = '#FAFAFA';
 export const grey = '#CCCCCC';
 export const steelGrey = '#43464B';
+export const steelDarkGrey = '#21272D';
+export const darkGrey = '#15171D';
 export const lightBlue = '#00CAFF';
 export const blue = '#2196f3';
