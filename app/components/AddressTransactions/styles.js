@@ -1,6 +1,16 @@
 import styled from 'styled-components';
-import { grey, steelGrey, lightGreen, yellow, ivory } from 'styles/colors';
-import { extraSmall, small } from 'styles/fontSize';
+import {
+  grey,
+  green,
+  lightGreen,
+  red,
+  lightRed,
+  dark,
+  darkGrey,
+  blue,
+  darkBlue,
+} from 'styles/colors';
+import { small, extraSmall, extraExtraSmall } from 'styles/fontSize';
 
 export const Wrapper = styled.div`
   margin: 60px 0 20px 0;
@@ -25,59 +35,81 @@ export const NoTransactions = styled.div`
 `;
 
 export const Transaction = styled.div`
-  width: calc(100% - 6px);
-  height: 80px;
-  border: 1px solid ${grey};
-  border-radius: 5px;
-  margin: 5px 3px;
-  margin-top: 10px;
-  color: ${grey};
-  > a {
-    float: left;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: columns;
-    padding: 10px 17px;
+  > div {
+    background-color: ${dark};
   }
-
-  &:hover {
-    cursor: pointer;
-    background-color: ${steelGrey};
-  }
+  border-top: 1px solid ${grey};
 `;
 
-export const Fragment = styled.div`
-  width: ${props => props.width || '100%'};
-  overflow: hidden;
+export const SummaryContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  /* override material ui padding */
+  padding: 0 !important;
 `;
 
-export const TransId = styled.span`
-    width; 100%;
+export const SummaryLine = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 export const Confirmed = styled.div`
+  height: 25px;
+  width: 80px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 5px;
   font-size: ${extraSmall};
   text-transform: uppercase;
-  border-radius: 5px;
-  height: 22px;
-  line-height: 22px;
-  text-align: center;
-  color: ${ivory};
-  font-weight: bold;
   letter-spacing: 1px;
-  width: 50%;
-  margin: 10px 25%;
-
+  margin-left: 20px;
+  margin-top: 10px;
   ${props => {
     if (props.confirmed) {
-      return `background-color: ${lightGreen}`;
+      return `color: ${green}; background:${lightGreen}`;
     }
-    return `background-color: ${yellow}`;
+
+    return `color: ${red}; background:${lightRed}`;
   }};
 `;
 
-export const Amount = styled.div`
+export const TransactionDetails = styled.div`
+  background: ${darkGrey};
+  overflow: hidden;
+  font-size: ${extraExtraSmall};
   width: 100%;
-  text-align: center;
+  padding: 44px 10px 10px;
+  margin-top: -10px;
+  position: relative;
+`;
+
+export const DetailsLine = styled(SummaryLine)`
+  margin: 5px 0;
+`;
+
+export const ViewOnExplorer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background-color: ${blue};
+  border-radius: 5px;
+
+  &:hover {
+    background-color: ${darkBlue};
+  }
+
+  > img {
+    position: absolute;
+    width: 20px;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
