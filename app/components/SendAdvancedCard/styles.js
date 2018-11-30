@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 import { large } from 'styles/fontSize';
-import {
-  primaryButton,
-  primaryButtonHover,
-  grey,
-  // steelGrey,
-  lightBlue,
-} from 'styles/colors';
+import { grey, lightBlue } from 'styles/colors';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -16,16 +10,6 @@ export const Wrapper = styled.div`
 export const ShowButtonContainer = styled.div`
   width: 100%;
   text-align: center;
-
-  > button {
-    padding: 0;
-    color: ${primaryButton};
-
-    &:hover {
-      cursor: pointer;
-      color: ${primaryButtonHover};
-    }
-  }
 `;
 
 export const ShowContainer = styled.div`
@@ -59,11 +43,6 @@ export const Utxo = styled.div`
   justify-content: center;
   flex-direction: column;
   padding: 10px;
-
-  /* &:hover {
-    cursor: pointer;
-    background-color: steelGrey;
-  } */
 
   > div {
     width: 100%;
