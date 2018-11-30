@@ -14,7 +14,7 @@ export const ShowButtonContainer = styled.div`
 
 export const ShowContainer = styled.div`
   overflow: hidden;
-  transition: max-height 0.3s ease-out; // note that we're transitioning max-height, not height!
+  transition: max-height 0.3s ease-out;
   max-height: ${props => (props.show ? '600px' : '0')};
   height: auto;
 `;
@@ -50,7 +50,6 @@ export const Utxo = styled.div`
     flex-direction: row;
     > span {
       width: 50%;
-      overflow: hidden;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

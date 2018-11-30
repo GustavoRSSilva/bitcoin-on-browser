@@ -13,8 +13,7 @@ export const SelectStyled = styled.select`
   color: ${grey};
   border-radius: 5px;
 
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  appearance: none;
   text-indent: 1px;
 
   &:hover {
