@@ -50,6 +50,7 @@ The extension will works as a small RPC that will comunicate with a public node.
 - Receive funds (done)
 - List address transactions (done)
 - List address utxos
+  - Disable utxo on send page.
 - Create 1 - 1 transactions
 - Create 2 - 2 transactions
 - Fully integration with [arduino-bitcoin](https://github.com/arduino-bitcoin/arduino-bitcoin)
