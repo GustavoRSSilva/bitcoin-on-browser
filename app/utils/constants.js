@@ -22,7 +22,7 @@ export const COINDESK_CURRENT_PRICE_URL =
 
 export const BLOCKSTREAM_URL = 'https://blockstream.info/';
 
-export const INSIGHT_URL = 'insight.bitpay.com/api/';
+export const INSIGHT_URL = 'blockexplorer.com/api/';
 
 export const MAINNET = 'bitcoin';
 export const TESTNET = 'testnet';

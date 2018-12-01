@@ -13,6 +13,7 @@ import {
   SUBMIT_FORM,
   SUBMIT_FORM_REJECTED,
   SUBMIT_FORM_SUCCESSFUL,
+  RESET_SUBMIT_FORM,
 } from './constants';
 import { getDefaultFormValues } from './saga';
 
@@ -45,6 +46,9 @@ function sendReducer(state = initialState, action) {
         SUBMIT_FORM_STATE,
         setState(false, null, action.payload),
       );
+
+    case RESET_SUBMIT_FORM:
+      return state.set(SUBMIT_FORM_STATE, setState());
 
     default:
       return state;

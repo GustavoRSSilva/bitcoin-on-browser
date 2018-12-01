@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { large } from 'styles/fontSize';
-import { grey, lightBlue } from 'styles/colors';
+import { grey, lightBlue, blue, darkBlue } from 'styles/colors';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -10,6 +10,16 @@ export const Wrapper = styled.div`
 export const ShowButtonContainer = styled.div`
   width: 100%;
   text-align: center;
+
+  button {
+    text-transform: uppercase;
+    color: ${blue};
+
+    &:hover {
+      color: ${darkBlue};
+      cursor: pointer;
+    }
+  }
 `;
 
 export const ShowContainer = styled.div`

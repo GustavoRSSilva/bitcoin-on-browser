@@ -24,8 +24,12 @@ export default defineMessages({
     id: 'app.components.SendForm.fee',
     defaultMessage: 'Fee (SAT)',
   },
-  next: {
-    id: 'app.components.SendForm.next',
-    defaultMessage: 'Next',
+  required: {
+    id: 'app.components.SendForm.required',
+    defaultMessage: '* Required fields',
+  },
+  submit: {
+    id: 'app.components.SendForm.submit',
+    defaultMessage: 'Submit',
   },
 });

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { INSIGHT_URL, DEFAULT_SELECTED_NETWORK, TESTNET } from './constants';
 
 const getInsightApiUrl = networkId =>
-  `https://${networkId === TESTNET ? 'test-' : ''}${INSIGHT_URL}`;
+  `https://${networkId === TESTNET ? 'testnet.' : ''}${INSIGHT_URL}`;
 
 export const pushRawTransaction = (
   networkId = DEFAULT_SELECTED_NETWORK,
