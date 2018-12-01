@@ -33,6 +33,8 @@ The extension will works as a small RPC that will comunicate with a public node.
 
 8. select the folder Build in the project folder
 
+you can also watch this video on how to start the extension https://youtu.be/QpXL4fst134.
+
 ## Getting started development mode
 
 1. install node and npm
