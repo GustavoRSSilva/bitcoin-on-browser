@@ -7,7 +7,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
@@ -43,9 +42,10 @@ import {
 } from './constants';
 
 import * as actions from './actions';
-import { selectFormValues } from './selectors';
+import { selectFormValues, selectSubmitFormState } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import withRequestHandler from './withRequestHandler';
 // import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -62,6 +62,16 @@ export class Send extends React.Component {
   componentWillMount() {
     const { resetFormValues } = this.props;
     resetFormValues();
+  }
+
+  componentDidUpdate() {
+    const { formSubmitState, history, resetSubmitForm } = this.props;
+
+    // TODO: handle this on the withRequestHandler
+    if (formSubmitState.data) {
+      resetSubmitForm();
+      history.push('/');
+    }
   }
 
   handleLeavePage() {
@@ -247,12 +257,15 @@ Send.propTypes = {
   setFormValues: PropTypes.func.isRequired,
   resetFormValues: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
+  resetSubmitForm: PropTypes.func.isRequired,
+  formSubmitState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   networkId: selectNetworkId(),
   btcToFiatFetchState: selectBtcToFiatFetchState(),
   sendFormValues: selectFormValues(),
+  formSubmitState: selectSubmitFormState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -275,4 +288,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(Send);
+)(withRequestHandler(Send));

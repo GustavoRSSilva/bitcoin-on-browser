@@ -21,7 +21,6 @@ function TextField({
   disable,
   required,
 }) {
-  console.log(required);
   return (
     <Wrapper margin={margin}>
       <TextFieldStyled

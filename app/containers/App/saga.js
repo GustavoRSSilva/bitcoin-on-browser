@@ -16,7 +16,7 @@ import {
   getAddressTransactions,
   getAddressUtxos,
 } from 'utils/blockstreamAPI';
-import { getEstimatedFees } from 'utils/insightAPI';
+// import { getEstimatedFees } from 'utils/insightAPI';
 
 import {
   NETWORK,
@@ -306,20 +306,22 @@ function* callGetaddressUtxos(action) {
 
 function* callGetEstimatedFees() {
   try {
-    const nBlocks = 2;
+    // const nBlocks = 2;
     const avgTxSize = 250;
     const toSat = 10000;
     const estimatedFee = {};
-    const mainResponse = yield call(getEstimatedFees, nBlocks, MAINNET);
-    const estimatedFeeMainKvB = mainResponse.data[nBlocks];
+    // const mainResponse = yield call(getEstimatedFees, nBlocks, MAINNET);
+    const estimatedFeeMainKvB = 0.001;
     // TODO: create a vervice to convert this
     estimatedFee[MAINNET] = parseInt(
       estimatedFeeMainKvB * toSat * avgTxSize,
       10,
     ).toString();
 
-    const testResponse = yield call(getEstimatedFees, nBlocks, TESTNET);
-    const estimatedFeeTestKvB = testResponse.data[nBlocks];
+    // const testResponse = yield call(getEstimatedFees, nBlocks, TESTNET);
+    // const estimatedFeeTestKvB = testResponse.data && testResponse.data[nBlocks] > 0 ? testResponse.data[nBlocks] : 0.00025;
+
+    const estimatedFeeTestKvB = 0.001;
     // TODO: create a vervice to convert this
     estimatedFee[TESTNET] = parseInt(
       estimatedFeeTestKvB * toSat * avgTxSize,
