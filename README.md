@@ -1,4 +1,10 @@
 # bitcoin-on-browser
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/wiki/GustavoRSSilva/bitcoin-on-browser/images/bitcoin-on-browser.png" alt="drawing" width="200" align="center"/>
+</p>
+
+
 Bitcoin wallet on your browser
 
 ## Objective
