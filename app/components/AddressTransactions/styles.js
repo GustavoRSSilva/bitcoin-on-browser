@@ -88,7 +88,7 @@ export const TransactionDetails = styled.div`
 `;
 
 export const DetailsLine = styled(SummaryLine)`
-  margin 5px 0;
+  margin: 5px 0;
 `;
 
 export const ViewOnExplorer = styled.div`

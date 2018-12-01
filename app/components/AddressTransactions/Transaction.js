@@ -60,7 +60,6 @@ function Transaction(props) {
   const valueFiat = getFiatAmountFromCrypto(amount, rateFloat, unit, networkId);
   const fiatUnit = USD;
   const { fee, size, weight } = transaction;
-  console.log(transaction);
 
   const confirmMsg = confirmed ? (
     <FormattedMessage {...messages.confirmed} />
