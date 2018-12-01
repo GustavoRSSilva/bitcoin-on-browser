@@ -55,7 +55,10 @@ function* callResetFormValues() {
   const addressUtxos = addressUtxosFetchState.data;
   const networkId = yield select(selectNetworkId());
   const estimatedFeesFetchState = yield select(selectEstimatedFeesFetchState());
-  const estimatedFees = estimatedFeesFetchState.data[networkId];
+  const estimatedFees =
+    estimatedFeesFetchState.data && estimatedFeesFetchState.data[networkId]
+      ? estimatedFeesFetchState.data[networkId]
+      : 2500;
   yield put(
     setFormValues(
       getDefaultFormValues(activeAddress, addressUtxos, estimatedFees),
@@ -102,7 +105,7 @@ function* callSubmitForm({ payload }) {
     );
 
     //  Test resutl
-    yield put(submitFormSuccessful(result));
+    yield put(submitFormSuccessful(result.data));
   } catch (e) {
     yield put(submitFormRejected(e));
   }

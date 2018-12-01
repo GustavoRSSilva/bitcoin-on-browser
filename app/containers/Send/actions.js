@@ -11,6 +11,7 @@ import {
   SUBMIT_FORM,
   SUBMIT_FORM_REJECTED,
   SUBMIT_FORM_SUCCESSFUL,
+  RESET_SUBMIT_FORM,
 } from './constants';
 
 function resetFormValues() {
@@ -47,6 +48,12 @@ function submitFormSuccessful(payload) {
   };
 }
 
+function resetSubmitForm() {
+  return {
+    type: RESET_SUBMIT_FORM,
+  };
+}
+
 export {
   setFormValues,
   resetFormValues,
@@ -54,4 +61,5 @@ export {
   submitForm,
   submitFormRejected,
   submitFormSuccessful,
+  resetSubmitForm,
 };

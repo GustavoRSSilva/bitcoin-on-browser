@@ -22,3 +22,4 @@ export const SUBMIT_FORM_STATE = 'submit_form_state';
 export const SUBMIT_FORM = `${path}SUBMIT_FORM`;
 export const SUBMIT_FORM_REJECTED = `${path}SUBMIT_FORM_REJECTED`;
 export const SUBMIT_FORM_SUCCESSFUL = `${path}SUBMIT_FORM_SUCCESSFUL`;
+export const RESET_SUBMIT_FORM = `${path}RESET_SUBMIT_FORM`;

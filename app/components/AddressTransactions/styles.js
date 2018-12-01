@@ -3,12 +3,12 @@ import {
   grey,
   green,
   lightGreen,
-  red,
-  lightRed,
   dark,
   darkGrey,
   blue,
   darkBlue,
+  yellow,
+  btcOrange,
 } from 'styles/colors';
 import { small, extraSmall, extraExtraSmall } from 'styles/fontSize';
 
@@ -73,7 +73,7 @@ export const Confirmed = styled.div`
       return `color: ${green}; background:${lightGreen}`;
     }
 
-    return `color: ${red}; background:${lightRed}`;
+    return `color: ${btcOrange}; background:${yellow}`;
   }};
 `;
 

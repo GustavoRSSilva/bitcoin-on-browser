@@ -26,7 +26,7 @@ import {
   FEE,
 } from 'containers/Send/constants';
 
-import { Form, InputContainer, Unit } from './styles';
+import { Form, InputContainer, Unit, NoteRequired } from './styles';
 import messages from './messages';
 
 const onFocus = evt => evt.target.select();
@@ -126,6 +126,7 @@ function SendForm(props) {
           onChange={evt => handleChangeAddress(evt, ADDRESS_TO)}
           placeholder={formatMessage(messages[ADDRESS_TO])}
           margin="0"
+          required
         />
       </InputContainer>
       <InputContainer type="address">
@@ -164,8 +165,12 @@ function SendForm(props) {
         />
       </InputContainer>
 
+      <NoteRequired>
+        <FormattedMessage {...messages.required} />
+      </NoteRequired>
+
       <Button type="submit">
-        <FormattedMessage {...messages.next} />
+        <FormattedMessage {...messages.submit} />
       </Button>
     </Form>
   );
