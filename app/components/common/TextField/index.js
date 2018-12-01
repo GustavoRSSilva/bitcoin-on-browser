@@ -19,7 +19,9 @@ function TextField({
   pattern,
   onFocus,
   disable,
+  required,
 }) {
+  console.log(required);
   return (
     <Wrapper margin={margin}>
       <TextFieldStyled
@@ -34,6 +36,7 @@ function TextField({
         centered={variant === 'standard' ? 'true' : null}
         onFocus={onFocus}
         disable={disable ? 'true' : 'false'}
+        required={required || false}
       />
     </Wrapper>
   );
@@ -50,6 +53,7 @@ TextField.propTypes = {
   pattern: PropTypes.string,
   onFocus: PropTypes.func,
   disable: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 export default TextField;
