@@ -1,4 +1,10 @@
 # bitcoin-on-browser
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/wiki/GustavoRSSilva/bitcoin-on-browser/images/bitcoin-on-browser.png" alt="drawing" width="200" align="center"/>
+</p>
+
+
 Bitcoin wallet on your browser
 
 ## Objective
@@ -26,6 +32,8 @@ The extension will works as a small RPC that will comunicate with a public node.
 7. load unpacked
 
 8. select the folder Build in the project folder
+
+you can also watch this video on how to start the extension https://youtu.be/QpXL4fst134.
 
 ## Getting started development mode
 
