@@ -1,4 +1,10 @@
 # bitcoin-on-browser
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/wiki/GustavoRSSilva/bitcoin-on-browser/images/bitcoin-on-browser.png" alt="drawing" width="200" align="center"/>
+</p>
+
+
 Bitcoin wallet on your browser
 
 ## Objective
@@ -27,6 +33,8 @@ The extension will works as a small RPC that will comunicate with a public node.
 
 8. select the folder Build in the project folder
 
+you can also watch this video on how to start the extension https://youtu.be/QpXL4fst134.
+
 ## Getting started development mode
 
 1. install node and npm
@@ -50,8 +58,10 @@ The extension will works as a small RPC that will comunicate with a public node.
 - Receive funds (done)
 - List address transactions (done)
 - List address utxos
+  - Disable utxo on send page.
 - Create 1 - 1 transactions
 - Create 2 - 2 transactions
+- Fully integration with [arduino-bitcoin](https://github.com/arduino-bitcoin/arduino-bitcoin)
 - WYLTCAC (Would you like to create a channel)
 - Create Channels
 - List Channels

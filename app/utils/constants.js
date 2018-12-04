@@ -22,10 +22,12 @@ export const COINDESK_CURRENT_PRICE_URL =
 
 export const BLOCKSTREAM_URL = 'https://blockstream.info/';
 
+export const INSIGHT_URL = 'blockexplorer.com/api/';
+
 export const MAINNET = 'bitcoin';
 export const TESTNET = 'testnet';
 
-export const AVAILABLE_NETWORKS = [MAINNET, TESTNET];
+export const AVAILABLE_NETWORKS = [TESTNET];
 
 //  Default selected network
 export const DEFAULT_SELECTED_NETWORK = TESTNET;

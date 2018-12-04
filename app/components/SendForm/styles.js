@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { grey } from 'styles/colors';
-import { small, normal } from 'styles/fontSize';
+import { extraSmall, small, normal } from 'styles/fontSize';
 
-export const Wrapper = styled.div`
+export const Form = styled.form`
   width: 100%;
   margin-top: 20px;
   height: 127px;
@@ -31,4 +31,13 @@ export const Unit = styled.div`
     padding: 5px;
     float: left;
   }
+`;
+
+export const NoteRequired = styled.div`
+  width: 100%;
+  width: 100%;
+  padding: 0 5%;
+  margin-bottom: 20px;
+  color: ${grey};
+  font-size: ${extraSmall};
 `;

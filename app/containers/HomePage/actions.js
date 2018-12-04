@@ -10,6 +10,7 @@ import {
   fetchSessionValid,
   fetchActiveAddress,
   changeNetwork,
+  fetchEstimatedFees,
 } from 'containers/App/actions';
 import { DEFAULT_ACTION } from './constants';
 
@@ -25,4 +26,5 @@ export {
   fetchUserCreated,
   fetchActiveAddress,
   changeNetwork,
+  fetchEstimatedFees,
 };

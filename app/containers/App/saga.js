@@ -1,18 +1,22 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
-import { saveItem, getItem } from 'utils/storage';
-import { getTransactionsUtxos } from 'utils/transactions';
 
+import { saveItem, getItem } from 'utils/storage';
+import { mapUtxosToAddress } from 'utils/transactions';
 import {
   COINDESK_CURRENT_PRICE_URL,
   DEFAULT_SELECTED_NETWORK,
+  MAINNET,
+  TESTNET,
 } from 'utils/constants';
 import { sha256, getAddressFromMnemonic } from 'utils/bitcoin';
 import {
   getAddressBalance,
   getAddressTransactions,
+  getAddressUtxos,
 } from 'utils/blockstreamAPI';
+// import { getEstimatedFees } from 'utils/insightAPI';
 
 import {
   NETWORK,
@@ -31,10 +35,14 @@ import {
   FETCH_ADDRESS_BALANCE,
   FETCH_BTC_TO_FIAT_VALUE,
   FETCH_ADDRESS_TRANSACTIONS,
+  FETCH_ADDRESS_UTXOS,
+  FETCH_ESTIMATED_FEES,
 } from './constants';
 
 import {
   fetchNetworkSuccessful,
+  changeNetworkRejected,
+  changeNetworkSuccessful,
   fetchUserCreatedRejected,
   fetchUserCreatedSuccessful,
   fetchSessionValidRejected,
@@ -53,9 +61,11 @@ import {
   fetchAddressTransactions,
   fetchAddressTransactionsRejected,
   fetchAddressTransactionsSuccessful,
-  changeNetworkRejected,
-  changeNetworkSuccessful,
-  setAddressUxtos,
+  fetchAddressUtxos,
+  fetchAddressUtxosRejected,
+  fetchAddressUtxosSuccessful,
+  fetchEstimatedFeesRejected,
+  fetchEstimatedFeesSuccessful,
 } from './actions';
 
 import { selectNetworkId } from './selectors';
@@ -182,6 +192,24 @@ function* callGetNetwork() {
   }
 }
 
+function* callChangeNetwork(action) {
+  try {
+    const newNetwork = action.payload;
+    const selectedNetwork = yield select(selectNetworkId());
+    if (newNetwork !== selectedNetwork) {
+      yield call(setNetwork, newNetwork);
+      yield put(changeNetworkSuccessful(newNetwork));
+      //  After changing the network, creating the new Address and fetch the active address values
+      const mnemonic = yield getMnemonic();
+      const address = getAddressFromMnemonic(mnemonic, 0, newNetwork);
+      yield call(storeAddress, address);
+      yield put(fetchActiveAddress());
+    }
+  } catch (e) {
+    yield put(changeNetworkRejected());
+  }
+}
+
 function* callGetUserCreated() {
   try {
     const user = yield call(getUser);
@@ -209,6 +237,7 @@ function* callGetActiveAddress() {
     if (address) {
       yield put(fetchAddressBalance(address));
       yield put(fetchAddressTransactions(address));
+      yield put(fetchAddressUtxos(address));
       yield put(fetchActiveAddressSuccessful(address));
     } else {
       yield put(fetchActiveAddressRejected());
@@ -258,33 +287,59 @@ function* callGetaddressTransactions(action) {
     const result = yield call(getAddressTransactions, address, selectedNetwork);
     const transactions = result.data;
     yield put(fetchAddressTransactionsSuccessful(transactions));
-    const utxos = getTransactionsUtxos(transactions, address);
-    yield put(setAddressUxtos(utxos));
   } catch (e) {
     yield put(fetchAddressTransactionsRejected());
   }
 }
 
-function* callChangeNetwork(action) {
+function* callGetaddressUtxos(action) {
   try {
-    const newNetwork = action.payload;
+    const address = action.payload;
     const selectedNetwork = yield select(selectNetworkId());
-    if (newNetwork !== selectedNetwork) {
-      yield call(setNetwork, newNetwork);
-      yield put(changeNetworkSuccessful(newNetwork));
-      //  After changing the network, creating the new Address and fetch the active address values
-      const mnemonic = yield getMnemonic();
-      const address = getAddressFromMnemonic(mnemonic, 0, newNetwork);
-      yield call(storeAddress, address);
-      yield put(fetchActiveAddress());
-    }
+    const result = yield call(getAddressUtxos, address, selectedNetwork);
+    const utxos = result.data;
+    yield put(fetchAddressUtxosSuccessful(mapUtxosToAddress(utxos, address)));
   } catch (e) {
-    yield put(changeNetworkRejected());
+    yield put(fetchAddressUtxosRejected());
+  }
+}
+
+function* callGetEstimatedFees() {
+  try {
+    // const nBlocks = 2;
+    const avgTxSize = 250;
+    const toSat = 10000;
+    const estimatedFee = {};
+    // const mainResponse = yield call(getEstimatedFees, nBlocks, MAINNET);
+    const estimatedFeeMainKvB = 0.001;
+    // TODO: create a vervice to convert this
+    estimatedFee[MAINNET] = parseInt(
+      estimatedFeeMainKvB * toSat * avgTxSize,
+      10,
+    ).toString();
+
+    // const testResponse = yield call(getEstimatedFees, nBlocks, TESTNET);
+    // const estimatedFeeTestKvB = testResponse.data && testResponse.data[nBlocks] > 0 ? testResponse.data[nBlocks] : 0.00025;
+
+    const estimatedFeeTestKvB = 0.001;
+    // TODO: create a vervice to convert this
+    estimatedFee[TESTNET] = parseInt(
+      estimatedFeeTestKvB * toSat * avgTxSize,
+      10,
+    ).toString();
+
+    yield put(fetchEstimatedFeesSuccessful(estimatedFee));
+  } catch (e) {
+    yield put(fetchEstimatedFeesRejected());
   }
 }
 
 function* fetchNetworkSaga() {
   yield takeLatest(FETCH_NETWORK, callGetNetwork);
+}
+
+function* changeNetworkSaga() {
+  yield takeLatest(CHANGE_NETWORK, callChangeNetwork);
 }
 
 function* fetchUserCreatedSaga() {
@@ -315,14 +370,19 @@ function* fetchAddressTransactionsSaga() {
   yield takeLatest(FETCH_ADDRESS_TRANSACTIONS, callGetaddressTransactions);
 }
 
-function* changeNetworkSaga() {
-  yield takeLatest(CHANGE_NETWORK, callChangeNetwork);
+function* fetchAddressUtxosSaga() {
+  yield takeLatest(FETCH_ADDRESS_UTXOS, callGetaddressUtxos);
+}
+
+function* fetchEstimatedFeesSaga() {
+  yield takeLatest(FETCH_ESTIMATED_FEES, callGetEstimatedFees);
 }
 
 // Individual exports for testing
 export default function* defaultSaga() {
   yield [
     fetchNetworkSaga(),
+    changeNetworkSaga(),
     fetchUserCreatedSaga(),
     fetchSessionValidSaga(),
     fetchActiveAddressSaga(),
@@ -330,6 +390,7 @@ export default function* defaultSaga() {
     fetchAddressBalanceSaga(),
     fetchBtcToFiatValueSaga(),
     fetchAddressTransactionsSaga(),
-    changeNetworkSaga(),
+    fetchAddressUtxosSaga(),
+    fetchEstimatedFeesSaga(),
   ];
 }

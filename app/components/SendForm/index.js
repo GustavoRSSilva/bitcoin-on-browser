@@ -10,6 +10,7 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import Select from 'components/common/Select';
 import TextField from 'components/common/TextField';
+import Button from 'components/common/Button';
 
 import appMessages from 'containers/App/messages';
 
@@ -22,9 +23,10 @@ import {
   UNIT_FIAT,
   ADDRESS_TO,
   ADDRESS_FROM,
+  FEE,
 } from 'containers/Send/constants';
 
-import { Wrapper, InputContainer, Unit } from './styles';
+import { Form, InputContainer, Unit, NoteRequired } from './styles';
 import messages from './messages';
 
 const onFocus = evt => evt.target.select();
@@ -101,6 +103,7 @@ function SendForm(props) {
     formValue,
     availableCryptoUnits,
     handleChangeUnit,
+    handleSubmitForm,
   } = props;
 
   const { formatMessage } = props.intl;
@@ -108,12 +111,13 @@ function SendForm(props) {
   const unitCrypto = formValue[UNIT_CRYPTO];
   const amountFiat = formValue[AMOUNT_FIAT];
   const unitFiat = formValue[UNIT_FIAT];
+  const fee = formValue[FEE];
 
   const addressTo = formValue[ADDRESS_TO];
   const addressFrom = formValue[ADDRESS_FROM];
 
   return (
-    <Wrapper>
+    <Form onSubmit={handleSubmitForm}>
       {/* Address inputs */}
       <InputContainer type="address">
         <TextField
@@ -122,6 +126,7 @@ function SendForm(props) {
           onChange={evt => handleChangeAddress(evt, ADDRESS_TO)}
           placeholder={formatMessage(messages[ADDRESS_TO])}
           margin="0"
+          required
         />
       </InputContainer>
       <InputContainer type="address">
@@ -147,7 +152,27 @@ function SendForm(props) {
         availableCryptoUnits,
         formatMessage,
       )}
-    </Wrapper>
+
+      <InputContainer>
+        <TextField
+          type="text"
+          pattern="^\d+(\.\d*)?$"
+          value={toString(fee)}
+          onChange={evt => handleChangeAmount(evt, FEE)}
+          onFocus={onFocus}
+          margin="0"
+          placeholder={formatMessage(messages[FEE])}
+        />
+      </InputContainer>
+
+      <NoteRequired>
+        <FormattedMessage {...messages.required} />
+      </NoteRequired>
+
+      <Button type="submit">
+        <FormattedMessage {...messages.submit} />
+      </Button>
+    </Form>
   );
 }
 
@@ -159,6 +184,7 @@ SendForm.propTypes = {
   formValue: PropTypes.object.isRequired,
   availableCryptoUnits: PropTypes.array.isRequired,
   handleChangeUnit: PropTypes.func.isRequired,
+  handleSubmitForm: PropTypes.func.isRequired,
 };
 
 export default injectIntl(SendForm);

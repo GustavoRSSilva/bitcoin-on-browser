@@ -7,7 +7,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
@@ -31,7 +30,6 @@ import SendForm from 'components/SendForm';
 import {
   selectNetworkId,
   selectBtcToFiatFetchState,
-  selectAddressUtxos,
 } from 'containers/App/selectors';
 
 import {
@@ -39,12 +37,15 @@ import {
   UNIT_CRYPTO,
   AMOUNT_FIAT,
   ADDRESS_TO,
+  ADDRESS_FROM_UTXOS,
+  FEE,
 } from './constants';
 
 import * as actions from './actions';
-import { selectFormValues } from './selectors';
+import { selectFormValues, selectSubmitFormState } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import withRequestHandler from './withRequestHandler';
 // import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -55,11 +56,22 @@ export class Send extends React.Component {
     this.handleChangeAmount = this.handleChangeAmount.bind(this);
     this.handleChangeUnit = this.handleChangeUnit.bind(this);
     this.handleChangeAddress = this.handleChangeAddress.bind(this);
+    this.handleSubmitForm = this.handleSubmitForm.bind(this);
   }
 
   componentWillMount() {
     const { resetFormValues } = this.props;
     resetFormValues();
+  }
+
+  componentDidUpdate() {
+    const { formSubmitState, history, resetSubmitForm } = this.props;
+
+    // TODO: handle this on the withRequestHandler
+    if (formSubmitState.data) {
+      resetSubmitForm();
+      history.push('/');
+    }
   }
 
   handleLeavePage() {
@@ -152,6 +164,8 @@ export class Send extends React.Component {
       );
       formValues[AMOUNT_CRYPTO] = amount;
       formValues[UNIT_CRYPTO] = unit;
+    } else if (target === FEE) {
+      formValues[FEE] = value;
     }
 
     return setFormValues(formValues);
@@ -183,6 +197,17 @@ export class Send extends React.Component {
     return setFormValues(formValues);
   }
 
+  handleSubmitForm(evt) {
+    evt.preventDefault();
+
+    const { sendFormValues, submitForm } = this.props;
+
+    //    valdiate form
+    //    validate the user has enought funds for the request
+
+    submitForm(sendFormValues);
+  }
+
   renderCloseButton() {
     return <CloseButton onClick={this.handleLeavePage} />;
   }
@@ -202,21 +227,23 @@ export class Send extends React.Component {
         formValue={sendFormValues}
         availableCryptoUnits={AVAILABLE_CRYPTO_UNITS}
         handleChangeUnit={this.handleChangeUnit}
+        handleSubmitForm={this.handleSubmitForm}
       />
     );
   }
 
-  renderAdvanced(addressUtxos) {
+  renderAdvanced() {
+    const { sendFormValues } = this.props;
+    const addressUtxos = sendFormValues[ADDRESS_FROM_UTXOS] || [];
     return <SendAdvancedCard utxos={addressUtxos} />;
   }
 
   render() {
-    const { addressUtxos } = this.props;
     return (
       <Fragment>
         {this.renderCloseButton()}
         {this.renderSendForm()}
-        {this.renderAdvanced(addressUtxos)}
+        {this.renderAdvanced()}
       </Fragment>
     );
   }
@@ -229,14 +256,16 @@ Send.propTypes = {
   sendFormValues: PropTypes.object.isRequired,
   setFormValues: PropTypes.func.isRequired,
   resetFormValues: PropTypes.func.isRequired,
-  addressUtxos: PropTypes.array.isRequired,
+  submitForm: PropTypes.func.isRequired,
+  resetSubmitForm: PropTypes.func.isRequired,
+  formSubmitState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   networkId: selectNetworkId(),
   btcToFiatFetchState: selectBtcToFiatFetchState(),
   sendFormValues: selectFormValues(),
-  addressUtxos: selectAddressUtxos(),
+  formSubmitState: selectSubmitFormState(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -259,4 +288,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(Send);
+)(withRequestHandler(Send));

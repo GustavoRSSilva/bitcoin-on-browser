@@ -32,7 +32,12 @@ import {
   FETCH_ADDRESS_TRANSACTIONS,
   FETCH_ADDRESS_TRANSACTIONS_REJECTED,
   FETCH_ADDRESS_TRANSACTIONS_SUCCESSFUL,
-  SET_ADDRESS_UXTOS,
+  FETCH_ADDRESS_UTXOS,
+  FETCH_ADDRESS_UTXOS_REJECTED,
+  FETCH_ADDRESS_UTXOS_SUCCESSFUL,
+  FETCH_ESTIMATED_FEES,
+  FETCH_ESTIMATED_FEES_REJECTED,
+  FETCH_ESTIMATED_FEES_SUCCESSFUL,
 } from './constants';
 
 export function fetchNetwork() {
@@ -218,9 +223,45 @@ export function fetchAddressTransactionsSuccessful(payload) {
   };
 }
 
-export function setAddressUxtos(payload) {
+//  Fetch the address transactions
+export function fetchAddressUtxos(payload) {
   return {
-    type: SET_ADDRESS_UXTOS,
+    type: FETCH_ADDRESS_UTXOS,
+    payload,
+  };
+}
+
+export function fetchAddressUtxosRejected(payload) {
+  return {
+    type: FETCH_ADDRESS_UTXOS_REJECTED,
+    payload,
+  };
+}
+
+export function fetchAddressUtxosSuccessful(payload) {
+  return {
+    type: FETCH_ADDRESS_UTXOS_SUCCESSFUL,
+    payload,
+  };
+}
+
+//  Fetch estimated fees
+export function fetchEstimatedFees() {
+  return {
+    type: FETCH_ESTIMATED_FEES,
+  };
+}
+
+export function fetchEstimatedFeesRejected(payload) {
+  return {
+    type: FETCH_ESTIMATED_FEES_REJECTED,
+    payload,
+  };
+}
+
+export function fetchEstimatedFeesSuccessful(payload) {
+  return {
+    type: FETCH_ESTIMATED_FEES_SUCCESSFUL,
     payload,
   };
 }

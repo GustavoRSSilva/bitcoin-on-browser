@@ -7,4 +7,4 @@ export const Wrapper = styled.div`
   margin: 30px 0;
 `;
 
-export const ButtonStyled = styled(Button)``;
+export const ButtonStyled = Button;

@@ -46,12 +46,14 @@ export class HomePage extends React.Component {
       fetchSessionValid,
       fetchUserCreated,
       fetchActiveAddress,
+      fetchEstimatedFees,
     } = this.props;
 
     fetchNetwork();
     fetchUserCreated();
     fetchSessionValid();
     fetchActiveAddress();
+    fetchEstimatedFees();
   }
 
   componentDidUpdate() {
@@ -160,6 +162,7 @@ HomePage.propTypes = {
   btcToFiatFetchState: PropTypes.object.isRequired,
   addressTransactionsFetchState: PropTypes.object.isRequired,
   changeNetwork: PropTypes.func.isRequired,
+  fetchEstimatedFees: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

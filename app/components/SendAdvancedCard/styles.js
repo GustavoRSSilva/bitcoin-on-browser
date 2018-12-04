@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 import { large } from 'styles/fontSize';
-import {
-  primaryButton,
-  primaryButtonHover,
-  grey,
-  // steelGrey,
-  lightBlue,
-} from 'styles/colors';
+import { grey, lightBlue, blue, darkBlue } from 'styles/colors';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -17,20 +11,20 @@ export const ShowButtonContainer = styled.div`
   width: 100%;
   text-align: center;
 
-  > button {
-    padding: 0;
-    color: ${primaryButton};
+  button {
+    text-transform: uppercase;
+    color: ${blue};
 
     &:hover {
+      color: ${darkBlue};
       cursor: pointer;
-      color: ${primaryButtonHover};
     }
   }
 `;
 
 export const ShowContainer = styled.div`
   overflow: hidden;
-  transition: max-height 0.3s ease-out; // note that we're transitioning max-height, not height!
+  transition: max-height 0.3s ease-out;
   max-height: ${props => (props.show ? '600px' : '0')};
   height: auto;
 `;
@@ -60,18 +54,12 @@ export const Utxo = styled.div`
   flex-direction: column;
   padding: 10px;
 
-  /* &:hover {
-    cursor: pointer;
-    background-color: steelGrey;
-  } */
-
   > div {
     width: 100%;
     display: flex;
     flex-direction: row;
     > span {
       width: 50%;
-      overflow: hidden;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

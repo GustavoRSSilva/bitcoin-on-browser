@@ -38,63 +38,49 @@ export const calculateTransactionAddressRecieved = (
   return parseInt(txOutTotal - txInTotal, 10);
 };
 
-const createUtxo = (vout, index, txId) => ({
-  vout,
-  index,
-  txId,
-});
-
 /**
  *  @dev
- *    return the utxos in a transaction
- *  @params transactions {array} - transaction array ordered by block height
- *  @params address {string} - user address
- *  @params utxos {array} - the result from previous recursions
- *  @returm utxos {array} - array of utxos
+ *      Add address to utxo,
+ *  @params utxos (array) - arry of utxos
+ *  @params address (string) - address to be save
+ *  @returns mappedUtxosAdress (array) - utxo final object
+ *
+ *  ex:
+ *    "status": {
+ *       "block_hash": "000000000000008101e62372cc282c43861f428cfd683ed38312a83c7130852d",
+ *       "block_height": 1444857,
+ *       "confirmed": true,
+ *       },
+ *    "txid": "037cc5b291da18b7d4e910a2a32300d148e4907e9481485125627c69d0beb85f",
+ *    "value": 357400,
+ *    "vout": 0,
+ *    "address": "mx4LJCCgj6hznYDvFi3zmitMrLXodJVpP4",
+ *    "enabled": true
+ *  }
+ *
  */
-const getTransactionsUtxosRecursive = (transactions = [], address) => {
-  //  stop condition
-  if (!transactions.length) {
-    return [];
-  }
+export const mapUtxosToAddress = (utxos = [], address) =>
+  utxos.map(utxo => ({ ...utxo, address, enabled: true }));
 
-  const [tx, ...rest] = transactions;
-  const txId = tx.txid;
+export const selectUtxosForTransaction = (availableUtxos = [], total) => {
+  let aux = 0;
+  const resultUtxos = [];
 
-  const utxos = [];
-  const vouts = tx.vout;
+  //  sort by value (bigger first)
+  availableUtxos.sort((a, b) => a.value > b.value);
 
-  vouts.map((vout, index) => {
-    let isSpend = true;
-
-    if (vout.scriptpubkey_address === address) {
-      isSpend = false;
-
-      //  if there are no more transactions, the it is a utxo
-      if (rest.length) {
-        rest.map(rtx => {
-          const rTxvins = rtx.vin;
-          const find = rTxvins.find(
-            vin => vin.txid === txId && vin.vout === index,
-          );
-          if (find) {
-            isSpend = true;
-          }
-
-          return null;
-        });
-      }
-
-      if (!isSpend) {
-        utxos.push(createUtxo(vout, index, txId));
-      }
+  availableUtxos.map(utxo => {
+    if (aux < total) {
+      resultUtxos.push(utxo);
+      aux += utxo.value;
     }
 
     return null;
   });
 
-  return [...utxos, ...getTransactionsUtxosRecursive(rest, address, utxos)];
-};
+  if (aux < total) {
+    throw new Error('not enough funds');
+  }
 
-export const getTransactionsUtxos = (transactions = [], address) =>
-  getTransactionsUtxosRecursive(transactions, address);
+  return resultUtxos;
+};
