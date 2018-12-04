@@ -7,11 +7,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
-import TextArea from 'components/common/TextArea';
+import TextField from 'components/common/TextField';
 import Button from 'components/common/Button';
 import PageTitle from 'components/common/PageTitle';
 
@@ -46,7 +46,12 @@ export class Mnemonic extends React.Component {
   }
 
   render() {
-    const { mnemonic, generateNewMnemonic, saveMnemonic } = this.props;
+    const {
+      mnemonic,
+      generateNewMnemonic,
+      saveMnemonic,
+      intl: { formatMessage },
+    } = this.props;
 
     return (
       <Wrapper>
@@ -54,7 +59,13 @@ export class Mnemonic extends React.Component {
           <FormattedMessage {...messages.header} />
         </PageTitle>
         <MnemonicFragment>
-          <TextArea rows="4" readOnly value={mnemonic} />
+          <TextField
+            multiline
+            disable
+            value={mnemonic}
+            label={formatMessage(messages.mnemonic)}
+            onChange={() => null}
+          />
         </MnemonicFragment>
 
         <Button onClick={() => generateNewMnemonic()} color="default">
@@ -69,6 +80,7 @@ export class Mnemonic extends React.Component {
 }
 
 Mnemonic.propTypes = {
+  intl: intlShape.isRequired,
   history: PropTypes.object.isRequired,
   mnemonic: PropTypes.string,
   generateNewMnemonic: PropTypes.func.isRequired,
@@ -95,4 +107,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(Mnemonic);
+)(injectIntl(Mnemonic));

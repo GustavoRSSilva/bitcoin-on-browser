@@ -20,6 +20,8 @@ function TextField({
   onFocus,
   disable,
   required,
+  multiline,
+  error,
 }) {
   return (
     <Wrapper margin={margin}>
@@ -36,6 +38,8 @@ function TextField({
         onFocus={onFocus}
         disable={disable ? 'true' : 'false'}
         required={required || false}
+        multiline={multiline || false}
+        error={error || false}
       />
     </Wrapper>
   );
@@ -53,6 +57,8 @@ TextField.propTypes = {
   onFocus: PropTypes.func,
   disable: PropTypes.bool,
   required: PropTypes.bool,
+  multiline: PropTypes.bool,
+  error: PropTypes.bool,
 };
 
 export default TextField;

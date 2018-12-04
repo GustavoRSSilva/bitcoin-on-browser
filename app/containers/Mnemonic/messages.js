@@ -19,4 +19,8 @@ export default defineMessages({
     id: 'app.containers.Mnemonic.save',
     defaultMessage: 'Save',
   },
+  mnemonic: {
+    id: 'app.containers.Mnemonic.mnemonic',
+    defaultMessage: 'Mnemonic',
+  },
 });
