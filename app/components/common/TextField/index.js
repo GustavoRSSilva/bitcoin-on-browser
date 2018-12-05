@@ -22,6 +22,8 @@ function TextField({
   required,
   multiline,
   error,
+  rows,
+  rowsMax,
 }) {
   return (
     <Wrapper margin={margin}>
@@ -40,6 +42,8 @@ function TextField({
         required={required || false}
         multiline={multiline || false}
         error={error || false}
+        rows={rows}
+        rowsMax={rowsMax}
       />
     </Wrapper>
   );
@@ -59,6 +63,8 @@ TextField.propTypes = {
   required: PropTypes.bool,
   multiline: PropTypes.bool,
   error: PropTypes.bool,
+  rows: PropTypes.string,
+  rowsMax: PropTypes.string,
 };
 
 export default TextField;
