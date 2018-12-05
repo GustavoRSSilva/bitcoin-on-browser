@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import TextArea from '../index';
+// import MnemonicForm from '../index';
 
-describe('<TextArea />', () => {
+describe('<MnemonicForm />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

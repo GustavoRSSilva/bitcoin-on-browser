@@ -10,11 +10,13 @@ import {
   SAVE_MNEMONIC,
   SAVE_MNEMONIC_REJECTED,
   SAVE_MNEMONIC_SUCCESSFUL,
+  SET_NUM_WORDS_MNEMONIC,
 } from './constants';
 
-export function generateNewMnemonic() {
+export function generateNewMnemonic(payload) {
   return {
     type: GENERATE_NEW_MNEMONIC,
+    payload,
   };
 }
 
@@ -42,6 +44,13 @@ export function saveMnemonicRejected(payload) {
 export function saveMnemonicSuccessful(payload) {
   return {
     type: SAVE_MNEMONIC_SUCCESSFUL,
+    payload,
+  };
+}
+
+export function setNumWordsMnemonic(payload) {
+  return {
+    type: SET_NUM_WORDS_MNEMONIC,
     payload,
   };
 }
