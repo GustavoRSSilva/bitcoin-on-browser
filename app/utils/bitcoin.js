@@ -1,7 +1,7 @@
 import bitcoin from 'bitcoinjs-lib';
 import bip39 from 'bip39';
 
-import { TWELVE_WORDS_MNEMONIC, MAINNET, TESTNET } from './constants';
+import { DEFAULT_NUM_WORDS_MNEMONIC, MAINNET, TESTNET } from './constants';
 
 const { Buffer } = require('buffer/');
 
@@ -34,7 +34,7 @@ export const validateAddress = (address, networkId) => {
 export const sha256 = val => bitcoin.crypto.sha256(Buffer.from(val));
 
 export const generateMnemonic = (
-  strength = TWELVE_WORDS_MNEMONIC,
+  strength = DEFAULT_NUM_WORDS_MNEMONIC,
   rng = null,
   language = bip39.wordlists.EN,
 ) => bip39.generateMnemonic(strength, rng, language);
