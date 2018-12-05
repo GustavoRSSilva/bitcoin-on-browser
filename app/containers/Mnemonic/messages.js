@@ -11,16 +11,4 @@ export default defineMessages({
     id: 'app.containers.Mnemonic.header',
     defaultMessage: 'Mnemonic',
   },
-  generate_new_mnemonic: {
-    id: 'app.containers.Mnemonic.generate_new_mnemonic',
-    defaultMessage: 'New',
-  },
-  save: {
-    id: 'app.containers.Mnemonic.save',
-    defaultMessage: 'Save',
-  },
-  mnemonic: {
-    id: 'app.containers.Mnemonic.mnemonic',
-    defaultMessage: 'Mnemonic',
-  },
 });

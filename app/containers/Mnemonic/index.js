@@ -7,13 +7,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
-import TextField from 'components/common/TextField';
-import Button from 'components/common/Button';
 import PageTitle from 'components/common/PageTitle';
+import MnemonicForm from 'components/MnemonicForm';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -22,7 +21,7 @@ import { selectMnemonicString, selectSaveMnemonicState } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { Wrapper, MnemonicFragment } from './styles';
+import { Wrapper } from './styles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Mnemonic extends React.Component {
@@ -46,41 +45,24 @@ export class Mnemonic extends React.Component {
   }
 
   render() {
-    const {
-      mnemonic,
-      generateNewMnemonic,
-      saveMnemonic,
-      intl: { formatMessage },
-    } = this.props;
+    const { mnemonic, generateNewMnemonic, saveMnemonic } = this.props;
 
     return (
       <Wrapper>
         <PageTitle>
           <FormattedMessage {...messages.header} />
         </PageTitle>
-        <MnemonicFragment>
-          <TextField
-            multiline
-            disable
-            value={mnemonic}
-            label={formatMessage(messages.mnemonic)}
-            onChange={() => null}
-          />
-        </MnemonicFragment>
-
-        <Button onClick={() => generateNewMnemonic()} color="default">
-          <FormattedMessage {...messages.generate_new_mnemonic} />
-        </Button>
-        <Button onClick={() => saveMnemonic(mnemonic)}>
-          <FormattedMessage {...messages.save} />
-        </Button>
+        <MnemonicForm
+          mnemonic={mnemonic}
+          generateNewMnemonic={generateNewMnemonic}
+          saveMnemonic={saveMnemonic}
+        />
       </Wrapper>
     );
   }
 }
 
 Mnemonic.propTypes = {
-  intl: intlShape.isRequired,
   history: PropTypes.object.isRequired,
   mnemonic: PropTypes.string,
   generateNewMnemonic: PropTypes.func.isRequired,
@@ -107,4 +89,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(injectIntl(Mnemonic));
+)(Mnemonic);
