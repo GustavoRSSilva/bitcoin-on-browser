@@ -11,21 +11,31 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 
-import TextArea from 'components/common/TextArea';
-import Button from 'components/common/Button';
 import PageTitle from 'components/common/PageTitle';
+import MnemonicForm from 'components/MnemonicForm';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import * as actions from './actions';
-import { selectMnemonicString, selectSaveMnemonicState } from './selectors';
+import {
+  selectMnemonicString,
+  selectSaveMnemonicState,
+  selectNumWordsMnemonic,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { Wrapper, MnemonicFragment } from './styles';
+import { Wrapper } from './styles';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Mnemonic extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChangeNumWordsMnemonic = this.handleChangeNumWordsMnemonic.bind(
+      this,
+    );
+  }
+
   componentWillMount() {
     const { generateNewMnemonic } = this.props;
     //  TODO: fetch Mnemonic
@@ -45,24 +55,34 @@ export class Mnemonic extends React.Component {
     }
   }
 
+  handleChangeNumWordsMnemonic(evt) {
+    const { generateNewMnemonic, setNumWordsMnemonic } = this.props;
+    const { value } = evt.target;
+    const numWords = parseInt(value, 10);
+    generateNewMnemonic(numWords);
+    setNumWordsMnemonic(numWords);
+  }
+
   render() {
-    const { mnemonic, generateNewMnemonic, saveMnemonic } = this.props;
+    const {
+      mnemonic,
+      generateNewMnemonic,
+      saveMnemonic,
+      numWordsMnemonic,
+    } = this.props;
 
     return (
       <Wrapper>
         <PageTitle>
           <FormattedMessage {...messages.header} />
         </PageTitle>
-        <MnemonicFragment>
-          <TextArea rows="4" readOnly value={mnemonic} />
-        </MnemonicFragment>
-
-        <Button onClick={() => generateNewMnemonic()} color="default">
-          <FormattedMessage {...messages.generate_new_mnemonic} />
-        </Button>
-        <Button onClick={() => saveMnemonic(mnemonic)}>
-          <FormattedMessage {...messages.save} />
-        </Button>
+        <MnemonicForm
+          mnemonic={mnemonic}
+          generateNewMnemonic={generateNewMnemonic}
+          saveMnemonic={saveMnemonic}
+          numWordsMnemonic={numWordsMnemonic}
+          handleChangeNumWordsMnemonic={this.handleChangeNumWordsMnemonic}
+        />
       </Wrapper>
     );
   }
@@ -74,11 +94,14 @@ Mnemonic.propTypes = {
   generateNewMnemonic: PropTypes.func.isRequired,
   saveMnemonic: PropTypes.func.isRequired,
   saveMnemonicState: PropTypes.object.isRequired,
+  numWordsMnemonic: PropTypes.number.isRequired,
+  setNumWordsMnemonic: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   mnemonic: selectMnemonicString(),
   saveMnemonicState: selectSaveMnemonicState(),
+  numWordsMnemonic: selectNumWordsMnemonic(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

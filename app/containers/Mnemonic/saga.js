@@ -15,8 +15,8 @@ import {
 
 // Watcher sagas
 
-function* callGenerateMnemonic() {
-  const mnemonic = generateMnemonic();
+function* callGenerateMnemonic({ payload }) {
+  const mnemonic = generateMnemonic(payload);
   yield put(setMnemonic(mnemonic));
 }
 

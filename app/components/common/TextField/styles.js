@@ -14,8 +14,8 @@ export const TextFieldStyled = styled(TextField)`
   div,
   div:after,
   label {
-    color: ${grey} !important;
-    border-color: ${grey} !important;
+    color: ${props => (!props.error ? `${grey} !important` : 'inherit')};
+    border-color: ${props => (!props.error ? `${grey} !important` : 'inherit')};
   }
 
   input {
