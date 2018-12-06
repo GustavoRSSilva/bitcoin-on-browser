@@ -7,7 +7,6 @@ export const Layout = styled.div`
   height: ${appHeight};
   margin: 0 auto;
   background-color: ${dark};
-  overflow: auto;
   color: ${white};
   display: inline-block;
 
