@@ -6,8 +6,10 @@ import {
   transSatToUnit,
   convertFiatBtcToFiatUnit,
   convertCryptoFromUnitToUnit,
+  getFiatAmountFromCrypto,
+  getCryptoAmountAndUnitFromFiat,
 } from '../conversion';
-import { BTC, MBTC, SAT } from '../constants';
+import { BTC, MBTC, SAT, MAINNET } from '../constants';
 
 describe('conversion', () => {
   it('should correctly convert 100000000 SAT to 1 BTC and vice versa', () => {
@@ -96,5 +98,94 @@ describe('conversion', () => {
     const expectedValueSAT = 0.000056432;
     const resultSAT = convertFiatBtcToFiatUnit(valueInBTC, SAT);
     expect(resultSAT).toBe(expectedValueSAT);
+  });
+
+  it('should correctly convert 2 BTC worth of 5643.20 USD/BTC into USD', () => {
+    const btcToFiat = 5643.2;
+    const crytoUnit = BTC;
+    const cryptoAmount = 2;
+    const networkId = MAINNET;
+
+    const expected = cryptoAmount * btcToFiat;
+
+    const amountUsdOfCryptoAmount = getFiatAmountFromCrypto(
+      cryptoAmount,
+      btcToFiat,
+      crytoUnit,
+      networkId,
+    );
+    expect(amountUsdOfCryptoAmount).toBe(expected);
+  });
+
+  it('should correctly convert 90 MBTC worth of 5643.20 USD/BTC into USD', () => {
+    const btcToFiat = 5643.2;
+    const crytoUnit = MBTC;
+    const cryptoAmount = 90;
+    const networkId = MAINNET;
+
+    const expected = parseFloat(
+      ((cryptoAmount / 10 ** 3) * btcToFiat).toFixed(2),
+    );
+
+    const amountUsdOfCryptoAmount = getFiatAmountFromCrypto(
+      cryptoAmount,
+      btcToFiat,
+      crytoUnit,
+      networkId,
+    );
+    expect(amountUsdOfCryptoAmount).toBe(expected);
+  });
+
+  it('should correctly convert 1 SAT worth of 5643.20 USD/BTC into USD', () => {
+    const btcToFiat = 5643.2;
+    const crytoUnit = SAT;
+    const cryptoAmount = 1;
+    const networkId = MAINNET;
+
+    const expected = 0;
+
+    const amountUsdOfCryptoAmount = getFiatAmountFromCrypto(
+      cryptoAmount,
+      btcToFiat,
+      crytoUnit,
+      networkId,
+    );
+    expect(amountUsdOfCryptoAmount).toBe(expected);
+  });
+
+  it('should correctly convert 10 USD of 5643.20 USD/BTC into Crypto amount and unit', () => {
+    const amountFiat = 10;
+    const btcToFiat = 5643.2;
+    const networkId = MAINNET;
+
+    const expected = {
+      amount: 1.7720442302239863,
+      unit: MBTC,
+    };
+
+    const amountUsdOfCryptoAmount = getCryptoAmountAndUnitFromFiat(
+      amountFiat,
+      btcToFiat,
+      networkId,
+    );
+    expect(amountUsdOfCryptoAmount).toMatchObject(expected);
+  });
+
+  it('should correctly convert 0 USD of 5643.20 USD/BTC into Crypto amount and unit', () => {
+    const amountFiat = 0;
+    const btcToFiat = 5643.2;
+    const networkId = MAINNET;
+
+    const expected = {
+      amount: 0,
+      unit: BTC,
+    };
+
+    const amountUsdOfCryptoAmount = getCryptoAmountAndUnitFromFiat(
+      amountFiat,
+      btcToFiat,
+      networkId,
+    );
+    expect(amountUsdOfCryptoAmount).toMatchObject(expected);
   });
 });
