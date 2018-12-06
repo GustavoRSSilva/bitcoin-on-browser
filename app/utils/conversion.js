@@ -6,7 +6,7 @@ export const toFixed = (amount = 0, places) =>
 /*
  *  @dev converts an amount in satoshis to be displayed in the screen
  *  @returns - amount {string} - the amount
- *  @returns - unit {string} - the right unit
+ *  @returns - unit {string} - the unit
  * */
 export const transSatToUnit = (amountInSat = 0, decimals = null) => {
   if (amountInSat === 0) {
@@ -179,7 +179,6 @@ export const convertFiatBtcToFiatUnit = (value, unit) => {
  *  @params amount {int} - amount to be converted
  *  @params btcToFiat {flaot} - amount that 1 btc cost in fiat
  *  @params networkId {string} - the network id
- *
  *  @returns amountInCryptoUnit {float} - the amount of the amount in the crypto unit
  */
 export const getFiatAmountFromCrypto = (
@@ -199,8 +198,13 @@ export const getFiatAmountFromCrypto = (
 
 /**
  *  @dev convert any amount (fiat) into the Crypto amount and unit (Btc, mBtc or Sat)
+ *  @params amount {float} - amount in fiat
+ *  @params btcToFiat {flaot} - amount that 1 btc cost in fiat
+ *  @params networkId {string} - the network id
+ *  @params - decimals {int | null} - convert to decimals
+ *  @returns - amount {string} - the amount
+ *  @returns - unit {string} - the unit
  */
-//  TODO needs testing
 export const getCryptoAmountAndUnitFromFiat = (
   amount,
   btcToFiat,
