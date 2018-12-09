@@ -15,4 +15,12 @@ export default defineMessages({
     id: 'app.components.SendUtxosTable.utxos',
     defaultMessage: 'utxos',
   },
+  tx_id: {
+    id: 'app.components.SendUtxosTable.tx_id',
+    defaultMessage: 'Transaction Id',
+  },
+  amount: {
+    id: 'app.components.SendUtxosTable.amount',
+    defaultMessage: 'Amount',
+  },
 });
