@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,21 +14,33 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
+import Tooltip from '@material-ui/core/Tooltip';
+
+import InformationSVG from 'assets/img/information.svg';
+
+import appMessages from 'containers/App/messages';
 
 import { transSatToUnit } from 'utils/conversion';
 
-import { Wrapper } from './styles';
+import { Wrapper, TooltipImg } from './styles';
 import messages from './messages';
 
 function SendUtxosTable(props) {
-  const { utxos } = props;
+  const {
+    utxos,
+    intl: { formatMessage },
+  } = props;
 
   return (
     <Wrapper>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell />
+            <TableCell>
+              <Tooltip title={formatMessage(messages.utxos_info)}>
+                <TooltipImg src={InformationSVG} />
+              </Tooltip>
+            </TableCell>
             <TableCell padding="none">
               <FormattedMessage {...messages.tx_id} />
             </TableCell>
@@ -58,7 +70,7 @@ function SendUtxosTable(props) {
                 </TableCell>
                 <TableCell padding="none">{utxoTitle}</TableCell>
                 <TableCell numeric>
-                  {amount} {unit}
+                  {amount} {formatMessage(appMessages[unit])}
                 </TableCell>
               </TableRow>
             );
@@ -70,7 +82,8 @@ function SendUtxosTable(props) {
 }
 
 SendUtxosTable.propTypes = {
+  intl: intlShape.isRequired,
   utxos: PropTypes.array,
 };
 
-export default SendUtxosTable;
+export default injectIntl(SendUtxosTable);

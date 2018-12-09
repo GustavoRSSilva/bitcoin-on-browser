@@ -9,3 +9,9 @@ export const Wrapper = styled.div`
     color: white;
   }
 `;
+
+export const TooltipImg = styled.img`
+  &:hover {
+    cursor: pointer;
+  }
+`;

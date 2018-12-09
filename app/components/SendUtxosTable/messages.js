@@ -23,4 +23,8 @@ export default defineMessages({
     id: 'app.components.SendUtxosTable.amount',
     defaultMessage: 'Amount',
   },
+  utxos_info: {
+    id: 'app.components.SendUtxosTable.utxos_info',
+    defaultMessage: 'Utxos table: Click on a row to enable or disable a utxo.',
+  },
 });
