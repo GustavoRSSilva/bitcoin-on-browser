@@ -52,7 +52,7 @@ you can also watch this video on how to start the extension https://youtu.be/QpX
 
 ## Roadmap
 
-- Create or import new seed/account
+- Create or import new seed/account (done)
 - New address
 - List address balance (done)
 - Receive funds (done)
