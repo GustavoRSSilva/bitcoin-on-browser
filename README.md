@@ -57,9 +57,9 @@ you can also watch this video on how to start the extension https://youtu.be/QpX
 - List address balance (done)
 - Receive funds (done)
 - List address transactions (done)
-- List address utxos
+- List address utxos (done)
   - Disable utxo on send page.
-- Create 1 - 1 transactions
+- Create 1 - 1 transactions (done)
 - Create 2 - 2 transactions
 - Fully integration with [arduino-bitcoin](https://github.com/arduino-bitcoin/arduino-bitcoin)
 - WYLTCAC (Would you like to create a channel)
