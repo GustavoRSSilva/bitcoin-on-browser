@@ -36,7 +36,7 @@ export const INSIGHT_URL = 'blockexplorer.com/api/';
 export const MAINNET = 'bitcoin';
 export const TESTNET = 'testnet';
 
-export const AVAILABLE_NETWORKS = [TESTNET];
+export const AVAILABLE_NETWORKS = [TESTNET, MAINNET];
 
 //  Default selected network
 export const DEFAULT_SELECTED_NETWORK = TESTNET;
