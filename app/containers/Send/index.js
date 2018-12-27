@@ -209,13 +209,13 @@ export class Send extends React.Component {
     submitForm(sendFormValues);
   }
 
-  handleToggleUtxo(evt, utxoId) {
+  handleToggleUtxo(evt, utxoId, vout) {
     evt.preventDefault();
     const { sendFormValues, setFormValues } = this.props;
     const addressUtxos = sendFormValues[ADDRESS_FROM_UTXOS] || [];
     sendFormValues[ADDRESS_FROM_UTXOS] = addressUtxos.map(ut => {
       const utxo = ut;
-      if (utxo.txid === utxoId) {
+      if (utxo.txid === utxoId && utxo.vout === vout) {
         utxo.enabled = !utxo.enabled;
       }
 

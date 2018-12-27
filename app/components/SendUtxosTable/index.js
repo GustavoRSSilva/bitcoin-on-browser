@@ -60,7 +60,7 @@ function SendUtxosTable(props) {
             return (
               <TableRow
                 hover
-                onClick={evt => toggleUtxo(evt, utxo.txid)}
+                onClick={evt => toggleUtxo(evt, utxo.txid, utxo.vout)}
                 role="checkbox"
                 key={utxoTitle}
                 selected={isSelected}
