@@ -51,6 +51,11 @@ const renderCurrencyInputs = (
     <InputContainer>
       <TextField
         type="text"
+        label={
+          amountError
+            ? formatMessage(messages.insufficient_funds)
+            : formatMessage(appMessages[unitCrypto])
+        }
         pattern="^\d+(\.\d*)?$"
         value={toString(amountCrypto)}
         onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
@@ -83,6 +88,11 @@ const renderCurrencyInputs = (
         <InputContainer>
           <TextField
             type="text"
+            label={
+              amountError
+                ? formatMessage(messages.insufficient_funds)
+                : formatMessage(appMessages[unitFiat])
+            }
             pattern="^\d+(\.\d*)?$"
             value={toString(amountFiat)}
             onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
