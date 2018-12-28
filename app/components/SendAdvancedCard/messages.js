@@ -15,8 +15,4 @@ export default defineMessages({
     id: 'app.components.SendAdvancedCard.advanced',
     defaultMessage: 'advanced',
   },
-  utxos: {
-    id: 'app.components.SendAdvancedCard.utxos',
-    defaultMessage: 'utxos',
-  },
 });

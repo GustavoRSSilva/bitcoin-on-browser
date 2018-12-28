@@ -42,7 +42,11 @@ import {
 } from './constants';
 
 import * as actions from './actions';
-import { selectFormValues, selectSubmitFormState } from './selectors';
+import {
+  selectFormValues,
+  selectSubmitFormState,
+  selectAvailableAmountSatoshis,
+} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import withRequestHandler from './withRequestHandler';
@@ -57,6 +61,7 @@ export class Send extends React.Component {
     this.handleChangeUnit = this.handleChangeUnit.bind(this);
     this.handleChangeAddress = this.handleChangeAddress.bind(this);
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
+    this.handleToggleUtxo = this.handleToggleUtxo.bind(this);
   }
 
   componentWillMount() {
@@ -208,12 +213,37 @@ export class Send extends React.Component {
     submitForm(sendFormValues);
   }
 
+  handleToggleUtxo(evt, utxoId, vout) {
+    evt.preventDefault();
+    const { sendFormValues, setFormValues, setAvaialableAmount } = this.props;
+    const addressUtxos = sendFormValues[ADDRESS_FROM_UTXOS] || [];
+    sendFormValues[ADDRESS_FROM_UTXOS] = addressUtxos.map(ut => {
+      const utxo = ut;
+      if (utxo.txid === utxoId && utxo.vout === vout) {
+        utxo.enabled = !utxo.enabled;
+      }
+
+      return utxo;
+    });
+
+    let totalAvaiableAmount = 0;
+    sendFormValues[ADDRESS_FROM_UTXOS].filter(utxo => utxo.enabled).map(
+      utxo => {
+        totalAvaiableAmount += utxo.value;
+        return utxo;
+      },
+    );
+
+    setAvaialableAmount(totalAvaiableAmount);
+    setFormValues(sendFormValues);
+  }
+
   renderCloseButton() {
     return <CloseButton onClick={this.handleLeavePage} />;
   }
 
   renderSendForm() {
-    const { sendFormValues, networkId } = this.props;
+    const { sendFormValues, networkId, avaialableAmountSatoshis } = this.props;
 
     if (!sendFormValues[UNIT_CRYPTO]) {
       return null;
@@ -228,6 +258,7 @@ export class Send extends React.Component {
         availableCryptoUnits={AVAILABLE_CRYPTO_UNITS}
         handleChangeUnit={this.handleChangeUnit}
         handleSubmitForm={this.handleSubmitForm}
+        avaialableAmountSatoshis={avaialableAmountSatoshis}
       />
     );
   }
@@ -235,7 +266,12 @@ export class Send extends React.Component {
   renderAdvanced() {
     const { sendFormValues } = this.props;
     const addressUtxos = sendFormValues[ADDRESS_FROM_UTXOS] || [];
-    return <SendAdvancedCard utxos={addressUtxos} />;
+    return (
+      <SendAdvancedCard
+        utxos={addressUtxos}
+        toggleUtxo={this.handleToggleUtxo}
+      />
+    );
   }
 
   render() {
@@ -259,6 +295,8 @@ Send.propTypes = {
   submitForm: PropTypes.func.isRequired,
   resetSubmitForm: PropTypes.func.isRequired,
   formSubmitState: PropTypes.object.isRequired,
+  avaialableAmountSatoshis: PropTypes.number.isRequired,
+  setAvaialableAmount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -266,6 +304,7 @@ const mapStateToProps = createStructuredSelector({
   btcToFiatFetchState: selectBtcToFiatFetchState(),
   sendFormValues: selectFormValues(),
   formSubmitState: selectSubmitFormState(),
+  avaialableAmountSatoshis: selectAvailableAmountSatoshis(),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
