@@ -12,6 +12,7 @@ import {
   SUBMIT_FORM_REJECTED,
   SUBMIT_FORM_SUCCESSFUL,
   RESET_SUBMIT_FORM,
+  SET_AVAIALABLE_AMOUNT_SATOSHIS,
 } from './constants';
 
 function resetFormValues() {
@@ -54,6 +55,13 @@ function resetSubmitForm() {
   };
 }
 
+function setAvaialableAmount(payload) {
+  return {
+    type: SET_AVAIALABLE_AMOUNT_SATOSHIS,
+    payload,
+  };
+}
+
 export {
   setFormValues,
   resetFormValues,
@@ -62,4 +70,5 @@ export {
   submitFormRejected,
   submitFormSuccessful,
   resetSubmitForm,
+  setAvaialableAmount,
 };
