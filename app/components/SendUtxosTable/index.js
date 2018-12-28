@@ -29,6 +29,7 @@ function SendUtxosTable(props) {
   const {
     utxos,
     intl: { formatMessage },
+    toggleUtxo,
   } = props;
 
   return (
@@ -59,7 +60,7 @@ function SendUtxosTable(props) {
             return (
               <TableRow
                 hover
-                onClick={() => null}
+                onClick={evt => toggleUtxo(evt, utxo.txid, utxo.vout)}
                 role="checkbox"
                 key={utxoTitle}
                 selected={isSelected}
@@ -83,6 +84,7 @@ function SendUtxosTable(props) {
 
 SendUtxosTable.propTypes = {
   intl: intlShape.isRequired,
+  toggleUtxo: PropTypes.func.isRequired,
   utxos: PropTypes.array,
 };
 

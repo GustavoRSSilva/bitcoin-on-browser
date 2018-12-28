@@ -57,6 +57,7 @@ export class Send extends React.Component {
     this.handleChangeUnit = this.handleChangeUnit.bind(this);
     this.handleChangeAddress = this.handleChangeAddress.bind(this);
     this.handleSubmitForm = this.handleSubmitForm.bind(this);
+    this.handleToggleUtxo = this.handleToggleUtxo.bind(this);
   }
 
   componentWillMount() {
@@ -208,6 +209,22 @@ export class Send extends React.Component {
     submitForm(sendFormValues);
   }
 
+  handleToggleUtxo(evt, utxoId, vout) {
+    evt.preventDefault();
+    const { sendFormValues, setFormValues } = this.props;
+    const addressUtxos = sendFormValues[ADDRESS_FROM_UTXOS] || [];
+    sendFormValues[ADDRESS_FROM_UTXOS] = addressUtxos.map(ut => {
+      const utxo = ut;
+      if (utxo.txid === utxoId && utxo.vout === vout) {
+        utxo.enabled = !utxo.enabled;
+      }
+
+      return utxo;
+    });
+
+    setFormValues(sendFormValues);
+  }
+
   renderCloseButton() {
     return <CloseButton onClick={this.handleLeavePage} />;
   }
@@ -235,7 +252,12 @@ export class Send extends React.Component {
   renderAdvanced() {
     const { sendFormValues } = this.props;
     const addressUtxos = sendFormValues[ADDRESS_FROM_UTXOS] || [];
-    return <SendAdvancedCard utxos={addressUtxos} />;
+    return (
+      <SendAdvancedCard
+        utxos={addressUtxos}
+        toggleUtxo={this.handleToggleUtxo}
+      />
+    );
   }
 
   render() {
