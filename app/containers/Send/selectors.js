@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
-import { FORM_VALUES, SUBMIT_FORM_STATE } from './constants';
+import {
+  FORM_VALUES,
+  SUBMIT_FORM_STATE,
+  AVAILABLE_AMOUNT_SATOSHIS,
+} from './constants';
 
 /**
  * Direct selector to the send state domain
@@ -18,6 +22,11 @@ const selectFormValues = () =>
 const selectSubmitFormState = () =>
   createSelector(selectSendDomain, subState => subState.get(SUBMIT_FORM_STATE));
 
+const selectAvailableAmountSatoshis = () =>
+  createSelector(selectSendDomain, subState =>
+    subState.get(AVAILABLE_AMOUNT_SATOSHIS),
+  );
+
 /**
  * Default selector used by Send
  */
@@ -26,4 +35,9 @@ const makeSelectSend = () =>
   createSelector(selectSendDomain, substate => substate.toJS());
 
 export default makeSelectSend;
-export { selectSendDomain, selectFormValues, selectSubmitFormState };
+export {
+  selectSendDomain,
+  selectFormValues,
+  selectSubmitFormState,
+  selectAvailableAmountSatoshis,
+};

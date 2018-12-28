@@ -14,7 +14,9 @@ import Button from 'components/common/Button';
 
 import appMessages from 'containers/App/messages';
 
-import { TESTNET } from 'utils/constants';
+import { TESTNET, SAT } from 'utils/constants';
+
+import { convertCryptoFromUnitToUnit } from 'utils/conversion';
 
 import {
   AMOUNT_CRYPTO,
@@ -43,6 +45,7 @@ const renderCurrencyInputs = (
   unitFiat,
   availableCryptoUnits,
   formatMessage,
+  amountError,
 ) => (
   <Fragment>
     <InputContainer>
@@ -54,6 +57,7 @@ const renderCurrencyInputs = (
         onFocus={onFocus}
         placeholder={formatMessage(appMessages[unitCrypto])}
         margin="0"
+        error={amountError}
       />
       <Unit>
         <Select
@@ -85,6 +89,7 @@ const renderCurrencyInputs = (
             onFocus={onFocus}
             margin="0"
             placeholder={formatMessage(appMessages[unitFiat])}
+            error={amountError}
           />
           <Unit>
             <FormattedMessage {...appMessages[unitFiat]} />
@@ -104,6 +109,7 @@ function SendForm(props) {
     availableCryptoUnits,
     handleChangeUnit,
     handleSubmitForm,
+    avaialableAmountSatoshis,
   } = props;
 
   const { formatMessage } = props.intl;
@@ -115,6 +121,13 @@ function SendForm(props) {
 
   const addressTo = formValue[ADDRESS_TO];
   const addressFrom = formValue[ADDRESS_FROM];
+
+  const amountSatoshis = convertCryptoFromUnitToUnit(
+    amountCrypto,
+    unitCrypto,
+    SAT,
+  );
+  const amountError = amountSatoshis > avaialableAmountSatoshis;
 
   return (
     <Form onSubmit={handleSubmitForm}>
@@ -151,6 +164,7 @@ function SendForm(props) {
         unitFiat,
         availableCryptoUnits,
         formatMessage,
+        amountError,
       )}
 
       <InputContainer>
@@ -185,6 +199,7 @@ SendForm.propTypes = {
   availableCryptoUnits: PropTypes.array.isRequired,
   handleChangeUnit: PropTypes.func.isRequired,
   handleSubmitForm: PropTypes.func.isRequired,
+  avaialableAmountSatoshis: PropTypes.number.isRequired,
 };
 
 export default injectIntl(SendForm);
