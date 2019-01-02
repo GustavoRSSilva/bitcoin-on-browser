@@ -10,6 +10,7 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import Select from 'components/common/Select';
 import TextField from 'components/common/TextField';
+import { FLOAT_PATTERN } from 'components/common/TextField/constants';
 
 import appMessages from 'containers/App/messages';
 
@@ -54,7 +55,7 @@ function ReceiveForm(props) {
       <PrimaryInputContainer>
         <TextField
           type="text"
-          pattern="^\d+(\.\d*)?$"
+          pattern={FLOAT_PATTERN}
           id={AMOUNT_CRYPTO}
           value={toString(amountCrypto)}
           onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
@@ -85,7 +86,7 @@ function ReceiveForm(props) {
           <SecondaryInputContainer>
             <TextField
               type="text"
-              pattern="^\d*(\.\d*)?$"
+              pattern={FLOAT_PATTERN}
               value={toString(amountFiat)}
               onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
               onFocus={onFocus}
