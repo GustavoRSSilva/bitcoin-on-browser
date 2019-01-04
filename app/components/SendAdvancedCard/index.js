@@ -23,8 +23,8 @@ class SendAdvancedCard extends React.PureComponent {
   }
 
   renderUtxosTable() {
-    const { utxos } = this.props;
-    return <SendUtxosTable utxos={utxos} />;
+    const { utxos, toggleUtxo } = this.props;
+    return <SendUtxosTable utxos={utxos} toggleUtxo={toggleUtxo} />;
   }
 
   render() {
@@ -48,6 +48,7 @@ class SendAdvancedCard extends React.PureComponent {
 
 SendAdvancedCard.propTypes = {
   utxos: PropTypes.array.isRequired,
+  toggleUtxo: PropTypes.func.isRequired,
 };
 
 export default SendAdvancedCard;

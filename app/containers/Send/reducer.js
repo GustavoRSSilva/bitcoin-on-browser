@@ -14,6 +14,8 @@ import {
   SUBMIT_FORM_REJECTED,
   SUBMIT_FORM_SUCCESSFUL,
   RESET_SUBMIT_FORM,
+  AVAILABLE_AMOUNT_SATOSHIS,
+  SET_AVAIALABLE_AMOUNT_SATOSHIS,
 } from './constants';
 import { getDefaultFormValues } from './saga';
 
@@ -26,6 +28,7 @@ const setState = (requesting = false, error = null, data = null) => ({
 export const initialState = fromJS({
   [FORM_VALUES]: { ...getDefaultFormValues() },
   [SUBMIT_FORM_STATE]: setState(),
+  [AVAILABLE_AMOUNT_SATOSHIS]: 0,
 });
 
 function sendReducer(state = initialState, action) {
@@ -49,6 +52,9 @@ function sendReducer(state = initialState, action) {
 
     case RESET_SUBMIT_FORM:
       return state.set(SUBMIT_FORM_STATE, setState());
+
+    case SET_AVAIALABLE_AMOUNT_SATOSHIS:
+      return state.set(AVAILABLE_AMOUNT_SATOSHIS, action.payload);
 
     default:
       return state;
