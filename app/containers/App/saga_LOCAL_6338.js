@@ -119,6 +119,7 @@ function* storeAddress(address) {
   const selectedNetwork = yield select(selectNetworkId());
   //    add the address as the active address
   user[ACTIVE_ADDRESS] = address;
+  delete user['adtestnet'];
   //Try to get the address balance
   let result = 0;
   try{
