@@ -27,7 +27,6 @@ import {
   CHANGE_NETWORK,
   FETCH_NETWORK,
   ACTIVE_ADDRESS,
-  USER_ADDRESSES,
   FETCH_USER_CREATED,
   FETCH_SESSION_VALID,
   FETCH_ACTIVE_ADDRESS,
@@ -119,36 +118,35 @@ function* storeAddress(address) {
   const selectedNetwork = yield select(selectNetworkId());
   //    add the address as the active address
   user[ACTIVE_ADDRESS] = address;
-  //Try to get the address balance
+  // Try to get the address balance
   let result = 0;
-  try{
-    result = getAddressBalance(address, selectNetwork);
-  }catch(e){
+  try {
+    result = getAddressBalance(address, selectedNetwork);
+  } catch (e) {
     result = 0;
   }
   const bal = result;
-  //New address object
-  const adrObjct ={
-    'address': address,
-    'bal': bal
-  }
-  //Check weather address object already exists
+  // New address object
+  const adrObjct = {
+    address,
+    bal,
+  };
+  // Check weather address object already exists
   let isContain = false;
-  for(let i =0; i < user[selectedNetwork].length; i++){
-    if(user[selectedNetwork][i][address] == adrObjct[address]){
+  for (let i = 0; i < user[selectedNetwork].length; i += 1) {
+    if (user[selectedNetwork][i][address] === adrObjct[address]) {
       isContain = true;
       break;
-    }else{
+    } else {
       isContain = false;
     }
   }
-  //if adrObj does not exists in user[selectedNetwork] array
-  //Add the new object into the existing array
-  if(isContain == false){
+  // if adrObj does not exists in user[selectedNetwork] array
+  // Add the new object into the existing array
+  if (isContain === false) {
     user[selectedNetwork] = [...user[selectedNetwork], adrObjct];
   }
-  //Check the user object in console (only for debugging purpose)
-  console.log(user);
+
   return yield saveUser(user);
 }
 
