@@ -27,7 +27,6 @@ import {
   CHANGE_NETWORK,
   FETCH_NETWORK,
   ACTIVE_ADDRESS,
-  USER_ADDRESSES,
   FETCH_USER_CREATED,
   FETCH_SESSION_VALID,
   FETCH_ACTIVE_ADDRESS,
@@ -117,11 +116,37 @@ export function* saveMnemonic(mnemonic) {
 function* storeAddress(address) {
   const user = yield getUser();
   const selectedNetwork = yield select(selectNetworkId());
-  //    add teh address as the active address
+  //    add the address as the active address
   user[ACTIVE_ADDRESS] = address;
-  user[selectedNetwork] = user[selectedNetwork] || [];
-  const userAddresses = user[selectedNetwork][USER_ADDRESSES] || [];
-  user[selectedNetwork][USER_ADDRESSES] = [...userAddresses, address];
+  // Try to get the address balance
+  let result = 0;
+  try {
+    result = getAddressBalance(address, selectedNetwork);
+  } catch (e) {
+    result = 0;
+  }
+  const bal = result;
+  // New address object
+  const adrObjct = {
+    address,
+    bal,
+  };
+  // Check weather address object already exists
+  let isContain = false;
+  for (let i = 0; i < user[selectedNetwork].length; i += 1) {
+    if (user[selectedNetwork][i][address] === adrObjct[address]) {
+      isContain = true;
+      break;
+    } else {
+      isContain = false;
+    }
+  }
+  // if adrObj does not exists in user[selectedNetwork] array
+  // Add the new object into the existing array
+  if (isContain === false) {
+    user[selectedNetwork] = [...user[selectedNetwork], adrObjct];
+  }
+
   return yield saveUser(user);
 }
 
@@ -132,7 +157,6 @@ export function* getNetwork() {
 export function* getUser() {
   try {
     const ciphertext = yield getItem(USER);
-
     if (!ciphertext) {
       return null;
     }

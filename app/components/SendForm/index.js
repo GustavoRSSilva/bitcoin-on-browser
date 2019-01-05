@@ -10,6 +10,7 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import Select from 'components/common/Select';
 import TextField from 'components/common/TextField';
+import { FLOAT_PATTERN } from 'components/common/TextField/constants';
 import Button from 'components/common/Button';
 
 import appMessages from 'containers/App/messages';
@@ -56,7 +57,7 @@ const renderCurrencyInputs = (
             ? formatMessage(messages.insufficient_funds)
             : formatMessage(appMessages[unitCrypto])
         }
-        pattern="^\d+(\.\d*)?$"
+        pattern={FLOAT_PATTERN}
         value={toString(amountCrypto)}
         onChange={evt => handleChangeAmount(evt, AMOUNT_CRYPTO)}
         onFocus={onFocus}
@@ -93,7 +94,7 @@ const renderCurrencyInputs = (
                 ? formatMessage(messages.insufficient_funds)
                 : formatMessage(appMessages[unitFiat])
             }
-            pattern="^\d+(\.\d*)?$"
+            pattern={FLOAT_PATTERN}
             value={toString(amountFiat)}
             onChange={evt => handleChangeAmount(evt, AMOUNT_FIAT)}
             onFocus={onFocus}
