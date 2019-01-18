@@ -32,4 +32,8 @@ export default defineMessages({
     id: 'app.components.SendForm.submit',
     defaultMessage: 'Submit',
   },
+  insufficient_funds: {
+    id: 'app.components.SendForm.insufficient_funds',
+    defaultMessage: 'Insufficient funds',
+  },
 });
