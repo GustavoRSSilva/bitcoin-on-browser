@@ -30,6 +30,7 @@ import {
   setFormValues,
   submitFormRejected,
   submitFormSuccessful,
+  setAvaialableAmount,
 } from './actions';
 
 export const getDefaultFormValues = (
@@ -53,6 +54,14 @@ function* callResetFormValues() {
   const activeAddress = activeAddressFetchState.data;
   const addressUtxosFetchState = yield select(selectAddressUtxosFetchState());
   const addressUtxos = addressUtxosFetchState.data;
+
+  let avaialableAmount = 0;
+  addressUtxos.map(utxo => {
+    avaialableAmount += utxo.value;
+    return utxo;
+  });
+  yield put(setAvaialableAmount(avaialableAmount));
+
   const networkId = yield select(selectNetworkId());
   const estimatedFeesFetchState = yield select(selectEstimatedFeesFetchState());
   const estimatedFees =
