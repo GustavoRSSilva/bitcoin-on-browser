@@ -61,12 +61,17 @@ export class Receive extends React.Component {
    */
   // TODO: Test this!!
   handleChangeAmount(evt, target) {
-    //  thw value needs to pass the regex
-    if (evt.target.value && !evt.target.validity.valid) {
+    let value = evt.target.value || '0';
+
+    //  the value needs to pass the regex
+    if (
+      !value ||
+      !evt.target.validity.valid ||
+      (Number.isNaN(parseFloat(value)) && value !== '.') ||
+      /[a-zA-Z]+/.test(value)
+    ) {
       return null;
     }
-
-    let value = evt.target.value || '0';
 
     //  remove zeros at the left after the first
     //  ex: 001. => 1.,

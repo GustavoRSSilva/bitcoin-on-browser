@@ -45,7 +45,6 @@ export class App extends React.Component {
     );
   }
 }
-
 const withReducer = injectReducer({ key: 'app', reducer });
 const withSaga = injectSaga({ key: 'app', saga });
 

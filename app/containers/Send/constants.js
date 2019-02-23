@@ -23,3 +23,6 @@ export const SUBMIT_FORM = `${path}SUBMIT_FORM`;
 export const SUBMIT_FORM_REJECTED = `${path}SUBMIT_FORM_REJECTED`;
 export const SUBMIT_FORM_SUCCESSFUL = `${path}SUBMIT_FORM_SUCCESSFUL`;
 export const RESET_SUBMIT_FORM = `${path}RESET_SUBMIT_FORM`;
+
+export const AVAILABLE_AMOUNT_SATOSHIS = 'available_amount_satoshis';
+export const SET_AVAIALABLE_AMOUNT_SATOSHIS = `${path}SET_AVAIALABLE_AMOUNT_SATOSHIS`;
